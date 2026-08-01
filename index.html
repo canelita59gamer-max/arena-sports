@@ -3,16 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Arena Sports organiza torneos y eventos deportivos profesionales para comunidades, empresas e instituciones en Colombia.">
+<meta name="keywords" content="Arena Sports, torneos deportivos, eventos deportivos, fútbol, básquetbol, voleibol, ligas corporativas">
+<meta name="author" content="Arena Sports">
+<meta property="og:title" content="Arena Sports — Donde el Juego se Vuelve Historia">
+<meta property="og:description" content="Organización profesional de torneos y eventos deportivos con impacto comunitario y visibilidad para marcas.">
+<meta property="og:type" content="website">
 <title>Arena Sports — Donde el Juego se Vuelve Historia</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body id="top">
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo"><em>ARENA</em> SPORTS</div>
-  <div class="nav-links">
+  <a class="nav-logo" href="#top" aria-label="Inicio Arena Sports"><em>ARENA</em> SPORTS</a>
+  <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links" id="navMenu">
     <a href="#servicios">Servicios</a>
     <a href="#historial">Historial</a>
     <a href="#proximos">Agenda</a>
@@ -388,39 +400,45 @@
         </div>
         <div class="contact-item">
           <div class="contact-item-icon">📱</div>
-          <span>+57 300 000 0000</span>
+          <span>+57 322 246 2392</span>
         </div>
         <div class="contact-item">
           <div class="contact-item-icon">📍</div>
           <span>Colombia</span>
         </div>
       </div>
+      <a class="whatsapp-link" href="https://wa.me/573222462392?text=Hola%20Arena%20Sports%2C%20quiero%20más%20información%20sobre%20sus%20eventos." target="_blank" rel="noopener">
+        <span>💬</span> Escribir por WhatsApp
+      </a>
     </div>
     <div class="contact-form reveal">
-      <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" placeholder="Tu nombre">
-      </div>
-      <div class="form-group">
-        <label>Correo / WhatsApp</label>
-        <input type="text" placeholder="tu@correo.com o +57 300...">
-      </div>
-      <div class="form-group">
-        <label>¿Qué necesitas?</label>
-        <select>
-          <option value="">Selecciona una opción</option>
-          <option>Organizar un torneo</option>
-          <option>Patrocinar un evento</option>
-          <option>Liga corporativa o institucional</option>
-          <option>Información general</option>
-          <option>Otro</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Mensaje</label>
-        <textarea placeholder="Cuéntanos de tu proyecto o evento..."></textarea>
-      </div>
-      <button class="btn-acento" style="width:100%; font-size:15px;" onclick="alert('¡Mensaje enviado! Te contactaremos pronto.')">Enviar Mensaje</button>
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="name">Nombre completo</label>
+          <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="contact">Correo / WhatsApp</label>
+          <input id="contact" name="contact" type="text" placeholder="tu@correo.com o +57 300..." required>
+        </div>
+        <div class="form-group">
+          <label for="topic">¿Qué necesitas?</label>
+          <select id="topic" name="topic" required>
+            <option value="">Selecciona una opción</option>
+            <option>Organizar un torneo</option>
+            <option>Patrocinar un evento</option>
+            <option>Liga corporativa o institucional</option>
+            <option>Información general</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Mensaje</label>
+          <textarea id="message" name="message" placeholder="Cuéntanos de tu proyecto o evento..." required></textarea>
+        </div>
+        <button type="submit" class="btn-acento" style="width:100%; font-size:15px;">Enviar Mensaje</button>
+        <p class="form-message" id="formMessage" aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </section>
@@ -431,6 +449,8 @@
   <p>Donde el juego se vuelve historia · Organización Profesional de Eventos Deportivos</p>
   <p style="font-size:11px; color:var(--borde);">© 2026 Arena Sports · Todos los derechos reservados</p>
 </footer>
+
+<button id="backToTop" class="back-to-top" aria-label="Volver arriba">↑</button>
 
 <script src="js/main.js"></script>
 </body>
