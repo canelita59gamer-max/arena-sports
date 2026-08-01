@@ -581,6 +581,94 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
 }
 .red-card:hover .red-arrow { color: var(--acento); transform: translate(3px,-3px); }
 
+/* ══════════════════════ EVENTOS MODAL ══════════════════════ */
+.event-card-btn {
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  color: inherit;
+  font: inherit;
+}
+.event-card-btn .ev-result strong { color: var(--acento); }
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .28s ease, visibility .28s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-card {
+  width: min(960px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--gris-2);
+  border: 1px solid var(--borde);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+  transform: translateY(18px) scale(.98);
+  transition: transform .32s ease;
+}
+.modal-overlay.active .modal-card {
+  transform: translateY(0) scale(1);
+}
+.modal-close {
+  border: 0;
+  background: transparent;
+  color: var(--blanco);
+  font-size: 30px;
+  cursor: pointer;
+  float: right;
+}
+.modal-head h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.modal-meta {
+  color: var(--blanco-suave);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.modal-gallery img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+}
+.modal-description {
+  color: var(--blanco-suave);
+  line-height: 1.8;
+  font-size: 15px;
+  margin-top: 8px;
+}
+.modal-summary {
+  color: var(--acento);
+  font-weight: 600;
+  line-height: 1.7;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
 /* ══════════════════════ CONTACT ══════════════════════ */
 #contacto {
   background: var(--negro);
@@ -716,6 +804,7 @@ footer p { color: var(--blanco-suave); font-size: 12px; }
 /* ══════════════════════ RESPONSIVE ══════════════════════ */
 @media (max-width: 900px) {
   nav { padding: 0 20px; }
+  .modal-gallery { grid-template-columns: 1fr; }
   .menu-toggle { display: flex; }
   .nav-links {
     position: fixed;

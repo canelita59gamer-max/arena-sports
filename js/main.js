@@ -59,6 +59,52 @@ const form = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 const whatsappPhone = '573222462392';
 
+const eventButtons = document.querySelectorAll('.event-card-btn');
+const modalOverlay = document.getElementById('eventModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalMeta = document.getElementById('modalMeta');
+const modalSummary = document.getElementById('modalSummary');
+const modalDescription = document.getElementById('modalDescription');
+const modalGallery = document.getElementById('modalGallery');
+const closeModal = document.getElementById('closeModal');
+
+if (eventButtons.length && modalOverlay) {
+  eventButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      modalTitle.textContent = button.dataset.title || 'Evento Arena Sports';
+      modalMeta.innerHTML = `${button.dataset.date || ''} · ${button.dataset.location || ''}`;
+      modalSummary.textContent = button.dataset.summary || '';
+      modalDescription.textContent = button.dataset.description || '';
+
+      const images = (button.dataset.images || '').split(',').filter(Boolean);
+      modalGallery.innerHTML = '';
+      images.forEach((src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = button.dataset.title || 'Evento Arena Sports';
+        modalGallery.appendChild(img);
+      });
+
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+}
+
+if (closeModal && modalOverlay) {
+  closeModal.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  modalOverlay.addEventListener('click', (event) => {
+    if (event.target === modalOverlay) {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+}
+
 if (form && formMessage) {
   form.addEventListener('submit', (event) => {
     event.preventDefault();

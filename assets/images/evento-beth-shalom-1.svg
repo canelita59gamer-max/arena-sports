@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#0f172a"/>
+  <rect x="80" y="120" width="1040" height="560" rx="28" fill="#111827" stroke="#e8ff00" stroke-width="6"/>
+  <rect x="140" y="180" width="920" height="440" rx="20" fill="#1f2937"/>
+  <rect x="220" y="250" width="180" height="180" rx="24" fill="#e8ff00" opacity="0.9"/>
+  <rect x="460" y="250" width="220" height="180" rx="24" fill="#f59e0b" opacity="0.9"/>
+  <rect x="740" y="250" width="180" height="180" rx="24" fill="#38bdf8" opacity="0.9"/>
+  <rect x="220" y="470" width="700" height="90" rx="20" fill="#e5e7eb" opacity="0.9"/>
+  <text x="600" y="660" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#e8ff00">Torneo Intercolegiados</text>
+  <text x="600" y="708" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#f9fafb">Momento de juego y competencia</text>
+</svg>
