@@ -61,6 +61,7 @@ nav {
   border-bottom: 1px solid var(--borde);
 }
 .nav-logo {
+  display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -68,7 +69,10 @@ nav {
   text-transform: uppercase;
   color: var(--blanco);
   text-decoration: none;
+  line-height: 1;
 }
+.nav-logo img { display: block; }
+.nav-logo span { line-height: 1.1; color: var(--blanco); }
 .nav-logo em { color: var(--acento); font-style: normal; }
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .menu-toggle {
