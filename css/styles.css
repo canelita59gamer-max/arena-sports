@@ -57,7 +57,7 @@ nav {
   padding: 0 48px;
   height: 64px;
   background: rgba(8,8,8,0.95);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde);
 }
 .nav-logo {
@@ -224,12 +224,13 @@ nav {
   font-family: 'Oswald', sans-serif;
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: background .2s, transform .15s;
+  border-radius: 4px;
+  transition: background .3s, transform .3s;
   display: inline-block;
 }
 .btn-acento:hover { background: #d4eb00; transform: translateY(-2px); }
@@ -316,6 +317,7 @@ section { padding: 100px 48px; }
   font-size: clamp(36px, 5vw, 64px);
   text-transform: uppercase;
   line-height: 0.95;
+  letter-spacing: 3px;
   margin-bottom: 48px;
 }
 .s-title .dim { color: var(--blanco-suave); }
@@ -332,17 +334,12 @@ section { padding: 100px 48px; }
   padding: 48px 36px;
   position: relative;
   overflow: hidden;
-  transition: background .3s;
+  transition: background .3s, transform .3s ease;
 }
-.servicio-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--acento);
-  transform: scaleX(0);
-  transition: transform .4s;
+.servicio-card:hover {
+  background: var(--gris-3);
+  transform: translateY(-6px);
 }
-.servicio-card:hover { background: var(--gris-3); }
 .servicio-card:hover::after { transform: scaleX(1); }
 .serv-num {
   font-family: 'Oswald', sans-serif;
@@ -377,7 +374,7 @@ section { padding: 100px 48px; }
   padding: 6px 16px; font-weight: 500;
 }
 .tabla-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
+table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
 thead tr { border-bottom: 1px solid var(--acento); }
 thead th {
   padding: 12px 16px;
@@ -450,6 +447,7 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   display: grid; grid-template-columns: 90px 1fr auto;
   align-items: center; gap: 36px; padding: 28px 36px;
   transition: background .2s;
+  border-left: 3px solid var(--acento);
 }
 .prox-item:hover { background: var(--gris-3); }
 .prox-fecha { text-align: center; }
@@ -618,9 +616,9 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   overflow: auto;
   background: var(--gris-2);
   border: 1px solid var(--borde);
-  border-radius: 24px;
+  border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
   transform: translateY(18px) scale(.98);
   transition: transform .32s ease;
 }
