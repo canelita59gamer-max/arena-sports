@@ -79,10 +79,24 @@ if (eventButtons.length && modalOverlay) {
       const images = (button.dataset.images || '').split(',').filter(Boolean);
       modalGallery.innerHTML = '';
       images.forEach((src) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = button.dataset.title || 'Evento Arena Sports';
-        modalGallery.appendChild(img);
+        const isVideo = src.trim().toLowerCase().endsWith('.mp4');
+        if (isVideo) {
+          const video = document.createElement('video');
+          video.src = src;
+          video.controls = true;
+          video.playsInline = true;
+          video.style.width = '100%';
+          video.style.borderRadius = '12px';
+          modalGallery.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = button.dataset.title || 'Evento Arena Sports';
+          img.style.width = '100%';
+          img.style.borderRadius = '12px';
+          img.style.objectFit = 'cover';
+          modalGallery.appendChild(img);
+        }
       });
 
       modalOverlay.classList.add('active');
