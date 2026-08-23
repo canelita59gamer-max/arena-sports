@@ -866,3 +866,21 @@ footer p { color: var(--blanco-suave); font-size: 12px; }
   .estado { display: none; }
   footer { padding: 32px 20px; }
 }
+
+/* Reveal animations and button micro-interactions (added at request) */
+.reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+.btn-acento, .btn-ghost {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-block;
+}
