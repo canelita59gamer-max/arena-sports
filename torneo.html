@@ -369,55 +369,39 @@ const HORAS = ['4:00 PM','5:00 PM','6:00 PM','7:00 PM'];
 function generarPartidos() {
   const equiposIds = EQUIPOS.map(e => e.id);
   const totalRondas = equiposIds.length - 1;
-  const rotacion = [...equiposIds];
-  const partidos = [];
+  let rotacion = [...equiposIds];
+  const rondas = [];
 
   for (let ronda = 0; ronda < totalRondas; ronda++) {
-    const emparejamientos = [];
-    const fecha = DOMINGOS[ronda] || `Fecha ${ronda + 1}`;
+    const partidosRonda = [];
 
     for (let i = 0; i < rotacion.length / 2; i++) {
       const local = rotacion[i];
       const visitante = rotacion[rotacion.length - 1 - i];
 
-      if (local === visitante) continue;
-
-      const match = {
-        local,
-        visitante,
-        fecha,
-        hora: HORAS[i % HORAS.length]
-      };
-
-      const yaExiste = emparejamientos.some(m =>
-        (m.local === local && m.visitante === visitante) ||
-        (m.local === visitante && m.visitante === local)
-      );
-
-      if (!yaExiste) {
-        emparejamientos.push(match);
+      if (local !== visitante) {
+        partidosRonda.push({ local, visitante });
       }
     }
 
-    emparejamientos.forEach((match, idx) => {
-      partidos.push({
-        id: `p${String(partidos.length + 1).padStart(2, '0')}`,
-        local: match.local,
-        visitante: match.visitante,
-        fecha: match.fecha,
-        hora: HORAS[idx % HORAS.length],
-        golesLocal: null,
-        golesVisitante: null,
-        jugado: false,
-        fase: 'grupos'
-      });
-    });
-
+    rondas.push(partidosRonda);
     const primero = rotacion.shift();
     rotacion.splice(Math.ceil(rotacion.length / 2), 0, primero);
   }
 
-  return partidos;
+  return rondas.flatMap((partidosRonda, rondaIndex) =>
+    partidosRonda.map((match, idx) => ({
+      id: `p${String(rondaIndex * 4 + idx + 1).padStart(2, '0')}`,
+      local: match.local,
+      visitante: match.visitante,
+      fecha: DOMINGOS[rondaIndex] || `Fecha ${rondaIndex + 1}`,
+      hora: HORAS[idx % HORAS.length],
+      golesLocal: null,
+      golesVisitante: null,
+      jugado: false,
+      fase: 'grupos'
+    }))
+  );
 }
 
 // UI
@@ -465,11 +449,17 @@ function calendarioValido(partidos) {
 
   const porFecha = {};
   const conteo = {};
+  const partidosSet = new Set();
 
   for (const p of partidos) {
     if (!p || p.fase !== 'grupos') return false;
     if (!p.local || !p.visitante || p.local === p.visitante) return false;
     if (!p.fecha) return false;
+
+    const keyA = `${p.local}-${p.visitante}`;
+    const keyB = `${p.visitante}-${p.local}`;
+    if (partidosSet.has(keyA) || partidosSet.has(keyB)) return false;
+    partidosSet.add(keyA);
 
     const fechaSet = porFecha[p.fecha] || new Set();
     if (fechaSet.has(p.local) || fechaSet.has(p.visitante)) return false;
@@ -479,6 +469,7 @@ function calendarioValido(partidos) {
     porFecha[p.fecha] = fechaSet;
 
     if (fechaSet.size > 8) return false;
+    if (fechaSet.size !== 8 && !Object.keys(porFecha).includes(p.fecha)) return false;
 
     conteo[p.local] = (conteo[p.local] || 0) + 1;
     conteo[p.visitante] = (conteo[p.visitante] || 0) + 1;
@@ -489,18 +480,13 @@ function calendarioValido(partidos) {
     if ((conteo[id] || 0) !== 7) return false;
   }
 
-  const partidosSet = new Set();
-  for (const p of partidos) {
-    const keyA = `${p.local}-${p.visitante}`;
-    const keyB = `${p.visitante}-${p.local}`;
-    if (partidosSet.has(keyA) || partidosSet.has(keyB)) return false;
-    partidosSet.add(keyA);
-  }
-
   const fechas = Object.keys(porFecha);
   const fechasEsperadas = DOMINGOS;
   if (fechas.length !== fechasEsperadas.length) return false;
   if (fechas.some(f => !fechasEsperadas.includes(f))) return false;
+
+  const totalPorFecha = Object.values(porFecha).map(set => set.size / 2);
+  if (totalPorFecha.some(v => v !== 4)) return false;
 
   return true;
 }
@@ -519,6 +505,11 @@ async function inicializar(){
   }
 
   if(fixtureCorrupto){
+    const partidosSnapDelete = await getDocs(collection(db,'faithcup_partidos'));
+    const borrar=writeBatch(db);
+    partidosSnapDelete.forEach(d=>borrar.delete(doc(db,'faithcup_partidos',d.id)));
+    await borrar.commit();
+
     const partidos=generarPartidos();
     const b2=writeBatch(db);
     partidos.forEach(p=>b2.set(doc(db,'faithcup_partidos',p.id),p));
