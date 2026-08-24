@@ -368,12 +368,13 @@ const HORAS = ['4:00 PM','5:00 PM','6:00 PM','7:00 PM'];
 
 function generarPartidos() {
   const equiposIds = EQUIPOS.map(e => e.id);
+  const totalRondas = equiposIds.length - 1;
   const rotacion = [...equiposIds];
   const partidos = [];
-  const totalRondas = equiposIds.length - 1;
 
   for (let ronda = 0; ronda < totalRondas; ronda++) {
-    const partidosRonda = [];
+    const emparejamientos = [];
+    const fecha = DOMINGOS[ronda] || `Fecha ${ronda + 1}`;
 
     for (let i = 0; i < rotacion.length / 2; i++) {
       const local = rotacion[i];
@@ -381,23 +382,29 @@ function generarPartidos() {
 
       if (local === visitante) continue;
 
-      const yaExiste = partidosRonda.some(match =>
-        (match.local === local && match.visitante === visitante) ||
-        (match.local === visitante && match.visitante === local)
+      const match = {
+        local,
+        visitante,
+        fecha,
+        hora: HORAS[i % HORAS.length]
+      };
+
+      const yaExiste = emparejamientos.some(m =>
+        (m.local === local && m.visitante === visitante) ||
+        (m.local === visitante && m.visitante === local)
       );
 
       if (!yaExiste) {
-        partidosRonda.push({ local, visitante });
+        emparejamientos.push(match);
       }
     }
 
-    const fecha = DOMINGOS[ronda] || `Fecha ${ronda + 1}`;
-    partidosRonda.forEach((match, idx) => {
+    emparejamientos.forEach((match, idx) => {
       partidos.push({
         id: `p${String(partidos.length + 1).padStart(2, '0')}`,
         local: match.local,
         visitante: match.visitante,
-        fecha,
+        fecha: match.fecha,
         hora: HORAS[idx % HORAS.length],
         golesLocal: null,
         golesVisitante: null,
@@ -453,12 +460,65 @@ function showMsg(id,type,text){
 }
 
 // Inicializar Firebase
+function calendarioValido(partidos) {
+  if (!Array.isArray(partidos) || partidos.length !== 28) return false;
+
+  const porFecha = {};
+  const conteo = {};
+
+  for (const p of partidos) {
+    if (!p || p.fase !== 'grupos') return false;
+    if (!p.local || !p.visitante || p.local === p.visitante) return false;
+    if (!p.fecha) return false;
+
+    const fechaSet = porFecha[p.fecha] || new Set();
+    if (fechaSet.has(p.local) || fechaSet.has(p.visitante)) return false;
+
+    fechaSet.add(p.local);
+    fechaSet.add(p.visitante);
+    porFecha[p.fecha] = fechaSet;
+
+    if (fechaSet.size > 8) return false;
+
+    conteo[p.local] = (conteo[p.local] || 0) + 1;
+    conteo[p.visitante] = (conteo[p.visitante] || 0) + 1;
+  }
+
+  const esperados = EQUIPOS.map(e => e.id);
+  for (const id of esperados) {
+    if ((conteo[id] || 0) !== 7) return false;
+  }
+
+  const partidosSet = new Set();
+  for (const p of partidos) {
+    const keyA = `${p.local}-${p.visitante}`;
+    const keyB = `${p.visitante}-${p.local}`;
+    if (partidosSet.has(keyA) || partidosSet.has(keyB)) return false;
+    partidosSet.add(keyA);
+  }
+
+  const fechas = Object.keys(porFecha);
+  const fechasEsperadas = DOMINGOS;
+  if (fechas.length !== fechasEsperadas.length) return false;
+  if (fechas.some(f => !fechasEsperadas.includes(f))) return false;
+
+  return true;
+}
+
 async function inicializar(){
   const snap=await getDocs(collection(db,'faithcup_equipos'));
+  const partidosSnap=await getDocs(collection(db,'faithcup_partidos'));
+
+  const partidosExistentes = partidosSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const fixtureCorrupto = !calendarioValido(partidosExistentes);
+
   if(snap.empty){
     const b=writeBatch(db);
     EQUIPOS.forEach(e=>b.set(doc(db,'faithcup_equipos',e.id),{nombre:e.nombre,pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0}));
     await b.commit();
+  }
+
+  if(fixtureCorrupto){
     const partidos=generarPartidos();
     const b2=writeBatch(db);
     partidos.forEach(p=>b2.set(doc(db,'faithcup_partidos',p.id),p));
@@ -512,22 +572,31 @@ function renderTabla(){
 }
 
 function renderCalendario(){
-  const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos').sort((a,b)=>a.id.localeCompare(b.id));
+  const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos');
   const porFecha={};
   grupos.forEach(p=>{
     const k=p.fecha||'Sin fecha';
     if(!porFecha[k]) porFecha[k]=[];
     porFecha[k].push(p);
   });
+
+  const fechasOrdenadas = Object.keys(porFecha).sort((a,b) => {
+    const ia = DOMINGOS.indexOf(a);
+    const ib = DOMINGOS.indexOf(b);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? Number.MAX_SAFE_INTEGER : ia) - (ib === -1 ? Number.MAX_SAFE_INTEGER : ib);
+    return a.localeCompare(b);
+  });
+
   let html='';
-  Object.entries(porFecha).forEach(([fecha,ps],di)=>{
+  fechasOrdenadas.forEach((fecha)=>{
+    const ps = porFecha[fecha].sort((a,b)=>a.hora.localeCompare(b.hora));
     html+=`<div class="cal-domingo">
       <div class="cal-header">
         <span class="cal-fecha">📅 ${fecha}</span>
         <span class="cal-num">${ps.filter(p=>p.jugado).length}/${ps.length} jugados</span>
       </div>
       <div class="cal-partidos">`;
-    ps.sort((a,b)=>a.hora.localeCompare(b.hora)).forEach(p=>{
+    ps.forEach(p=>{
       const local=equiposData[p.local]?.nombre||p.local;
       const vis=equiposData[p.visitante]?.nombre||p.visitante;
       const centro=p.jugado
