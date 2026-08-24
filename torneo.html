@@ -367,26 +367,49 @@ const DOMINGOS = ['30 ago','6 sep','13 sep','20 sep','27 sep','4 oct','11 oct'];
 const HORAS = ['4:00 PM','5:00 PM','6:00 PM','7:00 PM'];
 
 function generarPartidos() {
+  const equiposIds = EQUIPOS.map(e => e.id);
+  const rotacion = [...equiposIds];
   const partidos = [];
-  let idx = 0;
-  for(let i=0;i<EQUIPOS.length;i++) {
-    for(let j=i+1;j<EQUIPOS.length;j++) {
-      const domingo = Math.floor(idx/4);
-      const hora = idx % 4;
+  const totalRondas = equiposIds.length - 1;
+
+  for (let ronda = 0; ronda < totalRondas; ronda++) {
+    const partidosRonda = [];
+
+    for (let i = 0; i < rotacion.length / 2; i++) {
+      const local = rotacion[i];
+      const visitante = rotacion[rotacion.length - 1 - i];
+
+      if (local === visitante) continue;
+
+      const yaExiste = partidosRonda.some(match =>
+        (match.local === local && match.visitante === visitante) ||
+        (match.local === visitante && match.visitante === local)
+      );
+
+      if (!yaExiste) {
+        partidosRonda.push({ local, visitante });
+      }
+    }
+
+    const fecha = DOMINGOS[ronda] || `Fecha ${ronda + 1}`;
+    partidosRonda.forEach((match, idx) => {
       partidos.push({
-        id: `p${String(idx+1).padStart(2,'0')}`,
-        local: EQUIPOS[i].id,
-        visitante: EQUIPOS[j].id,
-        fecha: DOMINGOS[domingo] || 'Por definir',
-        hora: HORAS[hora],
+        id: `p${String(partidos.length + 1).padStart(2, '0')}`,
+        local: match.local,
+        visitante: match.visitante,
+        fecha,
+        hora: HORAS[idx % HORAS.length],
         golesLocal: null,
         golesVisitante: null,
         jugado: false,
         fase: 'grupos'
       });
-      idx++;
-    }
+    });
+
+    const primero = rotacion.shift();
+    rotacion.splice(Math.ceil(rotacion.length / 2), 0, primero);
   }
+
   return partidos;
 }
 
