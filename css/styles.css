@@ -499,7 +499,7 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
 #nuestros-patrocinadores { background: var(--gris-1); padding: 80px 40px; }
 .patro-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
   margin-top: 40px;
 }
@@ -507,9 +507,8 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   background: var(--gris-2);
   border: 1px solid var(--borde);
   border-radius: 12px;
-  padding: 24px;
+  padding: 28px 20px;
   text-align: center;
-  text-decoration: none;
   color: var(--blanco);
   transition: all 0.25s ease;
   display: flex;
@@ -518,48 +517,52 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
 }
 .patro-card:hover { border-color: var(--acento); transform: translateY(-4px); background: var(--gris-3); }
 .patro-card img {
-  max-width: 120px;
-  max-height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
   margin-bottom: 16px;
   background: #fff;
   border-radius: 8px;
-  padding: 8px;
+  padding: 10px;
 }
-.patro-card h3 { font-family: 'Oswald', sans-serif; font-size: 18px; margin-bottom: 8px; color: var(--blanco); }
-.patro-card p { font-size: 13px; color: var(--blanco-suave); line-height: 1.5; margin-bottom: 12px; }
-.patro-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-.patro-links span, .patro-links a {
-  font-size: 11px;
-  color: var(--acento);
-  text-decoration: none;
-  border: 1px solid var(--acento-dim);
-  padding: 4px 10px;
-  border-radius: 20px;
+.patro-card h3 { font-family: 'Oswald', sans-serif; font-size: 17px; margin-bottom: 8px; color: var(--blanco); }
+.patro-card p { font-size: 13px; color: var(--blanco-suave); line-height: 1.5; margin-bottom: 16px; flex-grow: 1; }
+.patro-socials { display: flex; gap: 14px; justify-content: center; }
+.patro-socials a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blanco-suave);
+  font-size: 15px;
+  transition: all 0.2s ease;
 }
-.patro-sin-link { cursor: default; }
+.patro-socials a:hover { color: var(--negro); background: var(--acento); border-color: var(--acento); }
 .patro-sidebar {
   position: fixed;
-  right: 16px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  z-index: 50;
+  gap: 14px;
+  z-index: 40;
 }
 .patro-sidebar img {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
   background: #fff;
   border-radius: 50%;
   padding: 6px;
-  border: 2px solid var(--acento);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   transition: transform 0.2s ease;
 }
 .patro-sidebar img:hover { transform: scale(1.15); }
-@media (max-width: 900px) { .patro-sidebar { display: none; } }
+@media (max-width: 1100px) { .patro-sidebar { display: none; } }
 #patrocinadores { background: var(--gris-1); }
 .patro-desc { max-width: 560px; color: var(--blanco-suave); line-height: 1.75; font-size: 15px; margin-bottom: 48px; }
 .patro-tiers { display: flex; flex-direction: column; gap: 2px; margin-bottom: 48px; }
@@ -581,10 +584,6 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   font-size: 22px; text-align: right; white-space: nowrap;
 }
 
-.patro-logos {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 2px;
-  margin-bottom: 40px;
-}
 .patro-slot {
   background: var(--gris-2); aspect-ratio: 2/1;
   display: flex; align-items: center; justify-content: center;
@@ -595,6 +594,24 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
 .patro-activo { color: var(--blanco); background: rgba(232,255,0,0.05); border: 1px solid rgba(232,255,0,0.15); }
 .patro-libre { color: var(--borde); border: 1px dashed var(--borde); cursor: pointer; font-size: 12px; }
 .patro-libre:hover { border-color: var(--acento); color: var(--acento); background: var(--acento-dim); }
+.patro-logos {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  margin-bottom: 40px;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+.patro-logos .patro-slot { flex: 0 0 140px; }
+.patro-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+}
+.patro-slot.patro-activo { padding: 0; overflow: hidden; }
 
 .patro-cta-bar {
   background: var(--acento); padding: 36px 40px;
