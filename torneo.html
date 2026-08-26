@@ -384,6 +384,10 @@ function generarPartidos() {
       }
     }
 
+    if (ronda === 0) {
+      [partidosRonda[0], partidosRonda[2]] = [partidosRonda[2], partidosRonda[0]];
+    }
+
     rondas.push(partidosRonda);
     const primero = rotacion.shift();
     rotacion.splice(Math.ceil(rotacion.length / 2), 0, primero);
@@ -491,6 +495,42 @@ function calendarioValido(partidos) {
   return true;
 }
 
+function ordenFechaUnoValido(partidos) {
+  const partidoUno = partidos.find(p => p.id === 'p01');
+  const partidoTres = partidos.find(p => p.id === 'p03');
+  const fixtureEsperado = generarPartidos();
+  const esperadoUno = fixtureEsperado.find(p => p.id === 'p01');
+  const esperadoTres = fixtureEsperado.find(p => p.id === 'p03');
+
+  return partidoUno?.local === esperadoUno.local &&
+    partidoUno?.visitante === esperadoUno.visitante &&
+    partidoTres?.local === esperadoTres.local &&
+    partidoTres?.visitante === esperadoTres.visitante;
+}
+
+async function actualizarOrdenFechaUno(partidosExistentes) {
+  const partidoUno = partidosExistentes.find(p => p.id === 'p01');
+  const partidoTres = partidosExistentes.find(p => p.id === 'p03');
+  if (!partidoUno || !partidoTres || ordenFechaUnoValido(partidosExistentes)) return;
+
+  const actualizar = writeBatch(db);
+  actualizar.update(doc(db, 'faithcup_partidos', 'p01'), {
+    local: partidoTres.local,
+    visitante: partidoTres.visitante,
+    golesLocal: partidoTres.golesLocal ?? null,
+    golesVisitante: partidoTres.golesVisitante ?? null,
+    jugado: partidoTres.jugado ?? false
+  });
+  actualizar.update(doc(db, 'faithcup_partidos', 'p03'), {
+    local: partidoUno.local,
+    visitante: partidoUno.visitante,
+    golesLocal: partidoUno.golesLocal ?? null,
+    golesVisitante: partidoUno.golesVisitante ?? null,
+    jugado: partidoUno.jugado ?? false
+  });
+  await actualizar.commit();
+}
+
 async function inicializar(){
   const snap=await getDocs(collection(db,'faithcup_equipos'));
   const partidosSnap=await getDocs(collection(db,'faithcup_partidos'));
@@ -514,6 +554,8 @@ async function inicializar(){
     const b2=writeBatch(db);
     partidos.forEach(p=>b2.set(doc(db,'faithcup_partidos',p.id),p));
     await b2.commit();
+  } else {
+    await actualizarOrdenFechaUno(partidosExistentes);
   }
 }
 
