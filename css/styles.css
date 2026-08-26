@@ -546,12 +546,20 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+  height: 320px;
+  width: 54px;
+  overflow: hidden;
+  z-index: 40;
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+.patro-sidebar-track {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  z-index: 40;
+  gap: 16px;
+  animation: patro-scroll 22s linear infinite;
 }
-.patro-sidebar img {
+.patro-sidebar-track img {
   width: 42px;
   height: 42px;
   object-fit: contain;
@@ -560,8 +568,14 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
   padding: 6px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   transition: transform 0.2s ease;
+  display: block;
 }
-.patro-sidebar img:hover { transform: scale(1.15); }
+.patro-sidebar-track img:hover { transform: scale(1.2); }
+@keyframes patro-scroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.patro-sidebar:hover .patro-sidebar-track { animation-play-state: paused; }
 @media (max-width: 1100px) { .patro-sidebar { display: none; } }
 #patrocinadores { background: var(--gris-1); }
 .patro-desc { max-width: 560px; color: var(--blanco-suave); line-height: 1.75; font-size: 15px; margin-bottom: 48px; }
