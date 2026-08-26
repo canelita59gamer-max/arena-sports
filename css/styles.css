@@ -543,40 +543,59 @@ tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
 .patro-socials a:hover { color: var(--negro); background: var(--acento); border-color: var(--acento); }
 .patro-sidebar {
   position: fixed;
-  right: 20px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
-  height: 320px;
-  width: 54px;
+  height: 70vh;
+  max-height: 420px;
+  width: 60px;
   overflow: hidden;
   z-index: 40;
-  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  background: var(--gris-2);
+  border-left: 1px solid var(--borde);
+  border-top: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+  border-radius: 12px 0 0 12px;
+  padding: 12px 0;
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
 }
 .patro-sidebar-track {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 18px;
   animation: patro-scroll 22s linear infinite;
 }
 .patro-sidebar-track img {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
   background: #fff;
-  border-radius: 50%;
-  padding: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  transition: transform 0.2s ease;
   display: block;
+  border-radius: 8px;
+  padding: 5px;
+  transition: transform 0.2s ease;
 }
-.patro-sidebar-track img:hover { transform: scale(1.2); }
+.patro-sidebar-track img:hover { transform: scale(1.15); }
 @keyframes patro-scroll {
   0% { transform: translateY(0); }
   100% { transform: translateY(-50%); }
 }
 .patro-sidebar:hover .patro-sidebar-track { animation-play-state: paused; }
-@media (max-width: 1100px) { .patro-sidebar { display: none; } }
+@media (max-width: 600px) {
+  .patro-sidebar {
+    width: 40px;
+    height: 60vh;
+    border-radius: 8px 0 0 8px;
+  }
+  .patro-sidebar-track img {
+    width: 26px;
+    height: 26px;
+    padding: 3px;
+  }
+  .patro-sidebar-track { gap: 12px; }
+}
 #patrocinadores { background: var(--gris-1); }
 .patro-desc { max-width: 560px; color: var(--blanco-suave); line-height: 1.75; font-size: 15px; margin-bottom: 48px; }
 .patro-tiers { display: flex; flex-direction: column; gap: 2px; margin-bottom: 48px; }
