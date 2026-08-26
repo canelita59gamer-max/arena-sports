@@ -52,6 +52,21 @@ tr:hover td{background:#0d0d0d}
 .gol-pos{font-weight:900;color:#c8f000;width:24px;font-size:15px}
 .gol-info{flex:1}.gol-name{font-weight:600;font-size:14px}.gol-team{font-size:11px;color:#555;margin-top:2px}
 .gol-count{font-size:22px;font-weight:900;color:#c8f000}
+.patro-grid-torneo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.patro-card-torneo{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:16px 12px;text-align:center;transition:all .2s}
+.patro-card-torneo:hover{border-color:#c8f000}
+.patro-card-torneo img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px;padding:6px;margin-bottom:10px}
+.patro-nombre{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.patro-desc-torneo{font-size:11px;color:#666;line-height:1.4;margin-bottom:10px;min-height:28px}
+.patro-socials-torneo{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.patro-socials-torneo a{font-size:10px;color:#c8f000;border:1px solid #c8f00033;padding:3px 8px;border-radius:12px;text-decoration:none}
+.patro-socials-torneo a:hover{background:#c8f000;color:#0a0a0a}
+.patro-sidebar-torneo{position:fixed;right:0;top:50%;transform:translateY(-50%);height:60vh;max-height:380px;width:52px;overflow:hidden;z-index:90;background:#111;border:1px solid #1e1e1e;border-right:none;border-radius:10px 0 0 10px;padding:10px 0;mask-image:linear-gradient(to bottom,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,black 10%,black 90%,transparent)}
+.patro-sidebar-torneo-track{display:flex;flex-direction:column;align-items:center;gap:14px;animation:patro-scroll-torneo 22s linear infinite}
+.patro-sidebar-torneo-track img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:6px;padding:4px;cursor:pointer}
+@keyframes patro-scroll-torneo{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+.patro-sidebar-torneo:hover .patro-sidebar-torneo-track{animation-play-state:paused}
+@media(max-width:600px){.patro-sidebar-torneo{width:36px}.patro-sidebar-torneo-track img{width:24px;height:24px}}
 .admin-box{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:18px;margin-bottom:14px}
 .admin-box h3{font-size:12px;color:#c8f000;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
 label{font-size:11px;color:#555;display:block;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;margin-top:10px}
@@ -154,6 +169,7 @@ select option{background:#111}
   <button class="tab" onclick="showTab('calendario',this)">Calendario</button>
   <button class="tab" onclick="showTab('eliminacion',this)">Fase Final</button>
   <button class="tab" onclick="showTab('goleadores',this)">Goleadores</button>
+  <button class="tab" onclick="showTab('patrocinadores',this)">Patrocinadores</button>
   <button class="tab" id="adminTab" onclick="abrirAdmin(this)">Admin ⚙️</button>
 </div>
 
@@ -206,6 +222,104 @@ select option{background:#111}
   <div class="s-label">Faith Cup 2026</div>
   <div class="s-title">Goleadores</div>
   <div id="golList"><div class="empty">Sin goles registrados</div></div>
+</div>
+
+<!-- PATROCINADORES -->
+<div id="patrocinadores" class="section">
+  <div class="s-label">Faith Cup 2026</div>
+  <div class="s-title">Nuestros Patrocinadores</div>
+  <p style="font-size:13px;color:#777;margin-bottom:20px;line-height:1.6">
+    Gracias a estas empresas que hacen posible este torneo.
+  </p>
+  <div class="patro-grid-torneo">
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
+      <div class="patro-nombre">El Mero Taco</div>
+      <div class="patro-desc-torneo">Taquería mexicana en Piedecuesta.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/elmero.taco/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@elmerotaco6" target="_blank">TikTok</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
+      <div class="patro-nombre">Comunidad Espresso</div>
+      <div class="patro-desc-torneo">Iglesia en Piedecuesta.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/comunidadespresso/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@comunidad.espresso" target="_blank">TikTok</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
+      <div class="patro-nombre">Negrón</div>
+      <div class="patro-desc-torneo">Floristería &amp; Chocolatería.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/negron_oficial/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@negron.oficial" target="_blank">TikTok</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
+      <div class="patro-nombre">Luminus Car</div>
+      <div class="patro-desc-torneo">Detailing automotriz en Bucaramanga.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/luminuscar_bga/" target="_blank">Instagram</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos">
+      <div class="patro-nombre">M Autos</div>
+      <div class="patro-desc-torneo">Concesionaria de autos en Bucaramanga.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/mv_autos_/" target="_blank">Instagram</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
+      <div class="patro-nombre">Servicentro</div>
+      <div class="patro-desc-torneo">Lubricantes y mantenimiento vehicular.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.instagram.com/servicentromoderno/" target="_blank">Instagram</a>
+        <a href="https://wa.me/573202791482" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
+      <div class="patro-nombre">Superdrogas Piedecuesta</div>
+      <div class="patro-desc-torneo">Droguería — una mano amiga, siempre.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://www.tiktok.com/@henryman116" target="_blank">TikTok</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
+      <div class="patro-nombre">Avila Market</div>
+      <div class="patro-desc-torneo">Mercado ubicado en el sector Versalles.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://wa.me/573028684769" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="patro-card-torneo">
+      <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
+      <div class="patro-nombre">Dr. Oscar Mendoza</div>
+      <div class="patro-desc-torneo">Medicina domiciliaria.</div>
+      <div class="patro-socials-torneo">
+        <a href="https://oscarmendoza.co/" target="_blank">Web</a>
+        <a href="https://wa.me/573025978424" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- ADMIN -->
@@ -414,6 +528,10 @@ window.showTab = (id,el) => {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
+};
+window.irAPatrocinadores = () => {
+  const boton = [...document.querySelectorAll('.tab')].find(t=>t.textContent.trim()==='Patrocinadores');
+  if(boton) showTab('patrocinadores',boton);
 };
 window.showATab = (id,el) => {
   document.querySelectorAll('.asection').forEach(s=>s.classList.remove('active'));
@@ -861,5 +979,27 @@ escucharEquipos();
 escucharPartidos();
 escucharGoleadores();
 </script>
+<div class="patro-sidebar-torneo">
+  <div class="patro-sidebar-torneo-track" id="patroSidebarTrack">
+    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+  </div>
+</div>
 </body>
 </html>
