@@ -61,12 +61,14 @@ tr:hover td{background:#0d0d0d}
 .patro-socials-torneo{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
 .patro-socials-torneo a{font-size:10px;color:#c8f000;border:1px solid #c8f00033;padding:3px 8px;border-radius:12px;text-decoration:none}
 .patro-socials-torneo a:hover{background:#c8f000;color:#0a0a0a}
-.patro-sidebar-torneo{position:fixed;right:0;top:50%;transform:translateY(-50%);height:60vh;max-height:380px;width:52px;overflow:hidden;z-index:90;background:#111;border:1px solid #1e1e1e;border-right:none;border-radius:10px 0 0 10px;padding:10px 0;mask-image:linear-gradient(to bottom,transparent,black 10%,black 90%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,black 10%,black 90%,transparent)}
-.patro-sidebar-torneo-track{display:flex;flex-direction:column;align-items:center;gap:14px;animation:patro-scroll-torneo 22s linear infinite}
-.patro-sidebar-torneo-track img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:6px;padding:4px;cursor:pointer}
-@keyframes patro-scroll-torneo{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
-.patro-sidebar-torneo:hover .patro-sidebar-torneo-track{animation-play-state:paused}
-@media(max-width:600px){.patro-sidebar-torneo{width:36px}.patro-sidebar-torneo-track img{width:24px;height:24px}}
+.sponsors-marquee{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:28px 0 34px;overflow:hidden;margin-top:20px}
+.sponsors-marquee-label{text-align:center;font-size:11px;color:#555;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+.sponsors-marquee-track{display:flex;align-items:center;gap:48px;width:max-content;animation:sponsors-scroll 28s linear infinite}
+.sponsors-marquee:hover .sponsors-marquee-track{animation-play-state:paused}
+.sponsors-marquee-track img{height:96px;width:96px;object-fit:contain;background:#fff;border-radius:50%;padding:14px;flex-shrink:0;transition:transform .25s ease}
+.sponsors-marquee-track img:hover{transform:scale(1.1)}
+@keyframes sponsors-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@media(max-width:700px){.sponsors-marquee-track img{height:64px;width:64px;padding:10px}.sponsors-marquee-track{gap:28px}}
 .admin-box{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:18px;margin-bottom:14px}
 .admin-box h3{font-size:12px;color:#c8f000;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
 label{font-size:11px;color:#555;display:block;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;margin-top:10px}
@@ -529,10 +531,6 @@ window.showTab = (id,el) => {
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
 };
-window.irAPatrocinadores = () => {
-  const boton = [...document.querySelectorAll('.tab')].find(t=>t.textContent.trim()==='Patrocinadores');
-  if(boton) showTab('patrocinadores',boton);
-};
 window.showATab = (id,el) => {
   document.querySelectorAll('.asection').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
@@ -979,26 +977,27 @@ escucharEquipos();
 escucharPartidos();
 escucharGoleadores();
 </script>
-<div class="patro-sidebar-torneo">
-  <div class="patro-sidebar-torneo-track" id="patroSidebarTrack">
-    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
-    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador" onclick="irAPatrocinadores()">
+<div class="sponsors-marquee">
+  <div class="sponsors-marquee-label">Nuestros Sponsors</div>
+  <div class="sponsors-marquee-track">
+    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
+    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
+    <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
+    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
+    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos">
+    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
+    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
+    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
+    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
+    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
+    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
+    <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
+    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
+    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos">
+    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
+    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
+    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
+    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
   </div>
 </div>
 </body>
