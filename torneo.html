@@ -65,6 +65,7 @@ tr:hover td{background:#0d0d0d}
 .sponsors-marquee-label{text-align:center;font-size:11px;color:#555;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
 .sponsors-marquee-track{display:flex;align-items:center;gap:48px;width:max-content;animation:sponsors-scroll 28s linear infinite}
 .sponsors-marquee:hover .sponsors-marquee-track{animation-play-state:paused}
+.sponsor-logo-btn{background:none;border:none;padding:0;cursor:pointer;flex-shrink:0;line-height:0}
 .sponsors-marquee-track img{height:96px;width:96px;object-fit:contain;background:#fff;border-radius:50%;padding:14px;flex-shrink:0;transition:transform .25s ease}
 .sponsors-marquee-track img:hover{transform:scale(1.1)}
 @keyframes sponsors-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -531,6 +532,14 @@ window.showTab = (id,el) => {
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
 };
+window.irAPatrocinadores=()=>{
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('patrocinadores').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const btn=[...document.querySelectorAll('.tab')].find(t=>t.textContent.trim()==='Patrocinadores');
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
 window.showATab = (id,el) => {
   document.querySelectorAll('.asection').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
@@ -980,24 +989,24 @@ escucharGoleadores();
 <div class="sponsors-marquee">
   <div class="sponsors-marquee-label">Nuestros Sponsors</div>
   <div class="sponsors-marquee-track">
-    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
-    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
-    <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
-    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
-    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos">
-    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
-    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
-    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
-    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
-    <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
-    <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
-    <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
-    <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
-    <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos">
-    <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
-    <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
-    <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
-    <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="M Autos"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
+    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
   </div>
 </div>
 </body>
