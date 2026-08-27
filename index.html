@@ -528,8 +528,13 @@
 
 <button id="backToTop" class="back-to-top" aria-label="Volver arriba">↑</button>
 
-<div class="patro-sidebar">
-  <div class="patro-sidebar-track">
+<div class="patro-drawer" id="patroDrawer">
+  <button class="patro-drawer-tab" onclick="togglePatroDrawer()">
+    <span>SPONSORS</span>
+    <span class="patro-drawer-arrow">‹</span>
+  </button>
+  <div class="patro-drawer-panel">
+    <div class="patro-sidebar-track">
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador"></a>
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador"></a>
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador"></a>
@@ -539,20 +544,16 @@
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador"></a>
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador"></a>
     <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/negron.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Patrocinador"></a>
-    <a href="#nuestros-patrocinadores"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Patrocinador"></a>
+    </div>
   </div>
 </div>
 
 <script src="js/main.js"></script>
 <script>
+function togglePatroDrawer() {
+  document.getElementById('patroDrawer').classList.toggle('open');
+}
+
 document.querySelectorAll('.service-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
