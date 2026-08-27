@@ -470,7 +470,6 @@ let goleadoresData = {};
 
 const EQUIPOS = [
   {id:'eq1',nombre:'Livingroom'},
-  {id:'eq2',nombre:'Camino de la Libertad'},
   {id:'eq3',nombre:'Iglesia Cuadrangular Plenitud de Vida'},
   {id:'eq4',nombre:'Comunidad Espresso - Espresso F.C.'},
   {id:'eq5',nombre:'Casa Sobre la Roca - TMT'},
@@ -479,50 +478,44 @@ const EQUIPOS = [
   {id:'eq8',nombre:'Iglesia Piedecuesta'},
 ];
 
-// 28 partidos, 7 domingos, 4 por domingo
+// 21 partidos, 7 domingos, 3 por domingo
 const DOMINGOS = ['30 ago','6 sep','13 sep','20 sep','27 sep','4 oct','11 oct'];
-const HORAS = ['4:00 PM','5:00 PM','6:00 PM','7:00 PM'];
+const HORAS = ['4:00 PM','5:00 PM','6:00 PM'];
 
 function generarPartidos() {
-  const equiposIds = EQUIPOS.map(e => e.id);
-  const totalRondas = equiposIds.length - 1;
-  let rotacion = [...equiposIds];
-  const rondas = [];
-
-  for (let ronda = 0; ronda < totalRondas; ronda++) {
-    const partidosRonda = [];
-
-    for (let i = 0; i < rotacion.length / 2; i++) {
-      const local = rotacion[i];
-      const visitante = rotacion[rotacion.length - 1 - i];
-
-      if (local !== visitante) {
-        partidosRonda.push({ local, visitante });
-      }
-    }
-
-    if (ronda === 0) {
-      [partidosRonda[0], partidosRonda[2]] = [partidosRonda[2], partidosRonda[0]];
-    }
-
-    rondas.push(partidosRonda);
-    const primero = rotacion.shift();
-    rotacion.splice(Math.ceil(rotacion.length / 2), 0, primero);
-  }
-
-  return rondas.flatMap((partidosRonda, rondaIndex) =>
-    partidosRonda.map((match, idx) => ({
-      id: `p${String(rondaIndex * 4 + idx + 1).padStart(2, '0')}`,
-      local: match.local,
-      visitante: match.visitante,
-      fecha: DOMINGOS[rondaIndex] || `Fecha ${rondaIndex + 1}`,
-      hora: HORAS[idx % HORAS.length],
+  const calendario = [
+    // 30 ago — descansa Livingroom
+    ['eq3','eq8'], ['eq4','eq7'], ['eq5','eq6'],
+    // 6 sep — descansa Comunidad de Fe
+    ['eq1','eq8'], ['eq3','eq6'], ['eq4','eq5'],
+    // 13 sep — descansa Casa Sobre la Roca - TMT
+    ['eq1','eq7'], ['eq8','eq6'], ['eq3','eq4'],
+    // 20 sep — descansa Iglesia Cuadrangular Plenitud de Vida
+    ['eq1','eq6'], ['eq7','eq5'], ['eq8','eq4'],
+    // 27 sep — descansa Iglesia Piedecuesta
+    ['eq1','eq5'], ['eq6','eq4'], ['eq7','eq3'],
+    // 4 oct — descansa Espresso F.C. Youth
+    ['eq1','eq4'], ['eq5','eq3'], ['eq7','eq8'],
+    // 11 oct — descansa Comunidad Espresso - Espresso F.C.
+    ['eq1','eq3'], ['eq5','eq8'], ['eq6','eq7'],
+  ];
+  const partidos = [];
+  calendario.forEach((par, idx) => {
+    const domingo = Math.floor(idx / 3);
+    const hora = idx % 3;
+    partidos.push({
+      id: `p${String(idx + 1).padStart(2, '0')}`,
+      local: par[0],
+      visitante: par[1],
+      fecha: DOMINGOS[domingo] || 'Por definir',
+      hora: HORAS[hora],
       golesLocal: null,
       golesVisitante: null,
       jugado: false,
       fase: 'grupos'
-    }))
-  );
+    });
+  });
+  return partidos;
 }
 
 // UI
@@ -574,7 +567,7 @@ function showMsg(id,type,text){
 
 // Inicializar Firebase
 function calendarioValido(partidos) {
-  if (!Array.isArray(partidos) || partidos.length !== 28) return false;
+  if (!Array.isArray(partidos) || partidos.length !== 21) return false;
 
   const porFecha = {};
   const conteo = {};
@@ -597,8 +590,7 @@ function calendarioValido(partidos) {
     fechaSet.add(p.visitante);
     porFecha[p.fecha] = fechaSet;
 
-    if (fechaSet.size > 8) return false;
-    if (fechaSet.size !== 8 && !Object.keys(porFecha).includes(p.fecha)) return false;
+    if (fechaSet.size > 7) return false;
 
     conteo[p.local] = (conteo[p.local] || 0) + 1;
     conteo[p.visitante] = (conteo[p.visitante] || 0) + 1;
@@ -615,7 +607,7 @@ function calendarioValido(partidos) {
   if (fechas.some(f => !fechasEsperadas.includes(f))) return false;
 
   const totalPorFecha = Object.values(porFecha).map(set => set.size / 2);
-  if (totalPorFecha.some(v => v !== 4)) return false;
+  if (totalPorFecha.some(v => v !== 3)) return false;
 
   return true;
 }
@@ -702,8 +694,8 @@ function escucharPartidos(){
     Object.values(partidosData).forEach(p=>{
       if(p.fase==='grupos'&&p.jugado){jugados++;goles+=(p.golesLocal||0)+(p.golesVisitante||0);}
     });
-    document.getElementById('statPart').textContent=jugados+'/28';
-    document.getElementById('statJorn').textContent='J'+Math.min(7,Math.floor(jugados/4)+1);
+    document.getElementById('statPart').textContent=jugados+'/21';
+    document.getElementById('statJorn').textContent='J'+Math.min(7,Math.floor(jugados/3)+1);
   });
 }
 
