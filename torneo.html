@@ -40,6 +40,8 @@ tr:hover td{background:#0d0d0d}
 .badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:1px}
 .badge-green{background:#c8f00018;color:#c8f000;border:1px solid #c8f00033}
 .badge-gray{background:#1e1e1e;color:#555;border:1px solid #2a2a2a}
+.badge-amber{background:#ffb02418;color:#ffb024;border:1px solid #ffb02433}
+.badge-red{background:#ff3a3a18;color:#ff6b6b;border:1px solid #ff3a3a33}
 .match-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
 .match-main{flex:1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .match-team{font-weight:600;font-size:13px;flex:1;min-width:100px}
@@ -196,7 +198,7 @@ select option{background:#111}
       <tbody id="tablaBody"></tbody>
     </table>
   </div>
-  <div style="font-size:11px;color:#333;padding-top:10px;letter-spacing:1px">* Top 4 clasifican a semifinales</div>
+  <div style="font-size:11px;color:#333;padding-top:10px;letter-spacing:1px">* 1° y 2° clasifican directo a semifinales · 3° al 6° juegan repechaje · 7° queda eliminado</div>
 </div>
 
 <!-- CALENDARIO -->
@@ -210,6 +212,10 @@ select option{background:#111}
 <div id="eliminacion" class="section">
   <div class="s-label">Faith Cup 2026</div>
   <div class="s-title">Fase Final</div>
+  <div class="bracket-ronda">
+    <div class="bracket-title">Repechaje (3° vs 4° · 5° vs 6°)</div>
+    <div class="bracket-grid" id="repechaje"></div>
+  </div>
   <div class="bracket-ronda">
     <div class="bracket-title">Semifinales</div>
     <div class="bracket-grid" id="semis"></div>
@@ -724,7 +730,7 @@ function renderTabla(){
   const equipos=Object.values(equiposData).sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.dg||0)-(a.dg||0)||(b.gf||0)-(a.gf||0));
   document.getElementById('tablaBody').innerHTML=equipos.map((e,i)=>`<tr>
     <td class="pos">${i+1}</td>
-    <td class="team-name" style="font-size:12px">${e.nombre}${i<4?' <span class="badge badge-green">Top 4</span>':''}</td>
+    <td class="team-name" style="font-size:12px">${e.nombre}${i<2?' <span class="badge badge-green">Clasifica</span>':(i<6?' <span class="badge badge-amber">Repechaje</span>':' <span class="badge badge-red">Eliminado</span>')}</td>
     <td>${e.pj||0}</td><td>${e.g||0}</td><td>${e.emp||0}</td><td>${e.p||0}</td>
     <td>${e.gf||0}</td><td>${e.gc||0}</td>
     <td style="color:${(e.dg||0)>=0?'#c8f000':'#ff6b6b'}">${(e.dg||0)>=0?'+':''}${e.dg||0}</td>
@@ -786,6 +792,7 @@ function renderCalendario(){
 
 function renderFaseFinal(){
   const fp=Object.values(partidosData).filter(p=>p.fase==='final');
+  const repechaje=fp.filter(p=>p.ronda==='repechaje');
   const semis=fp.filter(p=>p.ronda==='semis');
   const final=fp.filter(p=>p.ronda==='final');
 
@@ -801,6 +808,10 @@ function renderFaseFinal(){
       <div class="bracket-team ${p.jugado&&p.goles2>p.goles1?'winner':''}">${e2} <strong>${g2}</strong></div>
     </div>`;
   };
+
+  document.getElementById('repechaje').innerHTML=repechaje.length
+    ?repechaje.map(matchHtml).join('')
+    :'<div class="empty" style="grid-column:span 2">Se genera al terminar fase de grupos</div>';
 
   document.getElementById('semis').innerHTML=semis.length
     ?semis.map(matchHtml).join('')
