@@ -407,6 +407,34 @@ select option{background:#111}
       <button class="btn btn-full" onclick="editarEquipo()">Guardar Nombre</button>
       <div id="msgEditEq" class="msg"></div>
     </div>
+
+    <div class="admin-box">
+      <h3>Agregar Equipo</h3>
+      <label>Nombre del equipo</label>
+      <input type="text" id="nuevoEqNombre" placeholder="ej: Nueva Iglesia F.C.">
+      <button class="btn btn-full" onclick="agregarEquipo()">Agregar Equipo</button>
+      <div id="msgNuevoEq" class="msg"></div>
+    </div>
+
+    <div class="admin-box">
+      <h3>Eliminar Equipo</h3>
+      <label>Equipo</label>
+      <select id="delEqSel"><option value="">Selecciona...</option></select>
+      <button class="btn-danger btn-full" style="margin-top:12px" onclick="eliminarEquipo()">Eliminar Equipo</button>
+      <div id="msgDelEq" class="msg"></div>
+    </div>
+
+    <div class="admin-box">
+      <h3>Generar / Regenerar Calendario</h3>
+      <p style="font-size:11px;color:#666;margin-bottom:10px;line-height:1.5">⚠️ Esto borra TODOS los partidos de fase de grupos actuales (jugados o no) y las estadísticas de la tabla, y crea un calendario nuevo con los equipos que existan en ese momento. Úsalo cada vez que agregues o quites un equipo, o para armar un torneo nuevo desde cero.</p>
+      <label>Fecha del primer partido</label>
+      <input type="date" id="calFechaInicio">
+      <label>Horarios por fecha (separados por coma)</label>
+      <input type="text" id="calHorarios" value="4:00 PM,5:00 PM,6:00 PM">
+      <button class="btn btn-full" style="margin-top:10px" onclick="regenerarCalendario()">Generar Calendario Nuevo</button>
+      <div id="msgCalendario" class="msg"></div>
+    </div>
+
     <div class="admin-box">
       <h3>Equipos Registrados</h3>
       <div id="listaEquiposAdmin"></div>
@@ -488,37 +516,45 @@ const EQUIPOS = [
 const DOMINGOS = ['30 ago','6 sep','13 sep','20 sep','27 sep','4 oct','11 oct'];
 const HORAS = ['4:00 PM','5:00 PM','6:00 PM'];
 
-function generarPartidos() {
-  const calendario = [
-    // 30 ago — descansa Livingroom
-    ['eq3','eq8'], ['eq4','eq7'], ['eq5','eq6'],
-    // 6 sep — descansa Comunidad de Fe
-    ['eq1','eq8'], ['eq3','eq6'], ['eq4','eq5'],
-    // 13 sep — descansa Casa Sobre la Roca - TMT
-    ['eq1','eq7'], ['eq8','eq6'], ['eq3','eq4'],
-    // 20 sep — descansa Iglesia Cuadrangular Plenitud de Vida
-    ['eq1','eq6'], ['eq7','eq5'], ['eq8','eq4'],
-    // 27 sep — descansa Iglesia Piedecuesta
-    ['eq1','eq5'], ['eq6','eq4'], ['eq7','eq3'],
-    // 4 oct — descansa Espresso F.C. Youth
-    ['eq1','eq4'], ['eq5','eq3'], ['eq7','eq8'],
-    // 11 oct — descansa Comunidad Espresso - Espresso F.C.
-    ['eq1','eq3'], ['eq5','eq8'], ['eq6','eq7'],
-  ];
-  const partidos = [];
-  calendario.forEach((par, idx) => {
-    const domingo = Math.floor(idx / 3);
-    const hora = idx % 3;
-    partidos.push({
-      id: `p${String(idx + 1).padStart(2, '0')}`,
-      local: par[0],
-      visitante: par[1],
-      fecha: DOMINGOS[domingo] || 'Por definir',
-      hora: HORAS[hora],
-      golesLocal: null,
-      golesVisitante: null,
-      jugado: false,
-      fase: 'grupos'
+function generarRoundRobin(ids){
+  let teams=[...ids];
+  if(teams.length%2!==0) teams.push('BYE');
+  const n=teams.length;
+  const fixed=teams[0];
+  let rotating=teams.slice(1);
+  const rounds=[];
+  for(let r=0;r<n-1;r++){
+    const roundTeams=[fixed,...rotating];
+    const pares=[];
+    for(let i=0;i<n/2;i++){
+      const t1=roundTeams[i], t2=roundTeams[n-1-i];
+      if(t1!=='BYE'&&t2!=='BYE') pares.push([t1,t2]);
+    }
+    rounds.push(pares);
+    rotating.unshift(rotating.pop());
+  }
+  return rounds;
+}
+
+function formatFechaEs(d){
+  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return d.getDate()+' '+meses[d.getMonth()];
+}
+
+function generarPartidos(){
+  const rounds=generarRoundRobin(EQUIPOS.map(e=>e.id));
+  const partidos=[];
+  let idx=0;
+  rounds.forEach((pares,ri)=>{
+    pares.forEach((par,hi)=>{
+      idx++;
+      partidos.push({
+        id:`p${String(idx).padStart(2,'0')}`,
+        local:par[0], visitante:par[1],
+        fecha: DOMINGOS[ri]||'Por definir',
+        hora: HORAS[hi]||HORAS[HORAS.length-1],
+        golesLocal:null, golesVisitante:null, jugado:false, fase:'grupos'
+      });
     });
   });
   return partidos;
@@ -697,6 +733,7 @@ function escucharEquipos(){
   onSnapshot(collection(db,'faithcup_equipos'),snap=>{
     equiposData={};
     snap.forEach(d=>equiposData[d.id]={id:d.id,...d.data()});
+    document.getElementById('statEq').textContent=Object.keys(equiposData).length;
     renderTabla(); renderAdminEquipos(); renderSelects();
   });
 }
@@ -707,11 +744,17 @@ function escucharPartidos(){
     snap.forEach(d=>partidosData[d.id]={id:d.id,...d.data()});
     renderCalendario(); renderFaseFinal(); renderPartidosSel();
     let jugados=0,goles=0;
-    Object.values(partidosData).forEach(p=>{
-      if(p.fase==='grupos'&&p.jugado){jugados++;goles+=(p.golesLocal||0)+(p.golesVisitante||0);}
+    const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos');
+    grupos.forEach(p=>{
+      if(p.jugado){jugados++;goles+=(p.golesLocal||0)+(p.golesVisitante||0);}
     });
-    document.getElementById('statPart').textContent=jugados+'/21';
-    document.getElementById('statJorn').textContent='J'+Math.min(7,Math.floor(jugados/3)+1);
+    document.getElementById('statPart').textContent=jugados+'/'+grupos.length;
+    const fechasUnicas=[...new Set(grupos.map(p=>p.fecha))];
+    let jornadaActual=fechasUnicas.length;
+    for(let i=0;i<fechasUnicas.length;i++){
+      if(grupos.filter(p=>p.fecha===fechasUnicas[i]).some(p=>!p.jugado)){ jornadaActual=i+1; break; }
+    }
+    document.getElementById('statJorn').textContent='J'+jornadaActual+'/'+fechasUnicas.length;
   });
 }
 
@@ -843,7 +886,7 @@ function renderAdminEquipos(){
 
 function renderSelects(){
   const opts=Object.values(equiposData).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
-  ['equipoGolSel','editEqSel'].forEach(id=>{
+  ['equipoGolSel','editEqSel','delEqSel'].forEach(id=>{
     const s=document.getElementById(id); if(!s) return;
     const prev=s.value; s.innerHTML='<option value="">Selecciona...</option>'+opts;
     if(prev) s.value=prev;
@@ -948,6 +991,59 @@ window.editarEquipo=async()=>{
     document.getElementById('editEqNombre').value='';
     showMsg('msgEditEq','ok','Nombre actualizado ✓');
   }catch(e){showMsg('msgEditEq','err','Error al guardar');}
+};
+
+window.agregarEquipo=async()=>{
+  const nombre=document.getElementById('nuevoEqNombre').value.trim();
+  if(!nombre){ showMsg('msgNuevoEq','err','Escribe un nombre'); return; }
+  await addDoc(collection(db,'faithcup_equipos'),{nombre,pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0});
+  document.getElementById('nuevoEqNombre').value='';
+  showMsg('msgNuevoEq','ok','Equipo agregado. No olvides generar el calendario de nuevo para incluirlo en los partidos.');
+};
+
+window.eliminarEquipo=async()=>{
+  const id=document.getElementById('delEqSel').value;
+  if(!id){ showMsg('msgDelEq','err','Selecciona un equipo'); return; }
+  if(!confirm('¿Seguro que quieres eliminar este equipo? Esta acción no se puede deshacer.')) return;
+  await deleteDoc(doc(db,'faithcup_equipos',id));
+  showMsg('msgDelEq','ok','Equipo eliminado. Genera el calendario de nuevo para actualizar los partidos.');
+};
+
+window.regenerarCalendario=async()=>{
+  const ids=Object.keys(equiposData);
+  if(ids.length<2){ showMsg('msgCalendario','err','Necesitas al menos 2 equipos'); return; }
+  const fechaInicio=document.getElementById('calFechaInicio').value;
+  if(!fechaInicio){ showMsg('msgCalendario','err','Selecciona la fecha del primer partido'); return; }
+  const horarios=document.getElementById('calHorarios').value.split(',').map(h=>h.trim()).filter(Boolean);
+  if(!horarios.length){ showMsg('msgCalendario','err','Escribe al menos un horario'); return; }
+  if(!confirm('Esto va a borrar todos los partidos de fase de grupos actuales y las estadísticas de la tabla. ¿Continuar?')) return;
+
+  const existentes=Object.values(partidosData).filter(p=>p.fase==='grupos');
+  const bdel=writeBatch(db);
+  existentes.forEach(p=>bdel.delete(doc(db,'faithcup_partidos',p.id)));
+  await bdel.commit();
+
+  const breset=writeBatch(db);
+  ids.forEach(id=>breset.update(doc(db,'faithcup_equipos',id),{pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0}));
+  await breset.commit();
+
+  const rounds=generarRoundRobin(ids);
+  const inicio=new Date(fechaInicio+'T12:00:00');
+  const bnew=writeBatch(db);
+  let idx=0;
+  rounds.forEach((pares,ri)=>{
+    const fecha=formatFechaEs(new Date(inicio.getTime()+ri*7*24*60*60*1000));
+    pares.forEach((par,hi)=>{
+      idx++;
+      bnew.set(doc(db,'faithcup_partidos',`p${String(idx).padStart(2,'0')}_${Date.now()}${idx}`),{
+        local:par[0], visitante:par[1], fecha,
+        hora:horarios[hi]||horarios[horarios.length-1],
+        golesLocal:null, golesVisitante:null, jugado:false, fase:'grupos'
+      });
+    });
+  });
+  await bnew.commit();
+  showMsg('msgCalendario','ok',`Calendario generado: ${idx} partidos en ${rounds.length} fechas.`);
 };
 
 window.eliminarResultado=async()=>{
