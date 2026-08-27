@@ -181,7 +181,7 @@ select option{background:#111}
 <!-- POSICIONES -->
 <div id="posiciones" class="section active">
   <div class="stat-grid">
-    <div class="stat-card"><div class="stat-num" id="statEq">8</div><div class="stat-lbl">Equipos</div></div>
+    <div class="stat-card"><div class="stat-num" id="statEq">7</div><div class="stat-lbl">Equipos</div></div>
     <div class="stat-card"><div class="stat-num" id="statPart">0</div><div class="stat-lbl">Jugados</div></div>
     <div class="stat-card"><div class="stat-num" id="statGol">0</div><div class="stat-lbl">Goles</div></div>
     <div class="stat-card"><div class="stat-num" id="statJorn">J1</div><div class="stat-lbl">Jornada</div></div>
@@ -518,6 +518,16 @@ function generarPartidos() {
   return partidos;
 }
 
+const DESCANSOS = {
+  '30 ago': 'eq1',
+  '6 sep': 'eq7',
+  '13 sep': 'eq5',
+  '20 sep': 'eq3',
+  '27 sep': 'eq8',
+  '4 oct': 'eq6',
+  '11 oct': 'eq4',
+};
+
 // UI
 window.showTab = (id,el) => {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -710,6 +720,7 @@ function escucharGoleadores(){
 }
 
 function renderTabla(){
+  document.getElementById('statEq').textContent = Object.keys(equiposData).length || 7;
   const equipos=Object.values(equiposData).sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.dg||0)-(a.dg||0)||(b.gf||0)-(a.gf||0));
   document.getElementById('tablaBody').innerHTML=equipos.map((e,i)=>`<tr>
     <td class="pos">${i+1}</td>
@@ -740,11 +751,14 @@ function renderCalendario(){
   let html='';
   fechasOrdenadas.forEach((fecha)=>{
     const ps = porFecha[fecha].sort((a,b)=>a.hora.localeCompare(b.hora));
+    const descansaId = DESCANSOS[fecha];
+    const descansaNombre = descansaId ? (equiposData[descansaId]?.nombre || descansaId) : null;
     html+=`<div class="cal-domingo">
       <div class="cal-header">
         <span class="cal-fecha">📅 ${fecha}</span>
         <span class="cal-num">${ps.filter(p=>p.jugado).length}/${ps.length} jugados</span>
       </div>
+      ${descansaNombre ? `<div style="padding:8px 16px;font-size:11px;color:#666;border-bottom:1px solid #141414;letter-spacing:1px">😴 Descansa: <span style="color:#c8f000;font-weight:700">${descansaNombre}</span></div>` : ''}
       <div class="cal-partidos">`;
     ps.forEach(p=>{
       const local=equiposData[p.local]?.nombre||p.local;
