@@ -1,1128 +1,1361 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faith Cup — Arena Sports</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
-nav{background:#0d0d0d;border-bottom:1px solid #1e1e1e;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.nav-logo{display:flex;align-items:center;gap:10px}
-.nav-logo img{height:40px;width:auto;object-fit:contain}
-.nav-back{background:none;border:1px solid #2a2a2a;color:#666;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;display:inline-block;transition:all .2s}
-.nav-back:hover{color:#fff;border-color:#555}
-.hero{background:#111;padding:28px 24px 18px;text-align:center;border-bottom:1px solid #1a1a1a}
-.hero-tag{font-size:11px;color:#c8f000;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
-.hero h1{font-size:30px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
-.hero h1 span{color:#c8f000}
-.hero-sub{font-size:12px;color:#555;margin-top:5px;letter-spacing:1px}
-.tabs{display:flex;gap:4px;padding:12px 24px;background:#0d0d0d;border-bottom:1px solid #1a1a1a;overflow-x:auto}
-.tab{padding:8px 18px;border-radius:6px;font-size:12px;cursor:pointer;color:#666;border:none;background:none;white-space:nowrap;transition:all .2s;letter-spacing:1px;font-weight:600}
-.tab.active{background:#c8f000;color:#0a0a0a}
-.tab:hover:not(.active){color:#fff;background:#1a1a1a}
-.container{max-width:960px;margin:0 auto;padding:24px}
-.section{display:none}.section.active{display:block}
-.s-label{font-size:11px;color:#c8f000;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
-.s-title{font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
-.stat-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:14px;text-align:center}
-.stat-num{font-size:22px;font-weight:900;color:#c8f000}
-.stat-lbl{font-size:10px;color:#555;margin-top:3px;letter-spacing:2px;text-transform:uppercase}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:9px 12px;color:#555;font-weight:600;border-bottom:1px solid #1e1e1e;font-size:11px;letter-spacing:1px;text-transform:uppercase}
-td{padding:9px 12px;border-bottom:1px solid #141414;color:#ccc}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#0d0d0d}
-.pos{font-weight:900;color:#c8f000;width:24px}
-.pts{font-weight:900;color:#c8f000}
-.team-name{font-weight:600;color:#fff}
-.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:1px}
-.badge-green{background:#c8f00018;color:#c8f000;border:1px solid #c8f00033}
-.badge-gray{background:#1e1e1e;color:#555;border:1px solid #2a2a2a}
-.badge-amber{background:#ffb02418;color:#ffb024;border:1px solid #ffb02433}
-.badge-red{background:#ff3a3a18;color:#ff6b6b;border:1px solid #ff3a3a33}
-.match-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.match-main{flex:1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.match-team{font-weight:600;font-size:13px;flex:1;min-width:100px}
-.match-team.right{text-align:right}
-.match-center{display:flex;align-items:center;gap:8px;min-width:90px;justify-content:center}
-.match-score{font-size:18px;font-weight:900;color:#c8f000;background:#0d0d0d;border-radius:6px;padding:4px 10px;min-width:60px;text-align:center}
-.match-vs{font-size:12px;color:#444;font-weight:700;min-width:30px;text-align:center}
-.match-meta{font-size:11px;color:#444;margin-top:4px;letter-spacing:1px}
-.gol-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #141414}
-.gol-pos{font-weight:900;color:#c8f000;width:24px;font-size:15px}
-.gol-info{flex:1}.gol-name{font-weight:600;font-size:14px}.gol-team{font-size:11px;color:#555;margin-top:2px}
-.gol-count{font-size:22px;font-weight:900;color:#c8f000}
-.patro-grid-torneo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.patro-card-torneo{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:16px 12px;text-align:center;transition:all .2s}
-.patro-card-torneo:hover{border-color:#c8f000}
-.patro-card-torneo img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px;padding:6px;margin-bottom:10px}
-.patro-nombre{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
-.patro-desc-torneo{font-size:11px;color:#666;line-height:1.4;margin-bottom:10px;min-height:28px}
-.patro-socials-torneo{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-.patro-socials-torneo a{font-size:10px;color:#c8f000;border:1px solid #c8f00033;padding:3px 8px;border-radius:12px;text-decoration:none}
-.patro-socials-torneo a:hover{background:#c8f000;color:#0a0a0a}
-.sponsors-marquee{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:28px 0 34px;overflow:hidden;margin-top:20px}
-.sponsors-marquee-label{text-align:center;font-size:11px;color:#555;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
-.sponsors-marquee-track{display:flex;align-items:center;gap:48px;width:max-content;animation:sponsors-scroll 28s linear infinite}
-.sponsors-marquee:hover .sponsors-marquee-track{animation-play-state:paused}
-.sponsor-logo-btn{background:none;border:none;padding:0;cursor:pointer;flex-shrink:0;line-height:0}
-.sponsors-marquee-track img{height:96px;width:96px;object-fit:contain;background:#fff;border-radius:50%;padding:14px;flex-shrink:0;transition:transform .25s ease}
-.sponsors-marquee-track img:hover{transform:scale(1.1)}
-@keyframes sponsors-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:700px){.sponsors-marquee-track img{height:64px;width:64px;padding:10px}.sponsors-marquee-track{gap:28px}}
-.admin-box{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:18px;margin-bottom:14px}
-.admin-box h3{font-size:12px;color:#c8f000;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
-label{font-size:11px;color:#555;display:block;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;margin-top:10px}
-label:first-of-type{margin-top:0}
-input,select{width:100%;background:#0a0a0a;border:1px solid #2a2a2a;color:#fff;border-radius:6px;padding:9px 12px;font-size:13px;outline:none;transition:border .2s;font-family:inherit}
-input:focus,select:focus{border-color:#c8f000}
-select option{background:#111}
-.btn{background:#c8f000;color:#0a0a0a;border:none;padding:10px 20px;border-radius:6px;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:background .2s}
-.btn:hover{background:#b5d900}
-.btn-full{width:100%;margin-top:12px}
-.btn-danger{background:#ff3a3a;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
-.msg{padding:9px 12px;border-radius:6px;font-size:12px;margin-top:10px;display:none}
-.msg.ok{background:#c8f00018;color:#c8f000;border:1px solid #c8f00033;display:block}
-.msg.err{background:#ff3a3a18;color:#ff6b6b;border:1px solid #ff3a3a33;display:block}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.empty{text-align:center;padding:32px;color:#333;font-size:13px;letter-spacing:1px}
-.atab-bar{display:flex;gap:4px;margin-bottom:18px;flex-wrap:wrap}
-.atab{padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;color:#555;border:1px solid #1e1e1e;background:none;letter-spacing:1px;transition:all .2s}
-.atab.active{border-color:#c8f000;color:#c8f000}
-.atab:hover:not(.active){color:#fff}
-.asection{display:none}.asection.active{display:block}
-.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px)}
-.login-box{background:#111;border:1px solid #1e1e1e;border-radius:16px;padding:36px;width:100%;max-width:320px;text-align:center}
-.login-logo{font-size:18px;font-weight:900;letter-spacing:3px;color:#fff;margin-bottom:4px}
-.login-logo span{color:#c8f000}
-.login-sub{font-size:11px;color:#444;letter-spacing:2px;margin-bottom:24px}
-/* Calendario visual */
-.cal-domingo{background:#111;border:1px solid #1e1e1e;border-radius:10px;margin-bottom:16px;overflow:hidden}
-.cal-header{background:#1a1a1a;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-.cal-fecha{font-size:13px;font-weight:700;color:#fff;letter-spacing:1px}
-.cal-num{font-size:11px;color:#555;letter-spacing:2px}
-.cal-partidos{padding:10px 16px}
-.cal-partido{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #141414;gap:10px}
-.cal-partido:last-child{border-bottom:none}
-.cal-hora{font-size:11px;color:#c8f000;font-weight:700;min-width:55px;letter-spacing:1px}
-.cal-teams{flex:1;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
-.cal-local{flex:1;text-align:right}
-.cal-vs{color:#333;font-size:11px;font-weight:700;min-width:24px;text-align:center}
-.cal-vis{flex:1}
-.cal-score{font-size:14px;font-weight:900;color:#c8f000;min-width:50px;text-align:center;background:#0d0d0d;border-radius:4px;padding:2px 6px}
-.cal-status{min-width:70px;text-align:right}
-/* Fase final bracket */
-.bracket-ronda{margin-bottom:24px}
-.bracket-title{font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1a1a1a}
-.bracket-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bracket-match{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px}
-.bracket-lbl{font-size:10px;color:#555;letter-spacing:2px;margin-bottom:8px}
-.bracket-team{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:4px;font-size:13px;font-weight:600;margin-bottom:4px}
-.bracket-team.winner{background:#c8f00018;border-left:2px solid #c8f000;color:#c8f000}
-.bracket-team:last-child{margin-bottom:0}
-/* Minicalendario */
-.minical{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
-.minical-day{text-align:center;font-size:10px;color:#555;font-weight:600;padding:4px 0}
-.minical-cell{text-align:center;padding:6px 4px;border-radius:4px;font-size:12px;cursor:default}
-.minical-cell.today{background:#c8f000;color:#0a0a0a;font-weight:700}
-.minical-cell.partido{background:#c8f00022;color:#c8f000;font-weight:700;cursor:pointer}
-.minical-cell.empty-cell{color:#333}
-@media(max-width:700px){
-  .stat-grid{grid-template-columns:1fr 1fr}
-  .two-col{grid-template-columns:1fr}
-  .bracket-grid{grid-template-columns:1fr}
-  th:nth-child(n+5){display:none}td:nth-child(n+5){display:none}
-  .match-team{min-width:60px;font-size:12px}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faith Cup 2026 - Arena Sports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        institucional: {
+                            azul: '#0a0a0a', azulHover: '#1a1a1a',
+                            amarillo: '#c8f000', amarilloHover: '#b3d600',
+                            grisFondo: '#0a0a0a', grisTexto: '#cccccc'
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #cccccc; }
+        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.5rem; border-top: 4px solid #c8f000; }
+        .btn { border-radius: 0.75rem; font-weight: 700; transition: all 0.2s ease-in-out; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .btn:active:not(:disabled) { transform: scale(0.96); }
+        .btn:disabled { background-color: #cbd5e1 !important; color: #475569 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; border: none !important; }
+        .btn-primary { background-color: #0a0a0a; color: #c8f000; border: 1px solid #c8f000; }
+        .btn-primary:hover:not(:disabled) { background-color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(200,240,0,0.3); }
+        .btn-secondary { background-color: #c8f000; color: #0a0a0a; }
+        .btn-secondary:hover:not(:disabled) { background-color: #b3d600; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(200,240,0,0.4); }
+        .btn-success { background-color: #16a34a; color: white; }
+        .btn-success:hover:not(:disabled) { background-color: #15803d; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(22,163,74,0.4); }
+        .btn-danger { background-color: #dc2626; color: white; }
+        .btn-danger:hover:not(:disabled) { background-color: #b91c1c; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(220,38,38,0.4); }
+        .btn-warning { background-color: #d97706; color: white; }
+        .btn-warning:hover:not(:disabled) { background-color: #b45309; transform: translateY(-2px); }
+        .input-field { width: 100%; padding: 0.6rem; border: 1px solid #d1d5db; border-radius: 0.5rem; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+        .input-field:focus { border-color: #c8f000; box-shadow: 0 0 0 2px rgba(200,240,0,0.3); }
+        .vista-oculta { display: none !important; }
+        .vista-activa { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #notification-toast { transition: opacity 0.3s, transform 0.3s; }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
+        .animate-shine { position: relative; overflow: hidden; }
+        .animate-shine::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 4s infinite; }
+        .day-checkbox { display: none; }
+        .day-checkbox + label { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; border: 2px solid #d1d5db; cursor: pointer; font-weight: 700; font-size: 0.75rem; transition: all 0.2s; color: #6b7280; user-select: none; }
+        .day-checkbox:checked + label { background-color: #0a0a0a; border-color: #c8f000; color: #c8f000; }
+        .day-checkbox + label:hover { border-color: #c8f000; color: #0a0a0a; }
+        /* Faith Cup: fondo de página oscuro, pero las tarjetas y modales internos siguen con fondo claro y texto oscuro */
+        .card, .bg-white { color: #1f2937; }
+    </style>
 </head>
-<body>
+<body class="p-4 sm:p-6 md:p-8">
 
-<div id="loginOverlay" class="login-overlay" style="display:none">
-  <div class="login-box">
-    <div class="login-logo">ARENA <span>SPORTS</span></div>
-    <div class="login-sub">ACCESO ADMIN</div>
-    <label>Contraseña</label>
-    <input type="password" id="passInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPass()">
-    <button class="btn btn-full" onclick="checkPass()">Ingresar</button>
-    <button onclick="cerrarLogin()" style="background:none;border:none;color:#444;font-size:12px;margin-top:12px;cursor:pointer;width:100%">Cancelar</button>
-    <div id="loginMsg" class="msg"></div>
-  </div>
+<!-- Toast de notificaciones -->
+<div id="notification-toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[100] bg-institucional-azul text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none translate-y-[-20px]">
+    <span id="notification-msg">Mensaje</span>
 </div>
 
-<nav>
-  <div class="nav-logo">
-    <img src="assets/images/logo arena.jpeg" alt="Arena Sports">
-    <div>
-      <div style="font-size:13px;font-weight:800;letter-spacing:2px">ARENA <span style="color:#c8f000">SPORTS</span></div>
-      <div style="font-size:10px;color:#555;letter-spacing:2px">FAITH CUP 2026</div>
+<!-- Modal genérico -->
+<div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[60] p-4 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full text-center border-t-4 border-institucional-amarillo">
+        <div id="modal-message" class="mb-6 text-institucional-azul font-medium"></div>
+        <div id="modal-buttons" class="flex justify-center gap-4"></div>
     </div>
-  </div>
-  <a href="index.html" class="nav-back">← Volver</a>
-</nav>
-
-<div class="hero">
-  <div class="hero-tag">I Torneo Interiglesias 2026</div>
-  <h1>Faith <span>Cup</span></h1>
-  <div class="hero-sub">Resultados y posiciones en tiempo real</div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="showTab('posiciones',this)">Posiciones</button>
-  <button class="tab" onclick="showTab('calendario',this)">Calendario</button>
-  <button class="tab" onclick="showTab('eliminacion',this)">Fase Final</button>
-  <button class="tab" onclick="showTab('goleadores',this)">Goleadores</button>
-  <button class="tab" onclick="showTab('patrocinadores',this)">Patrocinadores</button>
-  <button class="tab" id="adminTab" onclick="abrirAdmin(this)">Admin ⚙️</button>
+<!-- Modal Fase Final (Knockout manual) -->
+<div id="modal-knockout" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[70] p-4 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg border-t-4 border-institucional-amarillo overflow-y-auto max-h-[90vh]">
+        <div class="bg-gradient-to-r from-institucional-azul to-institucional-azulHover p-5 text-white flex items-center justify-between rounded-t-xl">
+            <h3 id="knockout-modal-title" class="text-xl font-black uppercase tracking-wide">Configurar Fase Final</h3>
+            <button onclick="app.hideKnockoutModal()" class="text-white hover:text-gray-200 text-3xl leading-none font-bold">&times;</button>
+        </div>
+        <div class="p-6" id="knockout-modal-body"></div>
+    </div>
 </div>
 
-<div class="container">
-
-<!-- POSICIONES -->
-<div id="posiciones" class="section active">
-  <div class="stat-grid">
-    <div class="stat-card"><div class="stat-num" id="statEq">7</div><div class="stat-lbl">Equipos</div></div>
-    <div class="stat-card"><div class="stat-num" id="statPart">0</div><div class="stat-lbl">Jugados</div></div>
-    <div class="stat-card"><div class="stat-num" id="statGol">0</div><div class="stat-lbl">Goles</div></div>
-    <div class="stat-card"><div class="stat-num" id="statJorn">J1</div><div class="stat-lbl">Jornada</div></div>
-  </div>
-  <div class="s-label">Faith Cup 2026</div>
-  <div class="s-title">Tabla de Posiciones</div>
-  <div style="overflow-x:auto;background:#111;border:1px solid #1e1e1e;border-radius:10px">
-    <table>
-      <thead><tr>
-        <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
-      </tr></thead>
-      <tbody id="tablaBody"></tbody>
-    </table>
-  </div>
-  <div style="font-size:11px;color:#333;padding-top:10px;letter-spacing:1px">* 1° y 2° clasifican directo a semifinales · 3° al 6° juegan repechaje · 7° queda eliminado</div>
+<!-- Login Modal -->
+<div id="login-screen" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50 p-4 hidden backdrop-blur-sm">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-institucional-azul to-institucional-azulHover p-6 text-center relative">
+            <button onclick="app.hideLoginModal()" class="absolute top-4 right-4 text-white hover:text-gray-200 font-bold text-2xl leading-none">&times;</button>
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Acceso Admin</h2>
+        </div>
+        <div class="p-8">
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="email-input" class="input-field bg-gray-50" placeholder="admin@ejemplo.com">
+                </div>
+                <div class="relative">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="password-input" class="input-field bg-gray-50 pr-10" placeholder="••••••••">
+                    <button id="toggle-password-btn" class="absolute bottom-2 right-1 px-3 py-1 flex items-center text-gray-400 hover:text-institucional-azul focus:outline-none">
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                        <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                    </button>
+                </div>
+            </div>
+            <p id="login-error" class="text-red-500 text-sm mt-3 h-5 text-center font-medium"></p>
+            <button id="btn-ingresar" onclick="app.login()" class="btn btn-secondary w-full py-3 mt-4">Ingresar al Sistema</button>
+        </div>
+    </div>
 </div>
 
-<!-- CALENDARIO -->
-<div id="calendario" class="section">
-  <div class="s-label">Faith Cup 2026</div>
-  <div class="s-title">Calendario</div>
-  <div id="calList"><div class="empty">Cargando...</div></div>
+<!-- Contenedor principal -->
+<div id="app-container" class="max-w-6xl mx-auto">
+    <header class="text-center mb-8 relative">
+        <button id="btn-top-auth" onclick="app.toggleAuth()" class="absolute top-0 right-0 btn border-2 border-institucional-amarillo text-institucional-amarillo bg-transparent hover:bg-institucional-amarillo hover:text-institucional-azul px-4 py-2 mt-2 text-sm rounded-full z-10">
+            Ingresar Admin
+        </button>
+        <div class="flex flex-col items-center justify-center gap-2 pt-16 sm:pt-4">
+            <div class="text-center">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-white uppercase tracking-wide leading-tight">Faith Cup<br class="hidden sm:block"> 2026</h1>
+                <p class="text-lg sm:text-xl text-institucional-amarillo mt-2 font-medium">Torneo Oficial · Resultados en vivo</p>
+            </div>
+        </div>
+        <nav class="flex justify-center flex-wrap gap-3 mt-8">
+            <button class="nav-btn btn bg-institucional-amarillo text-institucional-azul font-bold shadow-md scale-105 px-6 py-2 rounded-full" onclick="app.switchTab('vista-partidos', this)" data-target="vista-partidos">Partidos</button>
+            <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-posiciones', this)" data-target="vista-posiciones">Posiciones</button>
+            <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-goleadores', this)" data-target="vista-goleadores">Goleadores</button>
+            <button id="nav-btn-admin" class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full hidden" onclick="app.switchTab('vista-admin', this)" data-target="vista-admin">Panel Admin</button>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- PARTIDOS -->
+        <section id="vista-partidos" class="vista-activa">
+            <div id="schedule-section">
+                <div class="card bg-gray-50 text-center text-gray-500">El calendario aún no ha sido generado.</div>
+            </div>
+        </section>
+
+        <!-- POSICIONES -->
+        <section id="vista-posiciones" class="vista-oculta">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 flex items-center text-institucional-azul">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    Tabla de Posiciones
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="bg-gray-100 font-semibold border-b-2 border-institucional-azul">
+                            <tr>
+                                <th class="p-3">Pos</th><th class="p-3">Equipo</th>
+                                <th class="p-3 text-center">PJ</th><th class="p-3 text-center">G</th><th class="p-3 text-center">E</th><th class="p-3 text-center">P</th>
+                                <th class="p-3 text-center">GF</th><th class="p-3 text-center">GC</th><th class="p-3 text-center">DG</th><th class="p-3 text-center">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-body" class="divide-y divide-gray-200">
+                            <tr><td colspan="10" class="p-4 text-center text-gray-500">Aún no hay equipos registrados.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOLEADORES -->
+        <section id="vista-goleadores" class="vista-oculta">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 flex items-center text-institucional-azul">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
+                    Goleadores del Torneo
+                </h2>
+                <table class="min-w-full text-sm text-left">
+                    <thead class="bg-gray-100 font-semibold border-b-2 border-institucional-azul">
+                        <tr><th class="p-3">Pos</th><th class="p-3">Jugador</th><th class="p-3">Equipo</th><th class="p-3 text-center">Goles</th></tr>
+                    </thead>
+                    <tbody id="top-scorers-body" class="divide-y divide-gray-200">
+                        <tr><td colspan="4" class="p-4 text-center text-gray-500">No hay goles registrados aún.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ADMIN -->
+        <section id="vista-admin" class="vista-oculta">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Gestión de equipos -->
+                <div class="card" id="add-team-wrapper">
+                    <h2 class="text-xl font-bold mb-4 flex items-center text-institucional-azul">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        1. Equipos
+                    </h2>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                        <input type="text" id="team-name" class="input-field flex-grow border-2" placeholder="Nombre del equipo" onkeypress="if(event.key==='Enter') app.addTeam()">
+                        <button id="add-team-btn" onclick="app.addTeam()" class="btn btn-success py-2 px-5 whitespace-nowrap">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                            Añadir
+                        </button>
+                    </div>
+                    <p id="team-tournament-notice" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-2 mb-3">
+                        ⚠️ El torneo ya inició. Solo puedes <strong>editar</strong> nombres o <strong>retirar</strong> equipos. Al retirar, los partidos pendientes se reorganizarán.
+                    </p>
+                    <div class="space-y-2" id="teams-list"></div>
+                    <div id="import-legacy-wrapper" class="mt-4 pt-4 border-t border-dashed border-gray-300 hidden">
+                        <p class="text-xs text-gray-500 mb-2">¿Ya tenías un calendario corriendo en el sistema anterior? Impórtalo una sola vez, sin perder fechas ni resultados ya jugados.</p>
+                        <button onclick="app.migrarDatosAntiguos()" class="btn btn-warning w-full py-2 text-sm">📥 Importar calendario del sistema anterior</button>
+                    </div>
+                </div>
+
+                <!-- Generación de calendario -->
+                <div class="card flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold mb-4 flex items-center text-institucional-azul">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            2. Calendario del Torneo
+                        </h2>
+                        <div class="flex flex-col sm:flex-row gap-3 mb-4 border-l-4 border-institucional-amarillo pl-3">
+                            <div class="w-full sm:w-1/2">
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Inicio de Temporada</label>
+                                <input type="date" id="tournament-start" class="input-field border-gray-300">
+                            </div>
+                            <div class="w-full sm:w-1/2">
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fin de Temporada</label>
+                                <input type="date" id="tournament-end" class="input-field border-gray-300">
+                            </div>
+                        </div>
+
+                        <!-- Selector de días permitidos -->
+                        <div class="mb-4 border-l-4 border-institucional-azul pl-3">
+                            <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Días permitidos para partidos</label>
+                            <div class="flex flex-wrap gap-2" id="day-selector">
+                                <input type="checkbox" id="day-1" class="day-checkbox" value="1" checked>
+                                <label for="day-1">Lun</label>
+                                <input type="checkbox" id="day-2" class="day-checkbox" value="2">
+                                <label for="day-2">Mar</label>
+                                <input type="checkbox" id="day-3" class="day-checkbox" value="3">
+                                <label for="day-3">Mié</label>
+                                <input type="checkbox" id="day-4" class="day-checkbox" value="4" checked>
+                                <label for="day-4">Jue</label>
+                                <input type="checkbox" id="day-5" class="day-checkbox" value="5">
+                                <label for="day-5">Vie</label>
+                                <input type="checkbox" id="day-6" class="day-checkbox" value="6">
+                                <label for="day-6">Sáb</label>
+                                <input type="checkbox" id="day-0" class="day-checkbox" value="0">
+                                <label for="day-0">Dom</label>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Los festivos colombianos se excluyen automáticamente.</p>
+                        </div>
+
+                        <button id="generate-schedule-btn" onclick="app.generateSchedule()" class="btn btn-secondary w-full py-3 mb-4" disabled>Generar Calendario (Round Robin)</button>
+                    </div>
+                    <div class="pt-4 border-t border-gray-200">
+                        <button id="reset-tournament-btn" onclick="app.resetTournament()" class="btn btn-danger w-full py-3 hidden">⚠️ Reiniciar Todo el Torneo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase Final -->
+            <div class="card mt-6 hidden" id="fase-final-admin">
+                <h2 class="text-xl font-bold mb-2 flex items-center text-institucional-azul">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                    3. Fase Final (Knockout)
+                </h2>
+                <p class="text-sm text-gray-600 mb-5">Selecciona manualmente los equipos y fechas para cada instancia.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="app.openSemifinalsModal()" class="btn btn-primary flex-1 py-3" id="btn-config-semi">
+                        🏆 Configurar Semifinales
+                    </button>
+                    <button onclick="app.openFinalModal()" class="btn btn-secondary flex-1 py-3" id="btn-config-final">
+                        ⚡ Configurar Gran Final
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
 </div>
 
-<!-- FASE FINAL -->
-<div id="eliminacion" class="section">
-  <div class="s-label">Faith Cup 2026</div>
-  <div class="s-title">Fase Final</div>
-  <div class="bracket-ronda">
-    <div class="bracket-title">Repechaje (3° vs 4° · 5° vs 6°)</div>
-    <div class="bracket-grid" id="repechaje"></div>
-  </div>
-  <div class="bracket-ronda">
-    <div class="bracket-title">Semifinales</div>
-    <div class="bracket-grid" id="semis"></div>
-  </div>
-  <div class="bracket-ronda">
-    <div class="bracket-title">Final</div>
-    <div id="finalBracket"></div>
-  </div>
-</div>
-
-<!-- GOLEADORES -->
-<div id="goleadores" class="section">
-  <div class="s-label">Faith Cup 2026</div>
-  <div class="s-title">Goleadores</div>
-  <div id="golList"><div class="empty">Sin goles registrados</div></div>
-</div>
-
-<!-- PATROCINADORES -->
-<div id="patrocinadores" class="section">
-  <div class="s-label">Faith Cup 2026</div>
-  <div class="s-title">Nuestros Patrocinadores</div>
-  <p style="font-size:13px;color:#777;margin-bottom:20px;line-height:1.6">
-    Gracias a estas empresas que hacen posible este torneo.
-  </p>
-  <div class="patro-grid-torneo">
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco">
-      <div class="patro-nombre">El Mero Taco</div>
-      <div class="patro-desc-torneo">Taquería mexicana en Piedecuesta.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.instagram.com/elmero.taco/" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@elmerotaco6" target="_blank">TikTok</a>
-        <a href="https://wa.me/573183000593" target="_blank">WhatsApp</a>
-      </div>
+<footer class="bg-institucional-azul text-white py-8 mt-12 border-t-4 border-institucional-amarillo shadow-[0_-10px_20px_rgba(0,0,0,0.1)]">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+            <div class="flex flex-col group">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-institucional-amarillo font-bold mb-1">Desarrollado por</span>
+                <span class="text-lg font-bold">Arena Sports</span>
+                <p class="text-[11px] text-gray-400 mt-1">&copy; 2026 · Todos los derechos reservados</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <p class="text-sm italic text-gray-300">Una idea de: <span class="text-white font-semibold not-italic">Juan Pablo Mendoza Villamizar</span></p>
+                <div class="mt-3 bg-white/5 px-5 py-1.5 rounded-full border border-white/10">
+                    <span class="text-sm font-black text-institucional-amarillo italic tracking-wide">Faith Cup 2026</span>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <a href="https://arena-sports-cyan.vercel.app/" target="_blank" rel="noopener noreferrer" class="animate-shine group flex items-center justify-center gap-3 bg-institucional-amarillo text-institucional-azul px-8 py-3 rounded-xl font-black uppercase text-sm tracking-tight hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_4px_15px_rgba(200,240,0,0.3)]">
+                    <span class="text-center">Visitar Arena Sports</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso">
-      <div class="patro-nombre">Comunidad Espresso</div>
-      <div class="patro-desc-torneo">Iglesia en Piedecuesta.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.instagram.com/comunidadespresso/" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@comunidad.espresso" target="_blank">TikTok</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón">
-      <div class="patro-nombre">Negrón</div>
-      <div class="patro-desc-torneo">Floristería &amp; Chocolatería.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.amonegron.com" target="_blank">Web</a>
-        <a href="https://www.instagram.com/negron_oficial/" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@negron.oficial" target="_blank">TikTok</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car">
-      <div class="patro-nombre">Luminus Car</div>
-      <div class="patro-desc-torneo">Detailing automotriz en Bucaramanga.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.instagram.com/luminuscar_bga/" target="_blank">Instagram</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos">
-      <div class="patro-nombre">MV Autos</div>
-      <div class="patro-desc-torneo">Concesionaria de autos en Bucaramanga.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.instagram.com/mv_autos_/" target="_blank">Instagram</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro">
-      <div class="patro-nombre">Servicentro</div>
-      <div class="patro-desc-torneo">Lubricantes y mantenimiento vehicular.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.instagram.com/servicentromoderno/" target="_blank">Instagram</a>
-        <a href="https://wa.me/573202791482" target="_blank">WhatsApp</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta">
-      <div class="patro-nombre">Superdrogas Piedecuesta</div>
-      <div class="patro-desc-torneo">Droguería — una mano amiga, siempre.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://www.tiktok.com/@henryman116" target="_blank">TikTok</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market">
-      <div class="patro-nombre">Avila Market</div>
-      <div class="patro-desc-torneo">Mercado ubicado en el sector Versalles.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://wa.me/573028684769" target="_blank">WhatsApp</a>
-      </div>
-    </div>
-
-    <div class="patro-card-torneo">
-      <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza">
-      <div class="patro-nombre">Dr. Oscar Mendoza</div>
-      <div class="patro-desc-torneo">Medicina domiciliaria.</div>
-      <div class="patro-socials-torneo">
-        <a href="https://oscarmendoza.co/" target="_blank">Web</a>
-        <a href="https://wa.me/573025978424" target="_blank">WhatsApp</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="section">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-    <div><div class="s-label">Panel Admin</div><div class="s-title" style="margin-bottom:0">Gestión</div></div>
-    <button onclick="cerrarSesion()" style="background:none;border:1px solid #2a2a2a;color:#555;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11px">Cerrar sesión</button>
-  </div>
-  <div class="atab-bar">
-    <button class="atab active" onclick="showATab('aResultado',this)">Resultado</button>
-    <button class="atab" onclick="showATab('aCalendario',this)">Editar Calendario</button>
-    <button class="atab" onclick="showATab('aGol',this)">Gol</button>
-    <button class="atab" onclick="showATab('aEquipos',this)">Equipos</button>
-    <button class="atab" onclick="showATab('aEliminar',this)">Eliminar</button>
-    <button class="atab" onclick="showATab('aFinal',this)">Fase Final</button>
-  </div>
-
-  <!-- Resultado -->
-  <div id="aResultado" class="asection active">
-    <div class="admin-box">
-      <h3>Registrar Resultado</h3>
-      <label>Partido</label>
-      <select id="partidoSel"><option value="">Selecciona partido...</option></select>
-      <div class="two-col" style="margin-top:10px">
-        <div><label>Goles Local</label><input type="number" id="golesLocal" value="0" min="0"></div>
-        <div><label>Goles Visitante</label><input type="number" id="golesVisitante" value="0" min="0"></div>
-      </div>
-      <button class="btn btn-full" onclick="registrarResultado()">Registrar Resultado</button>
-      <div id="msgPartido" class="msg"></div>
-    </div>
-  </div>
-
-  <!-- Editar Calendario -->
-  <div id="aCalendario" class="asection">
-    <div class="admin-box">
-      <h3>Editar Fecha y Hora de Partido</h3>
-      <label>Partido</label>
-      <select id="calPartidoSel"><option value="">Selecciona partido...</option></select>
-      <label>Nueva fecha (ej: 30 ago, 6 sep)</label>
-      <input type="text" id="calFecha" placeholder="ej: 30 ago">
-      <label>Nueva hora</label>
-      <select id="calHora">
-        <option value="4:00 PM">4:00 PM</option>
-        <option value="5:00 PM">5:00 PM</option>
-        <option value="6:00 PM">6:00 PM</option>
-        <option value="7:00 PM">7:00 PM</option>
-      </select>
-      <button class="btn btn-full" onclick="editarCalendario()">Guardar Cambios</button>
-      <div id="msgCal" class="msg"></div>
-    </div>
-  </div>
-
-  <!-- Gol -->
-  <div id="aGol" class="asection">
-    <div class="admin-box">
-      <h3>Registrar Gol</h3>
-      <label>Equipo</label>
-      <select id="equipoGolSel"><option value="">Selecciona equipo...</option></select>
-      <label>Nombre del jugador</label>
-      <input type="text" id="jugadorNombre" placeholder="Nombre completo">
-      <label>Cantidad de goles</label>
-      <input type="number" id="cantGoles" value="1" min="1">
-      <button class="btn btn-full" onclick="registrarGol()">Registrar Gol</button>
-      <div id="msgGol" class="msg"></div>
-    </div>
-  </div>
-
-  <!-- Equipos -->
-  <div id="aEquipos" class="asection">
-    <div class="admin-box">
-      <h3>Editar Nombre de Equipo</h3>
-      <label>Equipo</label>
-      <select id="editEqSel"><option value="">Selecciona...</option></select>
-      <label>Nuevo nombre</label>
-      <input type="text" id="editEqNombre" placeholder="Nuevo nombre">
-      <button class="btn btn-full" onclick="editarEquipo()">Guardar Nombre</button>
-      <div id="msgEditEq" class="msg"></div>
-    </div>
-
-    <div class="admin-box">
-      <h3>Agregar Equipo</h3>
-      <label>Nombre del equipo</label>
-      <input type="text" id="nuevoEqNombre" placeholder="ej: Nueva Iglesia F.C.">
-      <button class="btn btn-full" onclick="agregarEquipo()">Agregar Equipo</button>
-      <div id="msgNuevoEq" class="msg"></div>
-    </div>
-
-    <div class="admin-box">
-      <h3>Eliminar Equipo</h3>
-      <label>Equipo</label>
-      <select id="delEqSel"><option value="">Selecciona...</option></select>
-      <button class="btn-danger btn-full" style="margin-top:12px" onclick="eliminarEquipo()">Eliminar Equipo</button>
-      <div id="msgDelEq" class="msg"></div>
-    </div>
-
-    <div class="admin-box">
-      <h3>Generar / Regenerar Calendario</h3>
-      <p style="font-size:11px;color:#666;margin-bottom:10px;line-height:1.5">⚠️ Esto borra TODOS los partidos de fase de grupos actuales (jugados o no) y las estadísticas de la tabla, y crea un calendario nuevo con los equipos que existan en ese momento. Úsalo cada vez que agregues o quites un equipo, o para armar un torneo nuevo desde cero.</p>
-      <label>Fecha del primer partido</label>
-      <input type="date" id="calFechaInicio">
-      <label>Horarios por fecha (separados por coma)</label>
-      <input type="text" id="calHorarios" value="4:00 PM,5:00 PM,6:00 PM">
-      <button class="btn btn-full" style="margin-top:10px" onclick="regenerarCalendario()">Generar Calendario Nuevo</button>
-      <div id="msgCalendario" class="msg"></div>
-    </div>
-
-    <div class="admin-box">
-      <h3>Equipos Registrados</h3>
-      <div id="listaEquiposAdmin"></div>
-    </div>
-  </div>
-
-  <!-- Eliminar -->
-  <div id="aEliminar" class="asection">
-    <div class="admin-box">
-      <h3>Eliminar Resultado</h3>
-      <label>Partido</label>
-      <select id="elimPartidoSel"><option value="">Selecciona partido...</option></select>
-      <button class="btn-danger btn-full" style="margin-top:12px" onclick="eliminarResultado()">Eliminar Resultado</button>
-      <div id="msgElimPartido" class="msg"></div>
-    </div>
-    <div class="admin-box">
-      <h3>Quitar Goles a Jugador</h3>
-      <label>Jugador</label>
-      <select id="elimGolSel"><option value="">Selecciona jugador...</option></select>
-      <label>Goles a quitar</label>
-      <input type="number" id="elimCantGol" value="1" min="1">
-      <button class="btn-danger btn-full" style="margin-top:12px" onclick="eliminarGol()">Quitar Goles</button>
-      <div id="msgElimGol" class="msg"></div>
-    </div>
-  </div>
-
-  <!-- Fase Final -->
-  <div id="aFinal" class="asection">
-    <div class="admin-box">
-      <h3>Registrar Resultado Fase Final</h3>
-      <label>Partido</label>
-      <select id="finalPartidoSel"><option value="">Selecciona...</option></select>
-      <div class="two-col" style="margin-top:10px">
-        <div><label>Goles Equipo 1</label><input type="number" id="finalGoles1" value="0" min="0"></div>
-        <div><label>Goles Equipo 2</label><input type="number" id="finalGoles2" value="0" min="0"></div>
-      </div>
-      <label>Fecha (opcional)</label>
-      <input type="text" id="finalFecha" placeholder="ej: 19 oct">
-      <button class="btn btn-full" onclick="registrarFinal()">Registrar</button>
-      <div id="msgFinal" class="msg"></div>
-    </div>
-  </div>
-
-</div>
-</div>
+</footer>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, getDocs, updateDoc, deleteDoc, onSnapshot, increment, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBrHqD7Bg-ejuu230HV5pvBkR7FJGP_okI",
-  authDomain: "arena-sports-torneo.firebaseapp.com",
-  projectId: "arena-sports-torneo",
-  storageBucket: "arena-sports-torneo.firebasestorage.app",
-  messagingSenderId: "179756535467",
-  appId: "1:179756535467:web:69e52f4a2aa59db46b71ee"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const PASS = "arenasports2026";
-let isAdmin = false;
-let equiposData = {};
-let partidosData = {};
-let goleadoresData = {};
-
-const EQUIPOS = [
-  {id:'eq1',nombre:'Livingroom'},
-  {id:'eq3',nombre:'Iglesia Cuadrangular Plenitud de Vida'},
-  {id:'eq4',nombre:'Comunidad Espresso - Espresso F.C.'},
-  {id:'eq5',nombre:'Casa Sobre la Roca - TMT'},
-  {id:'eq6',nombre:'Espresso F.C. Youth'},
-  {id:'eq7',nombre:'Comunidad de Fe'},
-  {id:'eq8',nombre:'Iglesia Piedecuesta'},
-];
-
-// 21 partidos, 7 domingos, 3 por domingo
-const DOMINGOS = ['30 ago','6 sep','13 sep','20 sep','27 sep','4 oct','11 oct'];
-const HORAS = ['4:00 PM','5:00 PM','6:00 PM'];
-
-function generarRoundRobin(ids){
-  let teams=[...ids];
-  if(teams.length%2!==0) teams.push('BYE');
-  const n=teams.length;
-  const fixed=teams[0];
-  let rotating=teams.slice(1);
-  const rounds=[];
-  for(let r=0;r<n-1;r++){
-    const roundTeams=[fixed,...rotating];
-    const pares=[];
-    for(let i=0;i<n/2;i++){
-      const t1=roundTeams[i], t2=roundTeams[n-1-i];
-      if(t1!=='BYE'&&t2!=='BYE') pares.push([t1,t2]);
+    // ==========================================
+    // UTILIDADES DE CALENDARIO COLOMBIANO
+    // ==========================================
+    function calcularPascua(year) {
+        const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+        const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+        const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+        const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+        const m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+        const day = ((h + l - 7 * m + 114) % 31) + 1;
+        return new Date(year, month, day);
     }
-    rounds.push(pares);
-    rotating.unshift(rotating.pop());
-  }
-  return rounds;
-}
 
-function formatFechaEs(d){
-  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  return d.getDate()+' '+meses[d.getMonth()];
-}
-
-function generarPartidos(){
-  const rounds=generarRoundRobin(EQUIPOS.map(e=>e.id));
-  const partidos=[];
-  let idx=0;
-  rounds.forEach((pares,ri)=>{
-    pares.forEach((par,hi)=>{
-      idx++;
-      partidos.push({
-        id:`p${String(idx).padStart(2,'0')}`,
-        local:par[0], visitante:par[1],
-        fecha: DOMINGOS[ri]||'Por definir',
-        hora: HORAS[hi]||HORAS[HORAS.length-1],
-        golesLocal:null, golesVisitante:null, jugado:false, fase:'grupos'
-      });
-    });
-  });
-  return partidos;
-}
-
-const DESCANSOS = {
-  '30 ago': 'eq1',
-  '6 sep': 'eq7',
-  '13 sep': 'eq5',
-  '20 sep': 'eq3',
-  '27 sep': 'eq8',
-  '4 oct': 'eq6',
-  '11 oct': 'eq4',
-};
-
-// UI
-window.showTab = (id,el) => {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-};
-window.irAPatrocinadores=()=>{
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById('patrocinadores').classList.add('active');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  const btn=[...document.querySelectorAll('.tab')].find(t=>t.textContent.trim()==='Patrocinadores');
-  if(btn) btn.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-};
-window.showATab = (id,el) => {
-  document.querySelectorAll('.asection').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-};
-window.abrirAdmin = (el) => {
-  if(isAdmin) showTab('admin',el);
-  else document.getElementById('loginOverlay').style.display='flex';
-};
-window.cerrarLogin = () => {
-  document.getElementById('loginOverlay').style.display='none';
-  document.getElementById('passInput').value='';
-  document.getElementById('loginMsg').className='msg';
-};
-window.checkPass = () => {
-  if(document.getElementById('passInput').value===PASS){
-    isAdmin=true; cerrarLogin();
-    showTab('admin',document.getElementById('adminTab'));
-  } else {
-    const m=document.getElementById('loginMsg');
-    m.className='msg err'; m.textContent='Contraseña incorrecta';
-  }
-};
-window.cerrarSesion = () => { isAdmin=false; showTab('posiciones',document.querySelector('.tab')); };
-
-function showMsg(id,type,text){
-  const el=document.getElementById(id);
-  el.className='msg '+type; el.textContent=text;
-  setTimeout(()=>el.className='msg',3000);
-}
-
-// Inicializar Firebase
-function calendarioValido(partidos) {
-  if (!Array.isArray(partidos) || partidos.length !== 21) return false;
-
-  const porFecha = {};
-  const conteo = {};
-  const partidosSet = new Set();
-
-  for (const p of partidos) {
-    if (!p || p.fase !== 'grupos') return false;
-    if (!p.local || !p.visitante || p.local === p.visitante) return false;
-    if (!p.fecha) return false;
-
-    const keyA = `${p.local}-${p.visitante}`;
-    const keyB = `${p.visitante}-${p.local}`;
-    if (partidosSet.has(keyA) || partidosSet.has(keyB)) return false;
-    partidosSet.add(keyA);
-
-    const fechaSet = porFecha[p.fecha] || new Set();
-    if (fechaSet.has(p.local) || fechaSet.has(p.visitante)) return false;
-
-    fechaSet.add(p.local);
-    fechaSet.add(p.visitante);
-    porFecha[p.fecha] = fechaSet;
-
-    if (fechaSet.size > 7) return false;
-
-    conteo[p.local] = (conteo[p.local] || 0) + 1;
-    conteo[p.visitante] = (conteo[p.visitante] || 0) + 1;
-  }
-
-  const esperados = EQUIPOS.map(e => e.id);
-  for (const id of esperados) {
-    if ((conteo[id] || 0) !== 7) return false;
-  }
-
-  const fechas = Object.keys(porFecha);
-  const fechasEsperadas = DOMINGOS;
-  if (fechas.length !== fechasEsperadas.length) return false;
-  if (fechas.some(f => !fechasEsperadas.includes(f))) return false;
-
-  const totalPorFecha = Object.values(porFecha).map(set => set.size / 2);
-  if (totalPorFecha.some(v => v !== 3)) return false;
-
-  return true;
-}
-
-function ordenFechaUnoValido(partidos) {
-  const partidoUno = partidos.find(p => p.id === 'p01');
-  const partidoTres = partidos.find(p => p.id === 'p03');
-  const fixtureEsperado = generarPartidos();
-  const esperadoUno = fixtureEsperado.find(p => p.id === 'p01');
-  const esperadoTres = fixtureEsperado.find(p => p.id === 'p03');
-
-  return partidoUno?.local === esperadoUno.local &&
-    partidoUno?.visitante === esperadoUno.visitante &&
-    partidoTres?.local === esperadoTres.local &&
-    partidoTres?.visitante === esperadoTres.visitante;
-}
-
-async function actualizarOrdenFechaUno(partidosExistentes) {
-  const partidoUno = partidosExistentes.find(p => p.id === 'p01');
-  const partidoTres = partidosExistentes.find(p => p.id === 'p03');
-  if (!partidoUno || !partidoTres || ordenFechaUnoValido(partidosExistentes)) return;
-
-  const actualizar = writeBatch(db);
-  actualizar.update(doc(db, 'faithcup_partidos', 'p01'), {
-    local: partidoTres.local,
-    visitante: partidoTres.visitante,
-    golesLocal: partidoTres.golesLocal ?? null,
-    golesVisitante: partidoTres.golesVisitante ?? null,
-    jugado: partidoTres.jugado ?? false
-  });
-  actualizar.update(doc(db, 'faithcup_partidos', 'p03'), {
-    local: partidoUno.local,
-    visitante: partidoUno.visitante,
-    golesLocal: partidoUno.golesLocal ?? null,
-    golesVisitante: partidoUno.golesVisitante ?? null,
-    jugado: partidoUno.jugado ?? false
-  });
-  await actualizar.commit();
-}
-
-async function inicializar(){
-  const snap=await getDocs(collection(db,'faithcup_equipos'));
-  const partidosSnap=await getDocs(collection(db,'faithcup_partidos'));
-
-  const partidosExistentes = partidosSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-  const fixtureCorrupto = !calendarioValido(partidosExistentes);
-
-  if(snap.empty){
-    const b=writeBatch(db);
-    EQUIPOS.forEach(e=>b.set(doc(db,'faithcup_equipos',e.id),{nombre:e.nombre,pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0}));
-    await b.commit();
-  }
-
-  if(fixtureCorrupto){
-    const partidosSnapDelete = await getDocs(collection(db,'faithcup_partidos'));
-    const borrar=writeBatch(db);
-    partidosSnapDelete.forEach(d=>borrar.delete(doc(db,'faithcup_partidos',d.id)));
-    await borrar.commit();
-
-    const partidos=generarPartidos();
-    const b2=writeBatch(db);
-    partidos.forEach(p=>b2.set(doc(db,'faithcup_partidos',p.id),p));
-    await b2.commit();
-  } else {
-    await actualizarOrdenFechaUno(partidosExistentes);
-  }
-}
-
-// Listeners
-function escucharEquipos(){
-  onSnapshot(collection(db,'faithcup_equipos'),snap=>{
-    equiposData={};
-    snap.forEach(d=>equiposData[d.id]={id:d.id,...d.data()});
-    document.getElementById('statEq').textContent=Object.keys(equiposData).length;
-    renderTabla(); renderAdminEquipos(); renderSelects();
-  });
-}
-
-function escucharPartidos(){
-  onSnapshot(collection(db,'faithcup_partidos'),snap=>{
-    partidosData={};
-    snap.forEach(d=>partidosData[d.id]={id:d.id,...d.data()});
-    renderCalendario(); renderFaseFinal(); renderPartidosSel();
-    let jugados=0,goles=0;
-    const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos');
-    grupos.forEach(p=>{
-      if(p.jugado){jugados++;goles+=(p.golesLocal||0)+(p.golesVisitante||0);}
-    });
-    document.getElementById('statPart').textContent=jugados+'/'+grupos.length;
-    const fechasUnicas=[...new Set(grupos.map(p=>p.fecha))];
-    let jornadaActual=fechasUnicas.length;
-    for(let i=0;i<fechasUnicas.length;i++){
-      if(grupos.filter(p=>p.fecha===fechasUnicas[i]).some(p=>!p.jugado)){ jornadaActual=i+1; break; }
+    function moverALunes(fecha) {
+        const d = new Date(fecha);
+        if (d.getDay() !== 1) d.setDate(d.getDate() + (d.getDay() === 0 ? 1 : 8 - d.getDay()));
+        return d;
     }
-    document.getElementById('statJorn').textContent='J'+jornadaActual+'/'+fechasUnicas.length;
-  });
-}
 
-function escucharGoleadores(){
-  onSnapshot(collection(db,'faithcup_goleadores'),snap=>{
-    goleadoresData={};
-    snap.forEach(d=>goleadoresData[d.id]={id:d.id,...d.data()});
-    renderGoleadores(); renderElimGolSel();
-    let g=0; Object.values(goleadoresData).forEach(x=>g+=x.goles||0);
-    document.getElementById('statGol').textContent=g;
-  });
-}
-
-function renderTabla(){
-  document.getElementById('statEq').textContent = Object.keys(equiposData).length || 7;
-  const equipos=Object.values(equiposData).sort((a,b)=>(b.pts||0)-(a.pts||0)||(b.dg||0)-(a.dg||0)||(b.gf||0)-(a.gf||0));
-  document.getElementById('tablaBody').innerHTML=equipos.map((e,i)=>`<tr>
-    <td class="pos">${i+1}</td>
-    <td class="team-name" style="font-size:12px">${e.nombre}${i<2?' <span class="badge badge-green">Clasifica</span>':(i<6?' <span class="badge badge-amber">Repechaje</span>':' <span class="badge badge-red">Eliminado</span>')}</td>
-    <td>${e.pj||0}</td><td>${e.g||0}</td><td>${e.emp||0}</td><td>${e.p||0}</td>
-    <td>${e.gf||0}</td><td>${e.gc||0}</td>
-    <td style="color:${(e.dg||0)>=0?'#c8f000':'#ff6b6b'}">${(e.dg||0)>=0?'+':''}${e.dg||0}</td>
-    <td class="pts">${e.pts||0}</td>
-  </tr>`).join('') || '<tr><td colspan="10" class="empty">Sin datos</td></tr>';
-}
-
-function renderCalendario(){
-  const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos');
-  const porFecha={};
-  grupos.forEach(p=>{
-    const k=p.fecha||'Sin fecha';
-    if(!porFecha[k]) porFecha[k]=[];
-    porFecha[k].push(p);
-  });
-
-  const fechasOrdenadas = Object.keys(porFecha).sort((a,b) => {
-    const ia = DOMINGOS.indexOf(a);
-    const ib = DOMINGOS.indexOf(b);
-    if (ia !== -1 || ib !== -1) return (ia === -1 ? Number.MAX_SAFE_INTEGER : ia) - (ib === -1 ? Number.MAX_SAFE_INTEGER : ib);
-    return a.localeCompare(b);
-  });
-
-  let html='';
-  fechasOrdenadas.forEach((fecha)=>{
-    const ps = porFecha[fecha].sort((a,b)=>a.hora.localeCompare(b.hora));
-    const descansaId = DESCANSOS[fecha];
-    const descansaNombre = descansaId ? (equiposData[descansaId]?.nombre || descansaId) : null;
-    html+=`<div class="cal-domingo">
-      <div class="cal-header">
-        <span class="cal-fecha">📅 ${fecha}</span>
-        <span class="cal-num">${ps.filter(p=>p.jugado).length}/${ps.length} jugados</span>
-      </div>
-      ${descansaNombre ? `<div style="padding:8px 16px;font-size:11px;color:#666;border-bottom:1px solid #141414;letter-spacing:1px">😴 Descansa: <span style="color:#c8f000;font-weight:700">${descansaNombre}</span></div>` : ''}
-      <div class="cal-partidos">`;
-    ps.forEach(p=>{
-      const local=equiposData[p.local]?.nombre||p.local;
-      const vis=equiposData[p.visitante]?.nombre||p.visitante;
-      const centro=p.jugado
-        ?`<div class="cal-score">${p.golesLocal} – ${p.golesVisitante}</div>`
-        :`<div class="cal-vs">vs</div>`;
-      const status=p.jugado
-        ?'<span class="badge badge-green">✓</span>'
-        :'<span class="badge badge-gray">—</span>';
-      html+=`<div class="cal-partido">
-        <div class="cal-hora">${p.hora}</div>
-        <div class="cal-teams">
-          <div class="cal-local">${local}</div>
-          ${centro}
-          <div class="cal-vis">${vis}</div>
-        </div>
-        <div class="cal-status">${status}</div>
-      </div>`;
-    });
-    html+='</div></div>';
-  });
-  document.getElementById('calList').innerHTML=html||'<div class="empty">Sin partidos</div>';
-}
-
-function renderFaseFinal(){
-  const fp=Object.values(partidosData).filter(p=>p.fase==='final');
-  const repechaje=fp.filter(p=>p.ronda==='repechaje');
-  const semis=fp.filter(p=>p.ronda==='semis');
-  const final=fp.filter(p=>p.ronda==='final');
-
-  const matchHtml=(p)=>{
-    if(!p) return `<div class="bracket-match"><div class="bracket-lbl">Por definir</div>
-      <div class="bracket-team">—</div><div class="bracket-team">—</div></div>`;
-    const e1=equiposData[p.equipo1]?.nombre||p.equipo1||'?';
-    const e2=equiposData[p.equipo2]?.nombre||p.equipo2||'?';
-    const g1=p.jugado?p.goles1:'—', g2=p.jugado?p.goles2:'—';
-    return `<div class="bracket-match">
-      <div class="bracket-lbl">${p.label||''} · ${p.fecha||'Fecha por definir'}</div>
-      <div class="bracket-team ${p.jugado&&p.goles1>p.goles2?'winner':''}">${e1} <strong>${g1}</strong></div>
-      <div class="bracket-team ${p.jugado&&p.goles2>p.goles1?'winner':''}">${e2} <strong>${g2}</strong></div>
-    </div>`;
-  };
-
-  document.getElementById('repechaje').innerHTML=repechaje.length
-    ?repechaje.map(matchHtml).join('')
-    :'<div class="empty" style="grid-column:span 2">Se genera al terminar fase de grupos</div>';
-
-  document.getElementById('semis').innerHTML=semis.length
-    ?semis.map(matchHtml).join('')
-    :'<div class="empty" style="grid-column:span 2">Se generan al terminar fase de grupos</div>';
-
-  document.getElementById('finalBracket').innerHTML=final.length
-    ?final.map(matchHtml).join('')
-    :'<div class="empty">Se genera al terminar semifinales</div>';
-}
-
-function renderGoleadores(){
-  const g=Object.values(goleadoresData).sort((a,b)=>(b.goles||0)-(a.goles||0));
-  document.getElementById('golList').innerHTML=g.length
-    ?g.map((x,i)=>`<div class="gol-row">
-        <div class="gol-pos">${i+1}</div>
-        <div class="gol-info"><div class="gol-name">${x.nombre}</div><div class="gol-team">${equiposData[x.equipoId]?.nombre||x.equipo||''}</div></div>
-        <div class="gol-count">${x.goles}</div>
-      </div>`).join('')
-    :'<div class="empty">Sin goles registrados</div>';
-}
-
-function renderAdminEquipos(){
-  document.getElementById('listaEquiposAdmin').innerHTML=Object.values(equiposData)
-    .map(e=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a1a;font-size:13px">
-      <span style="font-weight:600">${e.nombre}</span>
-      <span style="font-size:11px;color:#555">${e.pts||0} pts</span>
-    </div>`).join('') || '<div class="empty">Sin equipos</div>';
-}
-
-function renderSelects(){
-  const opts=Object.values(equiposData).map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
-  ['equipoGolSel','editEqSel','delEqSel'].forEach(id=>{
-    const s=document.getElementById(id); if(!s) return;
-    const prev=s.value; s.innerHTML='<option value="">Selecciona...</option>'+opts;
-    if(prev) s.value=prev;
-  });
-}
-
-function renderPartidosSel(){
-  const grupos=Object.values(partidosData).filter(p=>p.fase==='grupos').sort((a,b)=>a.id.localeCompare(b.id));
-  const opts=grupos.map(p=>{
-    const l=equiposData[p.local]?.nombre||p.local;
-    const v=equiposData[p.visitante]?.nombre||p.visitante;
-    const status=p.jugado?` ✓`:'';
-    return `<option value="${p.id}">${l} vs ${v} · ${p.fecha} ${p.hora}${status}</option>`;
-  }).join('');
-  ['partidoSel','elimPartidoSel','calPartidoSel'].forEach(id=>{
-    const s=document.getElementById(id); if(!s) return;
-    s.innerHTML='<option value="">Selecciona partido...</option>'+opts;
-  });
-  const fp=Object.values(partidosData).filter(p=>p.fase==='final');
-  const fOpts=fp.map(p=>`<option value="${p.id}">${p.label||p.id}</option>`).join('');
-  const fs=document.getElementById('finalPartidoSel');
-  if(fs) fs.innerHTML='<option value="">Selecciona...</option>'+fOpts;
-}
-
-function renderElimGolSel(){
-  const opts=Object.values(goleadoresData).map(g=>`<option value="${g.id}">${g.nombre} (${g.goles} goles)</option>`).join('');
-  const s=document.getElementById('elimGolSel');
-  if(s) s.innerHTML='<option value="">Selecciona jugador...</option>'+opts;
-}
-
-// Acciones admin
-window.registrarResultado=async()=>{
-  const pid=document.getElementById('partidoSel').value;
-  const gl=parseInt(document.getElementById('golesLocal').value)||0;
-  const gv=parseInt(document.getElementById('golesVisitante').value)||0;
-  if(!pid) return showMsg('msgPartido','err','Selecciona un partido');
-  const p=partidosData[pid]; if(!p) return;
-  try{
-    if(p.jugado){
-      const rev=async(eqId,gf,gc,res)=>{
-        const u={pj:increment(-1),gf:increment(-gf),gc:increment(-gc),dg:increment(-(gf-gc))};
-        if(res==='g'){u.g=increment(-1);u.pts=increment(-3);}
-        else if(res==='e'){u.emp=increment(-1);u.pts=increment(-1);}
-        else u.p=increment(-1);
-        await updateDoc(doc(db,'faithcup_equipos',eqId),u);
-      };
-      const rL=p.golesLocal>p.golesVisitante?'g':(p.golesLocal===p.golesVisitante?'e':'p');
-      const rV=p.golesVisitante>p.golesLocal?'g':(p.golesLocal===p.golesVisitante?'e':'p');
-      await rev(p.local,p.golesLocal,p.golesVisitante,rL);
-      await rev(p.visitante,p.golesVisitante,p.golesLocal,rV);
+    function obtenerFestivosColombia(year) {
+        const pascua = calcularPascua(year);
+        const addDays = (date, days) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+        const toISO = (d) => { const z = n => ('0' + n).slice(-2); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };
+        const festivos = [
+            new Date(year, 0, 1), new Date(year, 4, 1), new Date(year, 6, 20),
+            new Date(year, 7, 7), new Date(year, 11, 8), new Date(year, 11, 25),
+            moverALunes(new Date(year, 0, 6)), moverALunes(new Date(year, 2, 19)),
+            moverALunes(new Date(year, 5, 29)), moverALunes(new Date(year, 7, 15)),
+            moverALunes(new Date(year, 9, 12)), moverALunes(new Date(year, 10, 1)),
+            moverALunes(new Date(year, 10, 11)),
+            addDays(pascua, -3), addDays(pascua, -2),
+            moverALunes(addDays(pascua, 39)), moverALunes(addDays(pascua, 60)), moverALunes(addDays(pascua, 68))
+        ];
+        return new Set(festivos.map(toISO));
     }
-    await updateDoc(doc(db,'faithcup_partidos',pid),{golesLocal:gl,golesVisitante:gv,jugado:true});
-    const emp=gl===gv;
-    if(emp){
-      await updateDoc(doc(db,'faithcup_equipos',p.local),{pj:increment(1),emp:increment(1),gf:increment(gl),gc:increment(gv),dg:increment(gl-gv),pts:increment(1)});
-      await updateDoc(doc(db,'faithcup_equipos',p.visitante),{pj:increment(1),emp:increment(1),gf:increment(gv),gc:increment(gl),dg:increment(gv-gl),pts:increment(1)});
-    }else{
-      const gan=gl>gv?p.local:p.visitante, per=gl>gv?p.visitante:p.local;
-      const ggan=Math.max(gl,gv), gper=Math.min(gl,gv);
-      await updateDoc(doc(db,'faithcup_equipos',gan),{pj:increment(1),g:increment(1),gf:increment(ggan),gc:increment(gper),dg:increment(ggan-gper),pts:increment(3)});
-      await updateDoc(doc(db,'faithcup_equipos',per),{pj:increment(1),p:increment(1),gf:increment(gper),gc:increment(ggan),dg:increment(gper-ggan)});
+
+    /**
+     * Genera fechas válidas para partidos entre dos fechas,
+     * considerando los días seleccionados y los festivos colombianos.
+     * @param {string} fechaInicioStr - Fecha ISO de inicio
+     * @param {string} fechaFinStr - Fecha ISO de fin
+     * @param {number[]} diasPermitidos - Ej: [1, 4] para Lunes y Jueves (0=Dom, 6=Sáb)
+     */
+    function generarFechasValidas(fechaInicioStr, fechaFinStr, diasPermitidos) {
+        const startDate = new Date(fechaInicioStr + "T12:00:00");
+        const endDate = new Date(fechaFinStr + "T12:00:00");
+        if (startDate > endDate || diasPermitidos.length === 0) return [];
+
+        const toISO = (d) => { const z = n => ('0' + n).slice(-2); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };
+
+        let festivos = new Set();
+        for (let y = startDate.getFullYear(); y <= endDate.getFullYear(); y++) {
+            obtenerFestivosColombia(y).forEach(f => festivos.add(f));
+        }
+
+        const fechasValidas = [];
+        let current = new Date(startDate);
+        while (current <= endDate) {
+            const isoDate = toISO(current);
+            if (diasPermitidos.includes(current.getDay()) && !festivos.has(isoDate)) {
+                fechasValidas.push(isoDate);
+            }
+            current.setDate(current.getDate() + 1);
+        }
+        return fechasValidas;
     }
-    showMsg('msgPartido','ok','Resultado registrado ✓');
-  }catch(e){showMsg('msgPartido','err','Error: '+e.message);}
-};
 
-window.editarCalendario=async()=>{
-  const pid=document.getElementById('calPartidoSel').value;
-  const fecha=document.getElementById('calFecha').value.trim();
-  const hora=document.getElementById('calHora').value;
-  if(!pid) return showMsg('msgCal','err','Selecciona un partido');
-  if(!fecha) return showMsg('msgCal','err','Escribe la fecha');
-  try{
-    await updateDoc(doc(db,'faithcup_partidos',pid),{fecha,hora});
-    showMsg('msgCal','ok','Calendario actualizado ✓');
-  }catch(e){showMsg('msgCal','err','Error al guardar');}
-};
-
-window.registrarGol=async()=>{
-  const eqId=document.getElementById('equipoGolSel').value;
-  const nombre=document.getElementById('jugadorNombre').value.trim();
-  const cant=parseInt(document.getElementById('cantGoles').value)||1;
-  if(!eqId||!nombre) return showMsg('msgGol','err','Completa todos los campos');
-  try{
-    const snap=await getDocs(collection(db,'faithcup_goleadores'));
-    let found=null;
-    snap.forEach(d=>{if(d.data().nombre.toLowerCase()===nombre.toLowerCase()&&d.data().equipoId===eqId) found=d.id;});
-    if(found) await updateDoc(doc(db,'faithcup_goleadores',found),{goles:increment(cant)});
-    else await addDoc(collection(db,'faithcup_goleadores'),{nombre,equipo:equiposData[eqId]?.nombre||'',equipoId:eqId,goles:cant});
-    document.getElementById('jugadorNombre').value='';
-    document.getElementById('cantGoles').value=1;
-    showMsg('msgGol','ok','Gol registrado ✓');
-  }catch(e){showMsg('msgGol','err','Error al guardar');}
-};
-
-window.editarEquipo=async()=>{
-  const id=document.getElementById('editEqSel').value;
-  const nombre=document.getElementById('editEqNombre').value.trim();
-  if(!id||!nombre) return showMsg('msgEditEq','err','Selecciona equipo y escribe nombre');
-  try{
-    await updateDoc(doc(db,'faithcup_equipos',id),{nombre});
-    document.getElementById('editEqNombre').value='';
-    showMsg('msgEditEq','ok','Nombre actualizado ✓');
-  }catch(e){showMsg('msgEditEq','err','Error al guardar');}
-};
-
-window.agregarEquipo=async()=>{
-  const nombre=document.getElementById('nuevoEqNombre').value.trim();
-  if(!nombre){ showMsg('msgNuevoEq','err','Escribe un nombre'); return; }
-  await addDoc(collection(db,'faithcup_equipos'),{nombre,pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0});
-  document.getElementById('nuevoEqNombre').value='';
-  showMsg('msgNuevoEq','ok','Equipo agregado. No olvides generar el calendario de nuevo para incluirlo en los partidos.');
-};
-
-window.eliminarEquipo=async()=>{
-  const id=document.getElementById('delEqSel').value;
-  if(!id){ showMsg('msgDelEq','err','Selecciona un equipo'); return; }
-  if(!confirm('¿Seguro que quieres eliminar este equipo? Esta acción no se puede deshacer.')) return;
-  await deleteDoc(doc(db,'faithcup_equipos',id));
-  showMsg('msgDelEq','ok','Equipo eliminado. Genera el calendario de nuevo para actualizar los partidos.');
-};
-
-window.regenerarCalendario=async()=>{
-  const ids=Object.keys(equiposData);
-  if(ids.length<2){ showMsg('msgCalendario','err','Necesitas al menos 2 equipos'); return; }
-  const fechaInicio=document.getElementById('calFechaInicio').value;
-  if(!fechaInicio){ showMsg('msgCalendario','err','Selecciona la fecha del primer partido'); return; }
-  const horarios=document.getElementById('calHorarios').value.split(',').map(h=>h.trim()).filter(Boolean);
-  if(!horarios.length){ showMsg('msgCalendario','err','Escribe al menos un horario'); return; }
-  if(!confirm('Esto va a borrar todos los partidos de fase de grupos actuales y las estadísticas de la tabla. ¿Continuar?')) return;
-
-  const existentes=Object.values(partidosData).filter(p=>p.fase==='grupos');
-  const bdel=writeBatch(db);
-  existentes.forEach(p=>bdel.delete(doc(db,'faithcup_partidos',p.id)));
-  await bdel.commit();
-
-  const breset=writeBatch(db);
-  ids.forEach(id=>breset.update(doc(db,'faithcup_equipos',id),{pj:0,g:0,emp:0,p:0,gf:0,gc:0,dg:0,pts:0}));
-  await breset.commit();
-
-  const rounds=generarRoundRobin(ids);
-  const inicio=new Date(fechaInicio+'T12:00:00');
-  const bnew=writeBatch(db);
-  let idx=0;
-  rounds.forEach((pares,ri)=>{
-    const fecha=formatFechaEs(new Date(inicio.getTime()+ri*7*24*60*60*1000));
-    pares.forEach((par,hi)=>{
-      idx++;
-      bnew.set(doc(db,'faithcup_partidos',`p${String(idx).padStart(2,'0')}_${Date.now()}${idx}`),{
-        local:par[0], visitante:par[1], fecha,
-        hora:horarios[hi]||horarios[horarios.length-1],
-        golesLocal:null, golesVisitante:null, jugado:false, fase:'grupos'
-      });
-    });
-  });
-  await bnew.commit();
-  showMsg('msgCalendario','ok',`Calendario generado: ${idx} partidos en ${rounds.length} fechas.`);
-};
-
-window.eliminarResultado=async()=>{
-  const pid=document.getElementById('elimPartidoSel').value;
-  if(!pid) return showMsg('msgElimPartido','err','Selecciona un partido');
-  if(!confirm('¿Eliminar resultado de este partido?')) return;
-  const p=partidosData[pid];
-  if(!p?.jugado) return showMsg('msgElimPartido','err','Este partido no tiene resultado');
-  try{
-    const rev=async(eqId,gf,gc,res)=>{
-      const u={pj:increment(-1),gf:increment(-gf),gc:increment(-gc),dg:increment(-(gf-gc))};
-      if(res==='g'){u.g=increment(-1);u.pts=increment(-3);}
-      else if(res==='e'){u.emp=increment(-1);u.pts=increment(-1);}
-      else u.p=increment(-1);
-      await updateDoc(doc(db,'faithcup_equipos',eqId),u);
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyBrHqD7Bg-ejuu230HV5pvBkR7FJGP_okI",
+        authDomain: "arena-sports-torneo.firebaseapp.com",
+        projectId: "arena-sports-torneo",
+        storageBucket: "arena-sports-torneo.firebasestorage.app",
+        messagingSenderId: "179756535467",
+        appId: "1:179756535467:web:69e52f4a2aa59db46b71ee"
     };
-    const rL=p.golesLocal>p.golesVisitante?'g':(p.golesLocal===p.golesVisitante?'e':'p');
-    const rV=p.golesVisitante>p.golesLocal?'g':(p.golesLocal===p.golesVisitante?'e':'p');
-    await rev(p.local,p.golesLocal,p.golesVisitante,rL);
-    await rev(p.visitante,p.golesVisitante,p.golesLocal,rV);
-    await updateDoc(doc(db,'faithcup_partidos',pid),{golesLocal:null,golesVisitante:null,jugado:false});
-    showMsg('msgElimPartido','ok','Resultado eliminado ✓');
-  }catch(e){showMsg('msgElimPartido','err','Error: '+e.message);}
-};
 
-window.eliminarGol=async()=>{
-  const gid=document.getElementById('elimGolSel').value;
-  const cant=parseInt(document.getElementById('elimCantGol').value)||1;
-  if(!gid) return showMsg('msgElimGol','err','Selecciona un jugador');
-  const g=goleadoresData[gid]; if(!g) return;
-  try{
-    const nuevos=(g.goles||0)-cant;
-    if(nuevos<=0) await deleteDoc(doc(db,'faithcup_goleadores',gid));
-    else await updateDoc(doc(db,'faithcup_goleadores',gid),{goles:increment(-cant)});
-    showMsg('msgElimGol','ok','Goles eliminados ✓');
-  }catch(e){showMsg('msgElimGol','err','Error: '+e.message);}
-};
+    // ==========================================
+    // CLASE PRINCIPAL
+    // ==========================================
+    class TournamentApp {
+        constructor() {
+            this.teams = [];
+            this.schedule = [];
+            this.knockout = null;
+            this.isAuthenticated = false;
+            this.db = null;
+            this.auth = null;
+            this.appId = 'faithcup2026';
+            this.unsubscribe = null;
+        }
 
-window.registrarFinal=async()=>{
-  const pid=document.getElementById('finalPartidoSel').value;
-  const g1=parseInt(document.getElementById('finalGoles1').value)||0;
-  const g2=parseInt(document.getElementById('finalGoles2').value)||0;
-  const fecha=document.getElementById('finalFecha').value.trim();
-  if(!pid) return showMsg('msgFinal','err','Selecciona un partido');
-  try{
-    await updateDoc(doc(db,'faithcup_partidos',pid),{goles1:g1,goles2:g2,jugado:true,fecha:fecha||'Por definir'});
-    showMsg('msgFinal','ok','Resultado registrado ✓');
-  }catch(e){showMsg('msgFinal','err','Error: '+e.message);}
-};
+        // ---- UI & Notificaciones ----
+        showNotification(msg, isError = false) {
+            const toast = document.getElementById('notification-toast');
+            document.getElementById('notification-msg').textContent = msg;
+            toast.classList.remove('bg-institucional-azul', 'bg-red-600');
+            toast.classList.add(isError ? 'bg-red-600' : 'bg-institucional-azul');
+            toast.classList.remove('opacity-0', 'translate-y-[-20px]', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-[-20px]', 'pointer-events-none');
+            }, 3500);
+        }
 
-await inicializar();
-escucharEquipos();
-escucharPartidos();
-escucharGoleadores();
+        showAlert(message) {
+            const modal = document.getElementById('modal');
+            document.getElementById('modal-message').innerHTML = `<p class="text-lg">${message}</p>`;
+            document.getElementById('modal-buttons').innerHTML = `<button onclick="app.hideModal()" class="btn btn-primary py-2 px-6">Entendido</button>`;
+            modal.classList.remove('hidden');
+        }
+
+        showConfirm(message, onConfirm) {
+            const modal = document.getElementById('modal');
+            document.getElementById('modal-message').innerHTML = `<p class="text-base text-gray-700">${message}</p>`;
+            document.getElementById('modal-buttons').innerHTML = `
+                <button onclick="app.hideModal()" class="btn btn-secondary py-2 px-4">Cancelar</button>
+                <button id="confirm-btn" class="btn btn-primary py-2 px-4">Confirmar</button>`;
+            modal.classList.remove('hidden');
+            document.getElementById('confirm-btn').onclick = () => { this.hideModal(); onConfirm(); };
+        }
+
+        hideModal() { document.getElementById('modal').classList.add('hidden'); }
+        showLoginModal() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('email-input').focus(); }
+        hideLoginModal() { document.getElementById('login-screen').classList.add('hidden'); }
+        hideKnockoutModal() { document.getElementById('modal-knockout').classList.add('hidden'); }
+
+        switchTab(targetId, btnElement) {
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('bg-institucional-amarillo', 'text-institucional-azul', 'font-bold', 'shadow-md', 'scale-105');
+                b.classList.add('bg-institucional-azulHover', 'text-white', 'opacity-90');
+            });
+            btnElement.classList.remove('bg-institucional-azulHover', 'text-white', 'opacity-90');
+            btnElement.classList.add('bg-institucional-amarillo', 'text-institucional-azul', 'font-bold', 'shadow-md', 'scale-105');
+            ['vista-posiciones', 'vista-goleadores', 'vista-partidos', 'vista-admin'].forEach(id => {
+                const vista = document.getElementById(id);
+                if (vista) { vista.classList.toggle('vista-activa', id === targetId); vista.classList.toggle('vista-oculta', id !== targetId); }
+            });
+        }
+
+        // ---- Auth ----
+        async init() {
+            const firebaseApp = initializeApp(firebaseConfig);
+            this.db = getFirestore(firebaseApp);
+            this.auth = getAuth(firebaseApp);
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(this.auth, __initial_auth_token);
+                } else { await signInAnonymously(this.auth); }
+            } catch (e) { console.error("Error Auth:", e); }
+
+            onAuthStateChanged(this.auth, (user) => {
+                this.isAuthenticated = !!(user && !user.isAnonymous && user.email);
+                this.updateUIForRole();
+                this.setupFirestoreListener();
+            });
+
+            document.getElementById('toggle-password-btn').addEventListener('click', () => {
+                const pwd = document.getElementById('password-input');
+                const isPwd = pwd.type === 'password';
+                pwd.type = isPwd ? 'text' : 'password';
+                document.getElementById('eye-icon').classList.toggle('hidden', isPwd);
+                document.getElementById('eye-slash-icon').classList.toggle('hidden', !isPwd);
+            });
+            document.getElementById('password-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') this.login(); });
+        }
+
+        async toggleAuth() {
+            if (this.isAuthenticated) {
+                await signOut(this.auth);
+                await signInAnonymously(this.auth);
+                this.showNotification("Sesión cerrada. Modo visitante activo.");
+            } else {
+                document.getElementById('login-error').textContent = '';
+                this.showLoginModal();
+            }
+        }
+
+        async login() {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const btn = document.getElementById('btn-ingresar');
+            const errorMsg = document.getElementById('login-error');
+            if (!email || !password) return errorMsg.textContent = "Llena ambos campos.";
+            btn.textContent = "Verificando..."; btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(this.auth, email, password);
+                document.getElementById('email-input').value = '';
+                document.getElementById('password-input').value = '';
+                this.hideLoginModal();
+                document.getElementById('nav-btn-admin').click();
+                this.showNotification("¡Bienvenido al panel de administración!");
+            } catch (error) {
+                errorMsg.textContent = error.code === 'auth/invalid-credential' ? "Correo o contraseña incorrectos." : "Error de conexión.";
+            } finally { btn.textContent = "Ingresar al Sistema"; btn.disabled = false; }
+        }
+
+        updateUIForRole() {
+            const btnTopAuth = document.getElementById('btn-top-auth');
+            const navBtnAdmin = document.getElementById('nav-btn-admin');
+            if (this.isAuthenticated) {
+                btnTopAuth.textContent = "Cerrar Sesión";
+                btnTopAuth.classList.remove('border-institucional-amarillo', 'text-institucional-amarillo');
+                btnTopAuth.classList.add('bg-red-600', 'text-white', 'border-red-600');
+                navBtnAdmin.classList.remove('hidden');
+            } else {
+                btnTopAuth.textContent = "Ingresar Admin";
+                btnTopAuth.classList.remove('bg-red-600', 'text-white', 'border-red-600');
+                btnTopAuth.classList.add('border-institucional-amarillo', 'text-institucional-amarillo');
+                navBtnAdmin.classList.add('hidden');
+                if (!document.getElementById('vista-admin').classList.contains('vista-oculta')) {
+                    document.querySelector('[data-target="vista-partidos"]')?.click();
+                }
+            }
+            this.renderAll();
+        }
+
+        // ---- Firestore ----
+        setupFirestoreListener() {
+            if (this.unsubscribe) this.unsubscribe();
+            const ref = doc(this.db, 'artifacts', this.appId, 'public', 'data', 'torneo', 'mainState');
+            this.unsubscribe = onSnapshot(ref, (docSnap) => {
+                if (docSnap.exists()) {
+                    const state = docSnap.data();
+                    this.teams = state.teams || [];
+                    this.schedule = state.schedule || [];
+                    this.knockout = state.knockout || null;
+                } else {
+                    this.teams = []; this.schedule = []; this.knockout = null;
+                }
+                this.renderAll();
+            });
+        }
+
+        async saveStateToFirestore() {
+            if (!this.isAuthenticated) return;
+            const ref = doc(this.db, 'artifacts', this.appId, 'public', 'data', 'torneo', 'mainState');
+            await setDoc(ref, {
+                teams: JSON.parse(JSON.stringify(this.teams)),
+                schedule: JSON.parse(JSON.stringify(this.schedule)),
+                knockout: this.knockout ? JSON.parse(JSON.stringify(this.knockout)) : null
+            });
+        }
+
+        // ---- Gestión de equipos ----
+        addTeam() {
+            if (this.schedule.length > 0) return this.showNotification("El torneo ya inició. Para agregar un equipo debes reiniciar el torneo.", true);
+            const input = document.getElementById('team-name');
+            const name = input.value.trim();
+            if (!name) return;
+            if (this.teams.some(t => t.name === name)) return this.showNotification("Ya existe un equipo con ese nombre.", true);
+            this.teams.push({ name, pj: 0, g: 0, e: 0, p: 0, gf: 0, gc: 0, dg: 0, pts: 0 });
+            input.value = '';
+            this.saveStateToFirestore();
+            this.showNotification(`Equipo "${name}" añadido.`);
+        }
+
+        removeTeam(index) {
+            if (this.schedule.length > 0) return this.showNotification("No puedes eliminar equipos con el torneo iniciado. Usa 'Retirar'.", true);
+            const name = this.teams[index].name;
+            this.showConfirm(`¿Eliminar el equipo "${name}"?`, () => {
+                this.teams.splice(index, 1);
+                this.saveStateToFirestore();
+                this.showNotification(`Equipo "${name}" eliminado.`);
+            });
+        }
+
+        editTeam(index) {
+            const oldName = this.teams[index].name;
+            // Usar un modal personalizado para el nombre
+            const modal = document.getElementById('modal');
+            document.getElementById('modal-message').innerHTML = `
+                <p class="text-base text-gray-700 mb-3">Editar nombre del equipo:</p>
+                <input type="text" id="edit-team-input" class="input-field border-2 border-institucional-azul text-lg font-bold text-center" value="${oldName}">
+            `;
+            document.getElementById('modal-buttons').innerHTML = `
+                <button onclick="app.hideModal()" class="btn btn-secondary py-2 px-4">Cancelar</button>
+                <button id="confirm-edit-btn" class="btn btn-primary py-2 px-4">Guardar</button>`;
+            modal.classList.remove('hidden');
+            const input = document.getElementById('edit-team-input');
+            input.focus(); input.select();
+            const doSave = () => {
+                const finalName = input.value.trim();
+                if (!finalName || finalName === oldName) { this.hideModal(); return; }
+                if (this.teams.some((t, i) => i !== index && t.name === finalName)) {
+                    return this.showNotification("Ya existe otro equipo con ese nombre.", true);
+                }
+                this.teams[index].name = finalName;
+                // Propagar en schedule
+                this.schedule.forEach(round => round.matches.forEach(match => {
+                    if (match.team1 === oldName) match.team1 = finalName;
+                    if (match.team2 === oldName) match.team2 = finalName;
+                    (match.scorers || []).forEach(s => { if (s.team === oldName) s.team = finalName; });
+                }));
+                // Propagar en knockout
+                if (this.knockout) {
+                    ['semifinals', 'final'].forEach(phase => {
+                        (this.knockout[phase] || []).forEach(match => {
+                            if (match.team1 === oldName) match.team1 = finalName;
+                            if (match.team2 === oldName) match.team2 = finalName;
+                            (match.scorers || []).forEach(s => { if (s.team === oldName) s.team = finalName; });
+                        });
+                    });
+                }
+                this.hideModal();
+                this.saveStateToFirestore();
+                this.showNotification(`Nombre actualizado: "${oldName}" → "${finalName}"`);
+            };
+            document.getElementById('confirm-edit-btn').onclick = doSave;
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSave(); });
+        }
+
+        withdrawTeam(teamName) {
+            this.showConfirm(`¿Retirar a "${teamName}" del torneo? Los partidos pendientes se reorganizarán.`, () => {
+                // 1. Quitar de lista
+                this.teams = this.teams.filter(t => t.name !== teamName);
+                // 2. Eliminar partidos no jugados donde participe
+                this.schedule.forEach(round => {
+                    round.matches = round.matches.filter(match => {
+                        if (match.played) return true;
+                        return match.team1 !== teamName && match.team2 !== teamName;
+                    });
+                });
+                // 3. Reorganizar
+                this.reorganizePendingMatches();
+                this.saveStateToFirestore();
+                this.showNotification(`Equipo "${teamName}" retirado y calendario reorganizado.`);
+            });
+        }
+
+        // ---- Calendario (Round Robin) ----
+        generateSchedule() {
+            if (this.teams.length < 2) return this.showAlert("Necesitas al menos 2 equipos.");
+            const startStr = document.getElementById('tournament-start').value;
+            const endStr = document.getElementById('tournament-end').value;
+            if (!startStr || !endStr) return this.showAlert("Define la fecha de inicio y fin del torneo.");
+
+            // Obtener días seleccionados
+            const diasPermitidos = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => parseInt(cb.value));
+            if (diasPermitidos.length === 0) return this.showAlert("Selecciona al menos un día de la semana para jugar.");
+
+            // Generar emparejamientos Round Robin
+            let teamNames = [...this.teams.map(t => t.name)];
+            if (teamNames.length % 2 !== 0) teamNames.push("descanso");
+
+            const numTeams = teamNames.length;
+            const numRounds = numTeams - 1;
+            const allMatches = [];
+
+            for (let round = 0; round < numRounds; round++) {
+                for (let i = 0; i < numTeams / 2; i++) {
+                    const t1 = teamNames[i];
+                    const t2 = teamNames[numTeams - 1 - i];
+                    if (t1 !== "descanso" && t2 !== "descanso") {
+                        const match = round % 2 === 1 ? { team1: t1, team2: t2 } : { team1: t2, team2: t1 };
+                        allMatches.push({ ...match, score1: null, score2: null, played: false, scorers: [] });
+                    }
+                }
+                teamNames.splice(1, 0, teamNames.pop());
+            }
+
+            const fechasValidas = generarFechasValidas(startStr, endStr, diasPermitidos);
+
+            if (fechasValidas.length < allMatches.length) {
+                const diasNombres = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+                const diasTexto = diasPermitidos.map(d => diasNombres[d]).join(', ');
+                return this.showAlert(`<strong>Faltan fechas disponibles.</strong><br><br>Se necesitan <strong>${allMatches.length} fechas</strong> pero solo hay <strong>${fechasValidas.length}</strong> disponibles (días: ${diasTexto}, sin festivos).<br><br>Amplía el rango de fechas o añade más días.`);
+            }
+
+            const diasNombres = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            const diasTexto = diasPermitidos.map(d => diasNombres[d]).join(', ');
+
+            this.showConfirm(
+                `Se programarán <strong>${allMatches.length} partidos</strong> (Round Robin), uno por fecha.<br>Días habilitados: <strong>${diasTexto}</strong>.<br>Los festivos colombianos ya están excluidos.<br><br>¿Confirmas la generación del calendario?`,
+                () => {
+                    this.schedule = allMatches.map((match, idx) => ({
+                        round: idx + 1,
+                        date: fechasValidas[idx],
+                        matches: [match]
+                    }));
+                    this.saveStateToFirestore();
+                    this.showNotification("¡Calendario generado exitosamente!");
+                    document.querySelector('[data-target="vista-partidos"]')?.click();
+                }
+            );
+        }
+
+        // ---- Reorganizar partidos pendientes ----
+        reorganizePendingMatches() {
+            let playedMatches = [];
+            let pendingMatches = [];
+
+            this.schedule.forEach(round => {
+                round.matches.forEach(match => {
+                    if (match.played) {
+                        playedMatches.push({ ...match, originalDate: round.date });
+                    } else {
+                        pendingMatches.push(match);
+                    }
+                });
+            });
+
+            // Fechas de rondas con partidos jugados (ocupadas)
+            const usedDates = new Set(
+                this.schedule.filter(r => r.matches.some(m => m.played)).map(r => r.date)
+            );
+
+            // Todas las fechas originales del calendario
+            const allDates = this.schedule.map(r => r.date).filter(Boolean).sort();
+
+            // Fechas disponibles = originales no ocupadas por partidos jugados
+            let availableDates = allDates.filter(date => !usedDates.has(date));
+
+            // Si faltan fechas, generar nuevas a partir de la última
+            if (availableDates.length < pendingMatches.length) {
+                const lastDateStr = allDates[allDates.length - 1] || new Date().toISOString().split('T')[0];
+                let lastDate = new Date(lastDateStr + 'T12:00:00');
+                while (availableDates.length < pendingMatches.length) {
+                    lastDate.setDate(lastDate.getDate() + 1);
+                    const iso = lastDate.toISOString().split('T')[0];
+                    availableDates.push(iso);
+                }
+            }
+
+            const newSchedule = [];
+            playedMatches.forEach((match, i) => {
+                const { originalDate, ...cleanMatch } = match;
+                newSchedule.push({ round: i + 1, date: originalDate, matches: [cleanMatch] });
+            });
+            pendingMatches.forEach((match, i) => {
+                newSchedule.push({ round: newSchedule.length + 1, date: availableDates[i], matches: [match] });
+            });
+
+            this.schedule = newSchedule;
+        }
+
+        // ---- Getters de partidos ----
+        getMatchObj(rIdx, mIdx) {
+            if (rIdx === 'semi') return this.knockout.semifinals[mIdx];
+            if (rIdx === 'final') return this.knockout.final[mIdx];
+            return this.schedule[rIdx].matches[mIdx];
+        }
+
+        // ---- Edición de fechas ----
+        toggleEditDate(rIdx, mIdx = null) {
+            const id = mIdx !== null ? `${rIdx}-${mIdx}` : rIdx;
+            document.getElementById(`date-editor-${id}`)?.classList.toggle('hidden');
+        }
+
+        saveMatchDate(rIdx, mIdx = null) {
+            const id = mIdx !== null ? `${rIdx}-${mIdx}` : rIdx;
+            const newDate = document.getElementById(`new-date-${id}`).value;
+            if (!newDate) return this.showNotification("Selecciona una fecha válida.", true);
+            if (rIdx === 'semi') this.knockout.semifinals[mIdx].date = newDate;
+            else if (rIdx === 'final') this.knockout.final[mIdx].date = newDate;
+            else this.schedule[rIdx].date = newDate;
+            this.saveStateToFirestore();
+            this.showNotification("Fecha actualizada.");
+            this.toggleEditDate(rIdx, mIdx);
+        }
+
+        // ---- Marcadores ----
+        updateScore(rIdx, mIdx) {
+            const match = this.getMatchObj(rIdx, mIdx);
+            const id = `${rIdx}-${mIdx}`;
+            const s1 = parseInt(document.getElementById(`score1-${id}`).value);
+            const s2 = parseInt(document.getElementById(`score2-${id}`).value);
+            if (isNaN(s1) || isNaN(s2) || s1 < 0 || s2 < 0) return this.showAlert("Ingresa marcadores válidos (números ≥ 0).");
+            match.score1 = s1; match.score2 = s2; match.played = true;
+            this.saveStateToFirestore();
+            this.showNotification("Marcador guardado.");
+        }
+
+        requestEditMatch(rIdx, mIdx) {
+            this.showConfirm("¿Habilitar edición para este partido?", () => {
+                const id = `${rIdx}-${mIdx}`;
+                document.getElementById(`score1-${id}`).readOnly = false;
+                document.getElementById(`score2-${id}`).readOnly = false;
+                document.getElementById(`edit-btn-${id}`).classList.add('hidden');
+                document.getElementById(`save-btn-${id}`).classList.remove('hidden');
+            });
+        }
+
+        // ---- Goleadores ----
+        addScorer(rIdx, mIdx) {
+            const match = this.getMatchObj(rIdx, mIdx);
+            const id = `${rIdx}-${mIdx}`;
+            const playerName = document.getElementById(`scorer-name-${id}`).value.trim();
+            const teamName = document.getElementById(`scorer-team-${id}`).value;
+            if (!playerName) return;
+            if (!match.scorers) match.scorers = [];
+            match.scorers.push({ player: playerName, team: teamName });
+            document.getElementById(`scorer-name-${id}`).value = '';
+            this.saveStateToFirestore();
+        }
+
+        removeScorer(rIdx, mIdx, sIdx) {
+            this.getMatchObj(rIdx, mIdx).scorers.splice(sIdx, 1);
+            this.saveStateToFirestore();
+        }
+
+        // ---- Fase Final (manual) ----
+        openSemifinalsModal() {
+            if (this.teams.length < 4) return this.showAlert("Necesitas al menos 4 equipos para las semifinales.");
+
+            const teamOptions = this.teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+            const existingSemis = this.knockout?.semifinals;
+
+            const s1t1 = existingSemis?.[0]?.team1 || '';
+            const s1t2 = existingSemis?.[0]?.team2 || '';
+            const s1date = existingSemis?.[0]?.date || '';
+            const s2t1 = existingSemis?.[1]?.team1 || '';
+            const s2t2 = existingSemis?.[1]?.team2 || '';
+            const s2date = existingSemis?.[1]?.date || '';
+
+            const buildSel = (id, selectedVal) => `<select id="${id}" class="input-field font-semibold border-2 border-institucional-azul">${teamOptions}</select>`;
+
+            document.getElementById('knockout-modal-title').textContent = 'Configurar Semifinales';
+            document.getElementById('knockout-modal-body').innerHTML = `
+                <div class="space-y-6">
+                    <!-- Semi 1 -->
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <h4 class="font-black text-institucional-azul uppercase text-sm tracking-widest mb-3">Semifinal 1</h4>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo A</label>
+                                <select id="semi1-team1" class="input-field font-semibold border-2 border-institucional-azul">${teamOptions}</select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo B</label>
+                                <select id="semi1-team2" class="input-field font-semibold border-2 border-institucional-azul">${teamOptions}</select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Fecha del Partido</label>
+                            <input type="date" id="semi1-date" class="input-field border-gray-300" value="${s1date}">
+                        </div>
+                    </div>
+                    <!-- Semi 2 -->
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <h4 class="font-black text-institucional-azul uppercase text-sm tracking-widest mb-3">Semifinal 2</h4>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo A</label>
+                                <select id="semi2-team1" class="input-field font-semibold border-2 border-institucional-azul">${teamOptions}</select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo B</label>
+                                <select id="semi2-team2" class="input-field font-semibold border-2 border-institucional-azul">${teamOptions}</select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Fecha del Partido</label>
+                            <input type="date" id="semi2-date" class="input-field border-gray-300" value="${s2date}">
+                        </div>
+                    </div>
+                    <button onclick="app.saveSemifinals()" class="btn btn-primary w-full py-3 text-base">Guardar Semifinales</button>
+                </div>`;
+
+            // Pre-select valores existentes
+            setTimeout(() => {
+                if (s1t1) document.getElementById('semi1-team1').value = s1t1;
+                if (s1t2) document.getElementById('semi1-team2').value = s1t2;
+                if (s2t1) document.getElementById('semi2-team1').value = s2t1;
+                if (s2t2) document.getElementById('semi2-team2').value = s2t2;
+            }, 50);
+
+            document.getElementById('modal-knockout').classList.remove('hidden');
+        }
+
+        saveSemifinals() {
+            const s1t1 = document.getElementById('semi1-team1').value;
+            const s1t2 = document.getElementById('semi1-team2').value;
+            const s2t1 = document.getElementById('semi2-team1').value;
+            const s2t2 = document.getElementById('semi2-team2').value;
+            const s1date = document.getElementById('semi1-date').value;
+            const s2date = document.getElementById('semi2-date').value;
+
+            if (s1t1 === s1t2) return this.showNotification("En Semifinal 1, los equipos deben ser diferentes.", true);
+            if (s2t1 === s2t2) return this.showNotification("En Semifinal 2, los equipos deben ser diferentes.", true);
+
+            const allTeams = [s1t1, s1t2, s2t1, s2t2];
+            if (new Set(allTeams).size < 4) return this.showNotification("Cada equipo solo puede aparecer en una semifinal.", true);
+
+            // Preservar marcadores si el partido ya fue jugado con los mismos equipos
+            const prevSemis = this.knockout?.semifinals || [];
+            const findExisting = (t1, t2, idx) => {
+                const prev = prevSemis[idx];
+                if (prev && prev.team1 === t1 && prev.team2 === t2) return prev;
+                return { team1: t1, team2: t2, score1: null, score2: null, played: false, scorers: [], date: '' };
+            };
+
+            if (!this.knockout) this.knockout = {};
+            this.knockout.semifinals = [
+                { ...findExisting(s1t1, s1t2, 0), team1: s1t1, team2: s1t2, date: s1date },
+                { ...findExisting(s2t1, s2t2, 1), team1: s2t1, team2: s2t2, date: s2date }
+            ];
+
+            this.hideKnockoutModal();
+            this.saveStateToFirestore();
+            this.showNotification("Semifinales configuradas correctamente.");
+            document.querySelector('[data-target="vista-partidos"]')?.click();
+        }
+
+        openFinalModal() {
+            const teamOptions = this.teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+            const existingFinal = this.knockout?.final?.[0];
+
+            const ft1 = existingFinal?.team1 || '';
+            const ft2 = existingFinal?.team2 || '';
+            const fdate = existingFinal?.date || '';
+
+            document.getElementById('knockout-modal-title').textContent = 'Configurar Gran Final';
+            document.getElementById('knockout-modal-body').innerHTML = `
+                <div class="space-y-5">
+                    <div class="bg-yellow-50 rounded-xl p-4 border-2 border-institucional-amarillo">
+                        <h4 class="font-black text-institucional-azul uppercase text-sm tracking-widest mb-4 text-center">⚡ Gran Final ⚡</h4>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo A (Finalista 1)</label>
+                                <select id="final-team1" class="input-field font-bold border-2 border-institucional-amarillo">${teamOptions}</select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo B (Finalista 2)</label>
+                                <select id="final-team2" class="input-field font-bold border-2 border-institucional-amarillo">${teamOptions}</select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Fecha de la Final</label>
+                            <input type="date" id="final-date" class="input-field border-gray-300" value="${fdate}">
+                        </div>
+                    </div>
+                    <button onclick="app.saveFinal()" class="btn btn-secondary w-full py-3 text-base font-black">Guardar Gran Final</button>
+                </div>`;
+
+            setTimeout(() => {
+                if (ft1) document.getElementById('final-team1').value = ft1;
+                if (ft2) document.getElementById('final-team2').value = ft2;
+            }, 50);
+
+            document.getElementById('modal-knockout').classList.remove('hidden');
+        }
+
+        saveFinal() {
+            const ft1 = document.getElementById('final-team1').value;
+            const ft2 = document.getElementById('final-team2').value;
+            const fdate = document.getElementById('final-date').value;
+
+            if (ft1 === ft2) return this.showNotification("Los equipos finalistas deben ser diferentes.", true);
+
+            const prevFinal = this.knockout?.final?.[0];
+            if (!this.knockout) this.knockout = {};
+
+            const match = (prevFinal && prevFinal.team1 === ft1 && prevFinal.team2 === ft2)
+                ? prevFinal
+                : { team1: ft1, team2: ft2, score1: null, score2: null, played: false, scorers: [] };
+
+            this.knockout.final = [{ ...match, team1: ft1, team2: ft2, date: fdate }];
+            this.hideKnockoutModal();
+            this.saveStateToFirestore();
+            this.showNotification("¡Gran Final configurada!");
+            document.querySelector('[data-target="vista-partidos"]')?.click();
+        }
+
+        // ---- Estadísticas ----
+        calculateTeamStats() {
+            this.teams.forEach(t => { t.pj = 0; t.g = 0; t.e = 0; t.p = 0; t.gf = 0; t.gc = 0; t.dg = 0; t.pts = 0; });
+            this.schedule.forEach(round => {
+                round.matches.forEach(match => {
+                    if (!match.played) return;
+                    const t1 = this.teams.find(t => t.name === match.team1);
+                    const t2 = this.teams.find(t => t.name === match.team2);
+                    if (!t1 || !t2) return;
+                    t1.pj++; t2.pj++;
+                    t1.gf += match.score1; t1.gc += match.score2;
+                    t2.gf += match.score2; t2.gc += match.score1;
+                    if (match.score1 > match.score2) { t1.g++; t2.p++; t1.pts += 3; }
+                    else if (match.score2 > match.score1) { t2.g++; t1.p++; t2.pts += 3; }
+                    else { t1.e++; t2.e++; t1.pts++; t2.pts++; }
+                });
+            });
+            this.teams.forEach(t => t.dg = t.gf - t.gc);
+            this.teams.sort((a, b) => b.pts - a.pts || b.dg - a.dg || b.gf - a.gf || a.name.localeCompare(b.name));
+        }
+
+        // ---- Importación única del sistema anterior (faithcup_equipos / faithcup_partidos / faithcup_goleadores) ----
+        migrarDatosAntiguos() {
+            if (this.schedule.length > 0) return this.showAlert("Ya existe un calendario en este panel. Para evitar duplicar o pisar datos, la importación solo está disponible cuando aún no hay calendario aquí.");
+            this.showConfirm("Esto va a <strong>importar</strong> (no borrar) los equipos, el calendario con sus fechas reales y los goleadores del sistema anterior (faithcup_equipos / faithcup_partidos / faithcup_goleadores). No se modifica ninguna fecha ni resultado ya jugado. ¿Continuar?", async () => {
+                try {
+                    const meses = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
+                    const parseFecha = (str) => {
+                        const m = (str || '').trim().match(/^(\d+)\s+([a-zA-Zé]+)/);
+                        if (!m) return null;
+                        const dia = parseInt(m[1]);
+                        const mes = meses[m[2].toLowerCase().slice(0, 3)];
+                        if (mes === undefined) return null;
+                        const d = new Date(2026, mes, dia);
+                        const z = n => ('0' + n).slice(-2);
+                        return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
+                    };
+
+                    const eqSnap = await getDocs(collection(this.db, 'faithcup_equipos'));
+                    const idToName = {};
+                    eqSnap.forEach(d => { idToName[d.id] = d.data().nombre; });
+
+                    if (Object.keys(idToName).length === 0) {
+                        return this.showAlert("No se encontraron equipos en 'faithcup_equipos'. Verifica que el sistema anterior siga teniendo datos en Firestore.");
+                    }
+
+                    const parSnap = await getDocs(collection(this.db, 'faithcup_partidos'));
+                    const grupos = {};
+                    parSnap.forEach(d => {
+                        const p = d.data();
+                        const fechaISO = parseFecha(p.fecha) || p.fecha || 'sin-fecha';
+                        if (!grupos[fechaISO]) grupos[fechaISO] = [];
+                        grupos[fechaISO].push({
+                            team1: idToName[p.local] || p.local,
+                            team2: idToName[p.visitante] || p.visitante,
+                            score1: p.golesLocal ?? null,
+                            score2: p.golesVisitante ?? null,
+                            played: !!p.jugado,
+                            scorers: [],
+                            _hora: p.hora || ''
+                        });
+                    });
+
+                    const fechasOrdenadas = Object.keys(grupos).sort();
+                    const nuevoSchedule = fechasOrdenadas.map((fecha, idx) => ({
+                        round: idx + 1,
+                        date: fecha,
+                        matches: grupos[fecha]
+                            .sort((a, b) => (a._hora || '').localeCompare(b._hora || ''))
+                            .map(({ _hora, ...m }) => m)
+                    }));
+
+                    const golSnap = await getDocs(collection(this.db, 'faithcup_goleadores'));
+                    golSnap.forEach(d => {
+                        const g = d.data();
+                        const n = g.goles || 0;
+                        if (!n) return;
+                        let destino = null;
+                        for (const r of nuevoSchedule) {
+                            destino = r.matches.find(m => m.team1 === g.equipo || m.team2 === g.equipo);
+                            if (destino) break;
+                        }
+                        if (destino) {
+                            for (let i = 0; i < n; i++) destino.scorers.push({ player: g.nombre, team: g.equipo });
+                        }
+                    });
+
+                    this.teams = Object.values(idToName).map(nombre => ({ name: nombre, pj: 0, g: 0, e: 0, p: 0, gf: 0, gc: 0, dg: 0, pts: 0 }));
+                    this.schedule = nuevoSchedule;
+                    await this.saveStateToFirestore();
+
+                    const totalPartidos = nuevoSchedule.reduce((s, r) => s + r.matches.length, 0);
+                    this.showNotification(`Importado: ${this.teams.length} equipos y ${totalPartidos} partidos en ${nuevoSchedule.length} fechas.`);
+                    document.querySelector('[data-target="vista-partidos"]')?.click();
+                } catch (e) {
+                    console.error(e);
+                    this.showAlert("Error al importar: " + e.message);
+                }
+            });
+        }
+
+        resetTournament() {
+            this.showConfirm("¿Estás 100% seguro? Se borrarán TODOS los equipos, partidos y fase final.", async () => {
+                const ref = doc(this.db, 'artifacts', this.appId, 'public', 'data', 'torneo', 'mainState');
+                await deleteDoc(ref);
+                this.showNotification("Torneo reiniciado.");
+            });
+        }
+
+        // ---- Renderizado principal ----
+        renderAll() {
+            this.calculateTeamStats();
+            const started = this.schedule.length > 0;
+
+            document.getElementById('add-team-wrapper').classList.toggle('opacity-60', started);
+            document.getElementById('team-name').disabled = started;
+            document.getElementById('add-team-btn').disabled = started;
+            document.getElementById('team-tournament-notice').classList.toggle('hidden', !started);
+            document.getElementById('tournament-start').disabled = started;
+            document.getElementById('tournament-end').disabled = started;
+            document.querySelectorAll('.day-checkbox').forEach(cb => cb.disabled = started);
+            document.getElementById('generate-schedule-btn').disabled = this.teams.length < 2 || started;
+            document.getElementById('reset-tournament-btn').classList.toggle('hidden', !started && this.teams.length === 0);
+            document.getElementById('fase-final-admin').classList.toggle('hidden', !started);
+            document.getElementById('import-legacy-wrapper').classList.toggle('hidden', started);
+
+            this.renderTeamsAdmin();
+            this.renderStandings();
+            this.renderSchedule();
+            this.renderTopScorers();
+        }
+
+        renderTeamsAdmin() {
+            const list = document.getElementById('teams-list');
+            const started = this.schedule.length > 0;
+            if (this.teams.length === 0) {
+                list.innerHTML = '<p class="text-sm text-gray-400 italic text-center py-3">No hay equipos aún.</p>';
+                return;
+            }
+            list.innerHTML = this.teams.map((t, i) => `
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                    <span class="font-bold text-institucional-azul">${t.name}</span>
+                    <div class="flex gap-2">
+                        <button onclick="app.editTeam(${i})" class="btn btn-primary py-1 px-3 text-xs">Editar</button>
+                        ${!started ? `<button onclick="app.removeTeam(${i})" class="btn btn-danger py-1 px-3 text-xs">Eliminar</button>` : ''}
+                        ${started ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
+                    </div>
+                </div>`).join('');
+        }
+
+        renderStandings() {
+            const body = document.getElementById('standings-body');
+            if (this.teams.length === 0) {
+                body.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500">Aún no hay equipos registrados.</td></tr>';
+                return;
+            }
+            body.innerHTML = this.teams.map((t, i) => `
+                <tr class="${i < 4 ? 'bg-green-50' : 'hover:bg-gray-50'} border-b border-gray-100 transition">
+                    <td class="p-3 font-bold text-institucional-azul">${i + 1}</td>
+                    <td class="p-3 font-semibold">${t.name}</td>
+                    <td class="p-3 text-center">${t.pj}</td><td class="p-3 text-center">${t.g}</td>
+                    <td class="p-3 text-center">${t.e}</td><td class="p-3 text-center">${t.p}</td>
+                    <td class="p-3 text-center">${t.gf}</td><td class="p-3 text-center">${t.gc}</td>
+                    <td class="p-3 text-center font-semibold">${t.dg}</td>
+                    <td class="p-3 text-center font-bold text-institucional-azul text-lg">${t.pts}</td>
+                </tr>`).join('');
+        }
+
+        renderTopScorers() {
+            const map = new Map();
+            const process = (matches) => matches.forEach(m => (m.scorers || []).forEach(s => {
+                const key = `${s.player}||${s.team}`;
+                if (!map.has(key)) map.set(key, { player: s.player, team: s.team, goals: 0 });
+                map.get(key).goals++;
+            }));
+            this.schedule.forEach(r => process(r.matches));
+            if (this.knockout?.semifinals) process(this.knockout.semifinals);
+            if (this.knockout?.final) process(this.knockout.final);
+
+            const sorted = Array.from(map.values()).sort((a, b) => b.goals - a.goals);
+            const body = document.getElementById('top-scorers-body');
+            if (sorted.length === 0) {
+                body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500">No hay goles registrados aún.</td></tr>';
+                return;
+            }
+            body.innerHTML = sorted.map((s, i) => `
+                <tr class="border-b border-gray-100">
+                    <td class="p-3 font-bold text-institucional-azul">${i + 1}</td>
+                    <td class="p-3 font-semibold">${s.player}</td>
+                    <td class="p-3 text-gray-500">${s.team}</td>
+                    <td class="p-3 text-center font-bold text-lg">${s.goals}</td>
+                </tr>`).join('');
+        }
+
+        renderSchedule() {
+            const section = document.getElementById('schedule-section');
+            if (this.schedule.length === 0 && (!this.knockout || (!this.knockout.semifinals && !this.knockout.final))) {
+                section.innerHTML = '<div class="card bg-gray-50 text-center text-gray-500">El calendario aún no ha sido generado.</div>';
+                return;
+            }
+
+            const fmt = new Intl.DateTimeFormat('es-CO', { weekday: 'long', month: 'long', day: 'numeric' });
+            const fmtDate = (dateStr) => {
+                if (!dateStr) return "Fecha por definir";
+                const d = new Date(dateStr + "T12:00:00");
+                const s = fmt.format(d);
+                return s.charAt(0).toUpperCase() + s.slice(1);
+            };
+
+            // Agrupar por semana (lunes)
+            const getMondayTs = (ds) => {
+                if (!ds) return 0;
+                const d = new Date(ds + "T12:00:00");
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                return new Date(d.getFullYear(), d.getMonth(), diff).getTime();
+            };
+
+            const weeksMap = new Map();
+            this.schedule.forEach((r, rIdx) => {
+                const ts = getMondayTs(r.date);
+                if (!weeksMap.has(ts)) weeksMap.set(ts, []);
+                weeksMap.get(ts).push({ r, rIdx });
+            });
+
+            const sortedTs = Array.from(weeksMap.keys()).sort((a, b) => a - b);
+            let html = '';
+            let weekNumber = 1;
+
+            // Fase Regular
+            for (const ts of sortedTs) {
+                const matchesInWeek = weeksMap.get(ts);
+                html += `
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <h2 class="text-3xl font-extrabold text-white uppercase tracking-wider">Semana ${weekNumber}</h2>
+                        <div class="flex-grow h-1 bg-institucional-amarillo ml-4 rounded-full"></div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6">`;
+
+                matchesInWeek.forEach(({ r, rIdx }) => {
+                    html += `
+                    <div class="card !bg-white border-l-4 border-l-institucional-azul !border-t-0 rounded-l-none shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 pb-4 border-b border-gray-100">
+                            <h3 class="text-xl font-black text-institucional-azul uppercase tracking-wider mb-2 sm:mb-0">Jornada ${r.round}</h3>
+                            <div class="flex flex-col items-center sm:items-end text-gray-600 font-medium">
+                                <div class="flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    <span class="text-sm">${fmtDate(r.date)}</span>
+                                    ${this.isAuthenticated ? `<button onclick="app.toggleEditDate(${rIdx})" class="ml-1 text-institucional-azul hover:text-institucional-amarilloHover" title="Cambiar fecha"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>` : ''}
+                                </div>
+                                ${this.isAuthenticated ? `
+                                <div id="date-editor-${rIdx}" class="hidden mt-2 flex gap-2 items-center bg-gray-50 p-2 rounded border border-gray-200">
+                                    <input type="date" id="new-date-${rIdx}" value="${r.date || ''}" class="input-field text-sm py-1 w-auto border-gray-300">
+                                    <button onclick="app.saveMatchDate(${rIdx})" class="bg-green-600 text-white p-1.5 rounded"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></button>
+                                    <button onclick="app.toggleEditDate(${rIdx})" class="bg-red-500 text-white p-1.5 rounded"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                                </div>` : ''}
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            ${r.matches.map((m, mIdx) => this.renderMatchCard(m, rIdx, mIdx)).join('')}
+                        </div>
+                    </div>`;
+                });
+                html += `</div></div>`;
+                weekNumber++;
+            }
+
+            // Fase Final — Semifinales
+            if (this.knockout?.semifinals) {
+                html += `
+                <div class="mb-12 border-t-4 border-institucional-amarillo pt-8 mt-8">
+                    <div class="flex items-center justify-center mb-8">
+                        <h2 class="text-4xl font-extrabold text-white uppercase tracking-wider text-center flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-institucional-amarillo" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                            Semifinales
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${this.knockout.semifinals.map((m, mIdx) => this.renderKnockoutCard(m, 'semi', mIdx, `Semifinal ${mIdx + 1}`)).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // Fase Final — Final
+            if (this.knockout?.final) {
+                html += `
+                <div class="mb-12">
+                    <div class="flex items-center justify-center mb-8">
+                        <h2 class="text-4xl font-extrabold text-white uppercase tracking-wider text-center flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-yellow-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
+                            Gran Final
+                        </h2>
+                    </div>
+                    <div class="max-w-3xl mx-auto">
+                        ${this.knockout.final.map((m, mIdx) => this.renderKnockoutCard(m, 'final', mIdx, 'Final por el Título')).join('')}
+                    </div>
+                </div>`;
+            }
+
+            section.innerHTML = html;
+        }
+
+        renderKnockoutCard(match, rIdx, mIdx, title) {
+            const id = `${rIdx}-${mIdx}`;
+            const fmt = new Intl.DateTimeFormat('es-CO', { weekday: 'long', month: 'long', day: 'numeric' });
+            let fechaText = "Fecha por definir";
+            if (match.date) {
+                const d = new Date(match.date + "T12:00:00");
+                const s = fmt.format(d);
+                fechaText = s.charAt(0).toUpperCase() + s.slice(1);
+            }
+            return `
+            <div class="card !bg-white border-4 border-institucional-amarillo shadow-lg">
+                <div class="text-center pb-4 border-b border-gray-100 mb-4">
+                    <h3 class="text-lg font-black text-institucional-azul uppercase tracking-widest">${title}</h3>
+                    <div class="flex items-center justify-center mt-1 text-sm text-gray-500 font-medium gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        ${fechaText}
+                        ${this.isAuthenticated ? `<button onclick="app.toggleEditDate('${rIdx}', ${mIdx})" class="ml-1 text-institucional-azul hover:text-institucional-amarilloHover"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>` : ''}
+                    </div>
+                    ${this.isAuthenticated ? `
+                    <div id="date-editor-${id}" class="hidden mt-2 flex justify-center gap-2 items-center bg-gray-50 p-2 rounded border border-gray-200">
+                        <input type="date" id="new-date-${id}" value="${match.date || ''}" class="input-field text-sm py-1 w-auto border-gray-300">
+                        <button onclick="app.saveMatchDate('${rIdx}', ${mIdx})" class="bg-green-600 text-white p-1.5 rounded"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></button>
+                        <button onclick="app.toggleEditDate('${rIdx}', ${mIdx})" class="bg-red-500 text-white p-1.5 rounded"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                    </div>` : ''}
+                </div>
+                ${this.renderMatchCard(match, rIdx, mIdx)}
+            </div>`;
+        }
+
+        renderMatchCard(match, rIdx, mIdx) {
+            const id = `${rIdx}-${mIdx}`;
+            const ro = (match.played || !this.isAuthenticated) ? 'readonly' : '';
+            const rIdxParam = typeof rIdx === 'string' ? `'${rIdx}'` : rIdx;
+            return `
+            <div class="bg-gray-50 border p-4 rounded-lg shadow-sm ${match.played ? 'border-l-4 border-l-institucional-amarillo' : ''}">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="sm:w-1/3 text-center sm:text-right font-bold text-xl text-institucional-azul">${match.team1}</div>
+                    <div class="flex items-center justify-center gap-2">
+                        <input type="number" min="0" id="score1-${id}" class="input-field text-center w-16 text-xl font-bold bg-white" value="${match.score1 ?? ''}" ${ro}>
+                        <span class="font-bold text-gray-400">vs</span>
+                        <input type="number" min="0" id="score2-${id}" class="input-field text-center w-16 text-xl font-bold bg-white" value="${match.score2 ?? ''}" ${ro}>
+                    </div>
+                    <div class="sm:w-1/3 text-center sm:text-left font-bold text-xl text-institucional-azul">${match.team2}</div>
+                </div>
+                ${this.isAuthenticated ? `
+                <div class="mt-4 flex justify-center gap-2">
+                    <button id="save-btn-${id}" onclick="app.updateScore(${rIdxParam}, ${mIdx})" class="btn btn-primary py-1.5 px-4 text-sm ${match.played ? 'hidden' : ''}">Guardar Marcador</button>
+                    <button id="edit-btn-${id}" onclick="app.requestEditMatch(${rIdxParam}, ${mIdx})" class="btn btn-secondary py-1.5 px-4 text-sm ${!match.played ? 'hidden' : ''}">Editar Marcador</button>
+                </div>` : ''}
+                ${(match.played || this.isAuthenticated) ? `
+                <hr class="my-4 border-gray-200">
+                <div class="text-sm">
+                    <h4 class="font-semibold mb-2 text-center text-gray-500 uppercase tracking-wide text-xs">Goles del Partido</h4>
+                    ${this.isAuthenticated ? `
+                    <div class="flex flex-col sm:flex-row gap-2 items-center mb-3 max-w-lg mx-auto bg-white p-2 rounded border border-gray-200 shadow-sm">
+                        <input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent" placeholder="Nombre del goleador">
+                        <div class="h-6 border-r border-gray-300 mx-1 hidden sm:block"></div>
+                        <select id="scorer-team-${id}" class="input-field text-sm py-1 border-none bg-transparent font-medium">
+                            <option value="${match.team1}">${match.team1}</option>
+                            <option value="${match.team2}">${match.team2}</option>
+                        </select>
+                        <button onclick="app.addScorer(${rIdxParam}, ${mIdx})" class="btn btn-primary py-1.5 px-3 text-xs whitespace-nowrap">+ Gol</button>
+                    </div>` : ''}
+                    <ul class="space-y-1 max-w-sm mx-auto">
+                        ${(match.scorers || []).map((scorer, sIdx) => `
+                        <li class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 shadow-sm">
+                            <span>⚽ <span class="font-semibold text-institucional-azul">${scorer.player}</span> <span class="text-xs text-gray-500">(${scorer.team})</span></span>
+                            ${this.isAuthenticated ? `<button onclick="app.removeScorer(${rIdxParam}, ${mIdx}, ${sIdx})" class="text-red-500 hover:text-red-700 font-bold text-lg leading-none p-1">&times;</button>` : ''}
+                        </li>`).join('')}
+                        ${(match.scorers || []).length === 0 ? '<li class="text-center text-gray-400 italic text-xs mt-2">Sin goles registrados</li>' : ''}
+                    </ul>
+                </div>` : ''}
+            </div>`;
+        }
+    }
+
+    window.app = new TournamentApp();
+    document.addEventListener('DOMContentLoaded', () => window.app.init());
 </script>
-<div class="sponsors-marquee">
-  <div class="sponsors-marquee-label">Nuestros Sponsors</div>
-  <div class="sponsors-marquee-track">
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
-    <button class="sponsor-logo-btn" onclick="irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
-  </div>
-</div>
 </body>
 </html>
