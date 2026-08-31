@@ -387,6 +387,16 @@
         appId: "1:179756535467:web:69e52f4a2aa59db46b71ee"
     };
 
+    // Proyecto de la página de inscripciones (torneo-interiglesias): de aquí se leen los jugadores reales por equipo
+    const firebaseConfigInscripciones = {
+        apiKey: "AIzaSyDkoBlrMc12TOCOe0LSg5kb2ZO6iNdW8Wo",
+        authDomain: "torneo-interiglesias.firebaseapp.com",
+        projectId: "torneo-interiglesias",
+        storageBucket: "torneo-interiglesias.firebasestorage.app",
+        messagingSenderId: "494456395930",
+        appId: "1:494456395930:web:5b680697e9460ece05a723"
+    };
+
     // ==========================================
     // CLASE PRINCIPAL
     // ==========================================
@@ -400,9 +410,82 @@
             this.auth = null;
             this.appId = 'faithcup2026';
             this.unsubscribe = null;
+            this.rosters = {}; // { churchName: ['Jugador 1', 'Jugador 2', ...] }
         }
 
-        // ---- UI & Notificaciones ----
+        // ---- Jugadores inscritos (proyecto Firebase separado: torneo-interiglesias) ----
+        async cargarRosters() {
+            try {
+                const snap = await getDocs(collection(this.dbInscripciones, 'teams'));
+                const rosters = {};
+                snap.forEach(d => {
+                    const t = d.data();
+                    if (!t.churchName) return;
+                    rosters[t.churchName] = (t.players || []).map(p => (p.name || '').trim()).filter(Boolean);
+                });
+                this.rosters = rosters;
+                this.autoVincularRosters();
+            } catch (e) {
+                console.error('No se pudieron cargar los jugadores inscritos:', e);
+                this.rosters = {};
+            }
+            this.renderAll();
+        }
+
+        normalizarTexto(str) {
+            return (str || '').toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9 ]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Intenta vincular automáticamente los equipos que aún no tienen rosterTeam,
+        // comparando el nombre del equipo con los nombres registrados en inscripciones.
+        // Nunca pisa un vínculo ya elegido a mano.
+        autoVincularRosters() {
+            if (!this.teams.length || !Object.keys(this.rosters).length) return;
+            const churchNames = Object.keys(this.rosters);
+            let cambios = false;
+            this.teams.forEach(t => {
+                if (t.rosterTeam) return;
+                const nt = this.normalizarTexto(t.name);
+                let match = churchNames.find(cn => this.normalizarTexto(cn) === nt);
+                if (!match) {
+                    match = churchNames.find(cn => {
+                        const ncn = this.normalizarTexto(cn);
+                        return ncn.length > 3 && (nt.includes(ncn) || ncn.includes(nt));
+                    });
+                }
+                if (match) { t.rosterTeam = match; t._autoVinculado = true; cambios = true; }
+            });
+            if (cambios && this.isAuthenticated) this.saveStateToFirestore();
+        }
+
+        getRosterNames(teamName) {
+            const t = this.teams.find(x => x.name === teamName);
+            if (!t || !t.rosterTeam) return [];
+            return this.rosters[t.rosterTeam] || [];
+        }
+
+        vincularRoster(index, churchName) {
+            this.teams[index].rosterTeam = churchName || null;
+            this.teams[index]._autoVinculado = false;
+            this.saveStateToFirestore();
+            this.showNotification(churchName ? `"${this.teams[index].name}" vinculado con "${churchName}".` : 'Vínculo eliminado.');
+        }
+
+        actualizarJugadoresSelect(id) {
+            const teamSel = document.getElementById(`scorer-team-${id}`);
+            const nameEl = document.getElementById(`scorer-name-${id}`);
+            if (!teamSel || !nameEl || nameEl.tagName !== 'SELECT') return;
+            const roster = this.getRosterNames(teamSel.value);
+            nameEl.innerHTML = roster.length
+                ? roster.map(n => `<option value="${n}">${n}</option>`).join('')
+                : `<option value="">(sin jugadores inscritos para este equipo)</option>`;
+        }
+
+
         showNotification(msg, isError = false) {
             const toast = document.getElementById('notification-toast');
             document.getElementById('notification-msg').textContent = msg;
@@ -456,6 +539,14 @@
             const firebaseApp = initializeApp(firebaseConfig);
             this.db = getFirestore(firebaseApp);
             this.auth = getAuth(firebaseApp);
+
+            // Segundo proyecto Firebase: página de inscripciones (torneo-interiglesias), solo lectura de jugadores
+            try {
+                const inscripcionesApp = initializeApp(firebaseConfigInscripciones, 'inscripciones');
+                this.dbInscripciones = getFirestore(inscripcionesApp);
+                this.cargarRosters();
+            } catch (e) { console.error('No se pudo conectar con el proyecto de inscripciones:', e); }
+
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(this.auth, __initial_auth_token);
@@ -541,6 +632,7 @@
                 } else {
                     this.teams = []; this.schedule = []; this.knockout = null;
                 }
+                this.autoVincularRosters();
                 this.renderAll();
             });
         }
@@ -1114,13 +1206,23 @@
                 list.innerHTML = '<p class="text-sm text-gray-400 italic text-center py-3">No hay equipos aún.</p>';
                 return;
             }
+            const churchOptions = Object.keys(this.rosters || {});
             list.innerHTML = this.teams.map((t, i) => `
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
-                    <span class="font-bold text-institucional-azul">${t.name}</span>
-                    <div class="flex gap-2">
-                        <button onclick="app.editTeam(${i})" class="btn btn-primary py-1 px-3 text-xs">Editar</button>
-                        ${!started ? `<button onclick="app.removeTeam(${i})" class="btn btn-danger py-1 px-3 text-xs">Eliminar</button>` : ''}
-                        ${started ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
+                <div class="bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-institucional-azul">${t.name}</span>
+                        <div class="flex gap-2">
+                            <button onclick="app.editTeam(${i})" class="btn btn-primary py-1 px-3 text-xs">Editar</button>
+                            ${!started ? `<button onclick="app.removeTeam(${i})" class="btn btn-danger py-1 px-3 text-xs">Eliminar</button>` : ''}
+                            ${started ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <select onchange="app.vincularRoster(${i}, this.value)" class="input-field text-xs py-1 border-gray-300">
+                            <option value="">⚠️ Sin vincular a inscripciones (goles con texto libre)</option>
+                            ${churchOptions.map(cn => `<option value="${cn}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
+                        </select>
+                        ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1">🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
                     </div>
                 </div>`).join('');
         }
@@ -1333,12 +1435,14 @@
                     <h4 class="font-semibold mb-2 text-center text-gray-500 uppercase tracking-wide text-xs">Goles del Partido</h4>
                     ${this.isAuthenticated ? `
                     <div class="flex flex-col sm:flex-row gap-2 items-center mb-3 max-w-lg mx-auto bg-white p-2 rounded border border-gray-200 shadow-sm">
-                        <input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent" placeholder="Nombre del goleador">
-                        <div class="h-6 border-r border-gray-300 mx-1 hidden sm:block"></div>
-                        <select id="scorer-team-${id}" class="input-field text-sm py-1 border-none bg-transparent font-medium">
+                        <select id="scorer-team-${id}" onchange="app.actualizarJugadoresSelect('${id}')" class="input-field text-sm py-1 border-none bg-transparent font-medium">
                             <option value="${match.team1}">${match.team1}</option>
                             <option value="${match.team2}">${match.team2}</option>
                         </select>
+                        <div class="h-6 border-r border-gray-300 mx-1 hidden sm:block"></div>
+                        ${this.getRosterNames(match.team1).length
+                            ? `<select id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow">${this.getRosterNames(match.team1).map(n => `<option value="${n}">${n}</option>`).join('')}</select>`
+                            : `<input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador">`}
                         <button onclick="app.addScorer(${rIdxParam}, ${mIdx})" class="btn btn-primary py-1.5 px-3 text-xs whitespace-nowrap">+ Gol</button>
                     </div>` : ''}
                     <ul class="space-y-1 max-w-sm mx-auto">
