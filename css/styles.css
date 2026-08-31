@@ -384,6 +384,13 @@ thead th {
 }
 thead th:not(:first-child):not(:nth-child(2)) { text-align: center; }
 tbody tr { border-bottom: 1px solid var(--borde); transition: background .2s; }
+#standings-body tr:nth-child(1),
+#standings-body tr:nth-child(2) { background: #1ea75f; }
+#standings-body tr:nth-child(3),
+#standings-body tr:nth-child(4),
+#standings-body tr:nth-child(5),
+#standings-body tr:nth-child(6) { background: #edf0ee; }
+#standings-body tr:nth-child(7) { background: #d94b4b; }
 tbody tr:hover { background: rgba(255,255,255,0.025); }
 tbody td { padding: 18px 16px; font-size: 14px; }
 tbody td:not(:first-child):not(:nth-child(2)) { text-align: center; }
