@@ -1234,13 +1234,15 @@
                 return;
             }
             body.innerHTML = this.teams.map((t, i) => {
-                const rowClass = i === 0 || i === 1
-                    ? 'bg-[#1ea75f]'
-                    : i >= 2 && i <= 5
-                        ? 'bg-[#edf0ee]'
-                        : i === 6
-                            ? 'bg-[#d94b4b]'
-                            : 'hover:bg-gray-50';
+                const rowClass = i === 0
+                    ? 'bg-[#167A55]'
+                    : i === 1
+                        ? 'bg-[#2E9D6F]'
+                        : i >= 2 && i <= 5
+                            ? 'bg-[#F1F3F2]'
+                            : i === 6
+                                ? 'bg-[#C94C4C]'
+                                : 'hover:bg-gray-50';
 
                 return `
                 <tr class="${rowClass} border-b border-gray-100 transition">
