@@ -1233,8 +1233,17 @@
                 body.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500">Aún no hay equipos registrados.</td></tr>';
                 return;
             }
-            body.innerHTML = this.teams.map((t, i) => `
-                <tr class="${i < 4 ? 'bg-green-50' : 'hover:bg-gray-50'} border-b border-gray-100 transition">
+            body.innerHTML = this.teams.map((t, i) => {
+                const rowClass = i === 0 || i === 1
+                    ? 'bg-[#1ea75f]'
+                    : i >= 2 && i <= 5
+                        ? 'bg-[#edf0ee]'
+                        : i === 6
+                            ? 'bg-[#d94b4b]'
+                            : 'hover:bg-gray-50';
+
+                return `
+                <tr class="${rowClass} border-b border-gray-100 transition">
                     <td class="p-3 font-bold text-institucional-azul">${i + 1}</td>
                     <td class="p-3 font-semibold">${t.name}</td>
                     <td class="p-3 text-center">${t.pj}</td><td class="p-3 text-center">${t.g}</td>
@@ -1242,7 +1251,8 @@
                     <td class="p-3 text-center">${t.gf}</td><td class="p-3 text-center">${t.gc}</td>
                     <td class="p-3 text-center font-semibold">${t.dg}</td>
                     <td class="p-3 text-center font-bold text-institucional-azul text-lg">${t.pts}</td>
-                </tr>`).join('');
+                </tr>`;
+            }).join('');
         }
 
         renderTopScorers() {
