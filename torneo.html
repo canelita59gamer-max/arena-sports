@@ -53,6 +53,42 @@
         .day-checkbox + label:hover { border-color: #c8f000; color: #0a0a0a; }
         /* Faith Cup: fondo de página oscuro, pero las tarjetas y modales internos siguen con fondo claro y texto oscuro */
         .card, .bg-white { color: #1f2937; }
+        /* Carrusel de patrocinadores */
+        .sponsors-marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width: max-content;
+            animation: sponsors-scroll 28s linear infinite;
+        }
+        .sponsors-marquee-wrap:hover .sponsors-marquee-track { animation-play-state: paused; }
+        .sponsors-marquee-track button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+            line-height: 0;
+        }
+        .sponsors-marquee-track img {
+            height: 72px;
+            width: 72px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 50%;
+            padding: 10px;
+            transition: transform 0.25s ease;
+        }
+        .sponsors-marquee-track img:hover { transform: scale(1.12); }
+        @keyframes sponsors-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @media (max-width: 700px) {
+            .sponsors-marquee-track img { height: 52px; width: 52px; padding: 7px; }
+            .sponsors-marquee-track { gap: 24px; }
+        }
+
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
@@ -130,6 +166,7 @@
             <button class="nav-btn btn bg-institucional-amarillo text-institucional-azul font-bold shadow-md scale-105 px-6 py-2 rounded-full" onclick="app.switchTab('vista-partidos', this)" data-target="vista-partidos">Partidos</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-posiciones', this)" data-target="vista-posiciones">Posiciones</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-goleadores', this)" data-target="vista-goleadores">Goleadores</button>
+            <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-patrocinadores', this)" data-target="vista-patrocinadores">Patrocinadores</button>
             <button id="nav-btn-admin" class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full hidden" onclick="app.switchTab('vista-admin', this)" data-target="vista-admin">Panel Admin</button>
         </nav>
     </header>
@@ -275,7 +312,138 @@
                 </div>
             </div>
         </section>
+
+        <!-- PATROCINADORES -->
+        <section id="vista-patrocinadores" class="vista-oculta">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-1 flex items-center text-institucional-azul">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Nuestros Patrocinadores
+                </h2>
+                <p class="text-sm text-gray-500 mb-6">Gracias a estas empresas que hacen posible este torneo.</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">El Mero Taco</h3>
+                        <p class="text-xs text-gray-500 mb-3">Taquería mexicana en Piedecuesta.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.instagram.com/elmero.taco/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                            <a href="https://www.tiktok.com/@elmerotaco6" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">TikTok</a>
+                            <a href="https://wa.me/573183000593" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">WhatsApp</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Comunidad Espresso</h3>
+                        <p class="text-xs text-gray-500 mb-3">Iglesia en Piedecuesta.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.instagram.com/comunidadespresso/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                            <a href="https://www.tiktok.com/@comunidad.espresso" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">TikTok</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Negrón</h3>
+                        <p class="text-xs text-gray-500 mb-3">Floristería & Chocolatería.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.amonegron.com" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Web</a>
+                            <a href="https://www.instagram.com/negron_oficial/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                            <a href="https://www.tiktok.com/@negron.oficial" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">TikTok</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Luminus Car</h3>
+                        <p class="text-xs text-gray-500 mb-3">Detailing automotriz en Bucaramanga.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.instagram.com/luminuscar_bga/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">MV Autos</h3>
+                        <p class="text-xs text-gray-500 mb-3">Concesionaria de autos en Bucaramanga.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.instagram.com/mv_autos_/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Servicentro</h3>
+                        <p class="text-xs text-gray-500 mb-3">Lubricantes y mantenimiento vehicular.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.instagram.com/servicentromoderno/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                            <a href="https://wa.me/573202791482" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">WhatsApp</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Superdrogas Piedecuesta</h3>
+                        <p class="text-xs text-gray-500 mb-3">Droguería — una mano amiga, siempre.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://www.tiktok.com/@henryman116" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">TikTok</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Avila Market</h3>
+                        <p class="text-xs text-gray-500 mb-3">Mercado ubicado en el sector Versalles.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://wa.me/573028684769" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">WhatsApp</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
+                        <img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza" class="w-16 h-16 object-contain rounded-lg bg-white mx-auto mb-3 p-1">
+                        <h3 class="font-bold text-institucional-azul text-sm mb-1">Dr. Oscar Mendoza</h3>
+                        <p class="text-xs text-gray-500 mb-3">Medicina domiciliaria.</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <a href="https://oscarmendoza.co/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Web</a>
+                            <a href="https://www.instagram.com/oscarmendoza.co" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">Instagram</a>
+                            <a href="https://www.tiktok.com/@oscarmendoza.co/" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">TikTok</a>
+                            <a href="https://wa.me/573025978424" target="_blank" class="text-[10px] text-institucional-azul border border-institucional-azul rounded-full px-2 py-0.5">WhatsApp</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
     </main>
+</div>
+
+<!-- CARRUSEL DE SPONSORS (visible siempre, debajo del contenido) -->
+<div class="max-w-6xl mx-auto px-4 sm:px-0 mt-8">
+    <div class="sponsors-marquee-wrap bg-institucional-azul rounded-2xl overflow-hidden py-6 border border-institucional-azulHover">
+        <p class="text-center text-[10px] uppercase tracking-[3px] text-institucional-amarillo font-bold mb-4">Nuestros Sponsors</p>
+        <div class="sponsors-marquee-track">
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/el-mero-taco.png" alt="El Mero Taco"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/comunidad-espresso.png" alt="Comunidad Espresso"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/negron.png" alt="Negrón"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/luminus-car.png" alt="Luminus Car"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/m-autos.jpg" alt="MV Autos"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/servicentro.png" alt="Servicentro"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/superdrogas-piedecuesta.png" alt="Superdrogas Piedecuesta"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/avila-market.jpg" alt="Avila Market"></button>
+            <button onclick="app.irAPatrocinadores()"><img src="assets/images/logos/patrocinadores/oscar-mendoza.jpg" alt="Dr. Oscar Mendoza"></button>
+        </div>
+    </div>
 </div>
 
 <footer class="bg-institucional-azul text-white py-8 mt-12 border-t-4 border-institucional-amarillo shadow-[0_-10px_20px_rgba(0,0,0,0.1)]">
@@ -305,7 +473,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // ==========================================
     // UTILIDADES DE CALENDARIO COLOMBIANO
@@ -421,7 +589,10 @@
                 snap.forEach(d => {
                     const t = d.data();
                     if (!t.churchName) return;
-                    rosters[t.churchName] = (t.players || []).map(p => (p.name || '').trim()).filter(Boolean);
+                    rosters[t.churchName] = {
+                        docId: d.id,
+                        players: (t.players || []).map(p => ({ ...p, name: (p.name || '').trim() })).filter(p => p.name)
+                    };
                 });
                 this.rosters = rosters;
                 this.autoVincularRosters();
@@ -465,7 +636,66 @@
         getRosterNames(teamName) {
             const t = this.teams.find(x => x.name === teamName);
             if (!t || !t.rosterTeam) return [];
-            return this.rosters[t.rosterTeam] || [];
+            return (this.rosters[t.rosterTeam]?.players || []).map(p => p.name);
+        }
+
+        // ---- Edición de jugadores del roster (escribe directo en torneo-interiglesias) ----
+        editarJugadoresRoster(churchName) {
+            const roster = this.rosters[churchName];
+            if (!roster) return;
+            document.getElementById('knockout-modal-title').textContent = `Jugadores — ${churchName}`;
+            const rows = roster.players.map((p, i) => `
+                <div class="flex gap-2 items-center mb-2">
+                    <input type="text" id="roster-player-${i}" class="input-field flex-grow" value="${(p.name || '').replace(/"/g, '&quot;')}">
+                    <button onclick="this.closest('div').remove()" class="text-red-500 hover:text-red-700 font-bold text-xl leading-none px-2">&times;</button>
+                </div>`).join('');
+            document.getElementById('knockout-modal-body').innerHTML = `
+                <div id="roster-players-list">${rows}</div>
+                <div class="flex gap-2 items-center mt-3 mb-4 pt-3 border-t border-gray-200">
+                    <input type="text" id="roster-new-player" class="input-field flex-grow" placeholder="Nombre del nuevo jugador" onkeypress="if(event.key==='Enter'){event.preventDefault(); app.agregarJugadorRosterInput();}">
+                    <button onclick="app.agregarJugadorRosterInput()" class="btn btn-secondary py-2 px-4 text-sm whitespace-nowrap">+ Añadir</button>
+                </div>
+                <button onclick="app.guardarJugadoresRoster('${churchName.replace(/'/g, "\\'")}')" class="btn btn-primary w-full py-3">Guardar cambios</button>
+            `;
+            this._rosterEditCount = roster.players.length;
+            document.getElementById('modal-knockout').classList.remove('hidden');
+        }
+
+        agregarJugadorRosterInput() {
+            const input = document.getElementById('roster-new-player');
+            const name = input.value.trim();
+            if (!name) return;
+            const list = document.getElementById('roster-players-list');
+            const idx = this._rosterEditCount++;
+            const row = document.createElement('div');
+            row.className = 'flex gap-2 items-center mb-2';
+            row.innerHTML = `<input type="text" id="roster-player-${idx}" class="input-field flex-grow" value="${name.replace(/"/g, '&quot;')}"><button onclick="this.closest('div').remove()" class="text-red-500 hover:text-red-700 font-bold text-xl leading-none px-2">&times;</button>`;
+            list.appendChild(row);
+            input.value = '';
+            input.focus();
+        }
+
+        async guardarJugadoresRoster(churchName) {
+            const roster = this.rosters[churchName];
+            if (!roster) return;
+            const inputs = document.querySelectorAll('#roster-players-list input[id^="roster-player-"]');
+            const nombres = Array.from(inputs).map(inp => inp.value.trim()).filter(Boolean);
+            if (nombres.length === 0) return this.showNotification("Debe quedar al menos un jugador.", true);
+            const originales = roster.players;
+            const nuevosPlayers = nombres.map(nombre => {
+                const orig = originales.find(p => p.name === nombre);
+                return orig ? { ...orig, name: nombre } : { name: nombre, docType: '', docNumber: '', birthDate: '' };
+            });
+            try {
+                await updateDoc(doc(this.dbInscripciones, 'teams', roster.docId), { players: nuevosPlayers });
+                roster.players = nuevosPlayers;
+                this.hideKnockoutModal();
+                this.showNotification(`Jugadores de "${churchName}" actualizados.`);
+                this.renderAll();
+            } catch (e) {
+                console.error(e);
+                this.showAlert("No se pudo guardar: " + e.message);
+            }
         }
 
         vincularRoster(index, churchName) {
@@ -528,10 +758,16 @@
             });
             btnElement.classList.remove('bg-institucional-azulHover', 'text-white', 'opacity-90');
             btnElement.classList.add('bg-institucional-amarillo', 'text-institucional-azul', 'font-bold', 'shadow-md', 'scale-105');
-            ['vista-posiciones', 'vista-goleadores', 'vista-partidos', 'vista-admin'].forEach(id => {
+            ['vista-posiciones', 'vista-goleadores', 'vista-partidos', 'vista-admin', 'vista-patrocinadores'].forEach(id => {
                 const vista = document.getElementById(id);
                 if (vista) { vista.classList.toggle('vista-activa', id === targetId); vista.classList.toggle('vista-oculta', id !== targetId); }
             });
+        }
+
+        irAPatrocinadores() {
+            const btn = document.querySelector('[data-target="vista-patrocinadores"]');
+            if (btn) this.switchTab('vista-patrocinadores', btn);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ---- Auth ----
@@ -1223,6 +1459,7 @@
                             ${churchOptions.map(cn => `<option value="${cn}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
                         </select>
                         ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1">🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
+                        ${t.rosterTeam ? `<button onclick="app.editarJugadoresRoster('${t.rosterTeam.replace(/'/g, "\\'")}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${(this.rosters[t.rosterTeam]?.players || []).length})</button>` : ''}
                     </div>
                 </div>`).join('');
         }
@@ -1233,19 +1470,8 @@
                 body.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500">Aún no hay equipos registrados.</td></tr>';
                 return;
             }
-            body.innerHTML = this.teams.map((t, i) => {
-                const rowClass = i === 0
-                    ? 'bg-[#167A55]'
-                    : i === 1
-                        ? 'bg-[#2E9D6F]'
-                        : i >= 2 && i <= 5
-                            ? 'bg-[#F1F3F2]'
-                            : i === 6
-                                ? 'bg-[#C94C4C]'
-                                : 'hover:bg-gray-50';
-
-                return `
-                <tr class="${rowClass} border-b border-gray-100 transition">
+            body.innerHTML = this.teams.map((t, i) => `
+                <tr class="${i < 4 ? 'bg-green-50' : 'hover:bg-gray-50'} border-b border-gray-100 transition">
                     <td class="p-3 font-bold text-institucional-azul">${i + 1}</td>
                     <td class="p-3 font-semibold">${t.name}</td>
                     <td class="p-3 text-center">${t.pj}</td><td class="p-3 text-center">${t.g}</td>
@@ -1253,8 +1479,7 @@
                     <td class="p-3 text-center">${t.gf}</td><td class="p-3 text-center">${t.gc}</td>
                     <td class="p-3 text-center font-semibold">${t.dg}</td>
                     <td class="p-3 text-center font-bold text-institucional-azul text-lg">${t.pts}</td>
-                </tr>`;
-            }).join('');
+                </tr>`).join('');
         }
 
         renderTopScorers() {
