@@ -478,16 +478,16 @@
     <div class="contact-form reveal">
       <form id="contactForm" novalidate>
         <div class="form-group">
-          <label for="name">Nombre completo</label>
-          <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+          <label for="cf-nombre">Nombre completo</label>
+          <input id="cf-nombre" name="name" type="text" placeholder="Tu nombre" required>
         </div>
         <div class="form-group">
-          <label for="contact">Correo / WhatsApp</label>
-          <input id="contact" name="contact" type="text" placeholder="tu@correo.com o +57 300..." required>
+          <label for="cf-contacto">Correo / WhatsApp</label>
+          <input id="cf-contacto" name="contact" type="text" placeholder="tu@correo.com o +57 300..." required>
         </div>
         <div class="form-group">
-          <label for="topic">¿Qué necesitas?</label>
-          <select id="topic" name="topic" required>
+          <label for="cf-necesidad">¿Qué necesitas?</label>
+          <select id="cf-necesidad" name="topic" required>
             <option value="">Selecciona una opción</option>
             <option>Organizar un torneo</option>
             <option>Patrocinar un evento</option>
@@ -497,10 +497,10 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="message">Mensaje</label>
-          <textarea id="message" name="message" placeholder="Cuéntanos de tu proyecto o evento..." required></textarea>
+          <label for="cf-mensaje">Mensaje</label>
+          <textarea id="cf-mensaje" name="message" placeholder="Cuéntanos de tu proyecto o evento..." required></textarea>
         </div>
-        <button type="submit" class="btn-acento" style="width:100%; font-size:15px;">Enviar Mensaje</button>
+        <button type="button" class="btn-acento" style="width:100%; font-size:15px;" onclick="enviarFormularioWhatsApp()">Enviar Mensaje</button>
         <p class="form-message" id="formMessage" aria-live="polite"></p>
       </form>
     </div>

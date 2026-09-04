@@ -60,6 +60,9 @@ nav {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde);
 }
+section[id] {
+  scroll-margin-top: 84px;
+}
 .nav-logo {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Oswald', sans-serif;
