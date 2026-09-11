@@ -1108,6 +1108,7 @@
             const resting = this.getRestingTeams(this.schedule[rIdx]);
             if (resting.length === 0) return this.showNotification("No hay equipos descansando para intercambiar.", true);
             const options = resting.map(name => `<option value="${name.replace(/"/g, '&quot;')}">${name}</option>`).join('');
+            const outgoingOptions = this.teams.map(team => `<option value="${team.name.replace(/"/g, '&quot;')}" ${team.name === match.team1 ? 'selected' : ''}>${team.name}</option>`).join('');
             const restingNames = resting.join(', ');
             document.getElementById('knockout-modal-title').textContent = 'Intercambiar equipo y descanso';
             document.getElementById('knockout-modal-body').innerHTML = `
@@ -1117,9 +1118,8 @@
                     <p class="mt-1 font-semibold text-institucional-azul">${restingNames}</p>
                 </div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Equipo que sale del partido</label>
-                <select id="swap-slot" class="input-field mb-4">
-                    <option value="1">${match.team1}</option>
-                    <option value="2">${match.team2}</option>
+                <select id="swap-team-out" class="input-field mb-4">
+                    ${outgoingOptions}
                 </select>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Equipo que entra</label>
                 <select id="swap-team" class="input-field mb-6">${options}</select>
@@ -1129,21 +1129,21 @@
         }
 
         async confirmTeamSwap(rIdx, mIdx) {
-            const match = this.getMatchObj(rIdx, mIdx);
-            if (!match || match.played) return this.hideKnockoutModal();
-            const slot = document.getElementById('swap-slot').value;
+            const selectedOut = document.getElementById('swap-team-out').value;
             const newTeam = document.getElementById('swap-team').value;
             if (!newTeam) return;
-            const oldTeam = slot === '1' ? match.team1 : match.team2;
-            if (newTeam === match.team1 || newTeam === match.team2) {
+            const round = this.schedule[rIdx];
+            const match = (round?.matches || []).find(item => item.team1 === selectedOut || item.team2 === selectedOut);
+            if (!match || match.played) return this.showNotification("El equipo seleccionado no tiene un partido pendiente en esta jornada.", true);
+            if (newTeam === selectedOut || (match.team1 === newTeam || match.team2 === newTeam)) {
                 return this.showNotification("Ese equipo ya juega en este partido.", true);
             }
-            if (slot === '1') match.team1 = newTeam;
+            if (match.team1 === selectedOut) match.team1 = newTeam;
             else match.team2 = newTeam;
             await this.saveStateToFirestore();
             this.hideKnockoutModal();
             this.renderAll();
-            this.showNotification(`Intercambio guardado: ${newTeam} juega y ${oldTeam} descansa.`);
+            this.showNotification(`Intercambio guardado: ${newTeam} juega y ${selectedOut} descansa.`);
         }
 
         // ---- Getters de partidos ----
