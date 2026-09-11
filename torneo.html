@@ -635,18 +635,22 @@
 
         getRosterNames(teamName) {
             const t = this.teams.find(x => x.name === teamName);
-            if (!t || !t.rosterTeam) return [];
+            if (!t) return [];
+            if (Array.isArray(t.players) && t.players.length) return t.players.map(p => typeof p === 'string' ? p : p.name).filter(Boolean);
+            if (!t.rosterTeam) return [];
             return (this.rosters[t.rosterTeam]?.players || []).map(p => p.name);
         }
 
         // ---- Edición de jugadores del roster (escribe directo en torneo-interiglesias) ----
-        editarJugadoresRoster(churchName) {
-            const roster = this.rosters[churchName];
-            if (!roster) return;
-            document.getElementById('knockout-modal-title').textContent = `Jugadores — ${churchName}`;
-            const rows = roster.players.map((p, i) => `
+        editarJugadoresRoster(churchName, teamName) {
+            const team = this.teams.find(t => t.name === teamName) || this.teams.find(t => t.rosterTeam === churchName);
+            const roster = this.rosters[churchName] || { players: [] };
+            if (!team) return;
+            const players = Array.isArray(team.players) && team.players.length ? team.players : roster.players;
+            document.getElementById('knockout-modal-title').textContent = `Jugadores — ${team.name}`;
+            const rows = players.map((p, i) => `
                 <div class="flex gap-2 items-center mb-2">
-                    <input type="text" id="roster-player-${i}" class="input-field flex-grow" value="${(p.name || '').replace(/"/g, '&quot;')}">
+                    <input type="text" id="roster-player-${i}" class="input-field flex-grow" value="${(typeof p === 'string' ? p : p.name || '').replace(/"/g, '&quot;')}">
                     <button onclick="this.closest('div').remove()" class="text-red-500 hover:text-red-700 font-bold text-xl leading-none px-2">&times;</button>
                 </div>`).join('');
             document.getElementById('knockout-modal-body').innerHTML = `
@@ -655,9 +659,9 @@
                     <input type="text" id="roster-new-player" class="input-field flex-grow" placeholder="Nombre del nuevo jugador" onkeypress="if(event.key==='Enter'){event.preventDefault(); app.agregarJugadorRosterInput();}">
                     <button onclick="app.agregarJugadorRosterInput()" class="btn btn-secondary py-2 px-4 text-sm whitespace-nowrap">+ Añadir</button>
                 </div>
-                <button onclick="app.guardarJugadoresRoster('${churchName.replace(/'/g, "\\'")}')" class="btn btn-primary w-full py-3">Guardar cambios</button>
+                <button onclick="app.guardarJugadoresRoster('${(churchName || '').replace(/'/g, "\\'")}', '${team.name.replace(/'/g, "\\'")}')" class="btn btn-primary w-full py-3">Guardar cambios</button>
             `;
-            this._rosterEditCount = roster.players.length;
+            this._rosterEditCount = players.length;
             document.getElementById('modal-knockout').classList.remove('hidden');
         }
 
@@ -675,22 +679,31 @@
             input.focus();
         }
 
-        async guardarJugadoresRoster(churchName) {
+        async guardarJugadoresRoster(churchName, teamName) {
             const roster = this.rosters[churchName];
-            if (!roster) return;
+            const team = this.teams.find(t => t.name === teamName) || this.teams.find(t => t.rosterTeam === churchName);
+            if (!team) return;
             const inputs = document.querySelectorAll('#roster-players-list input[id^="roster-player-"]');
             const nombres = Array.from(inputs).map(inp => inp.value.trim()).filter(Boolean);
             if (nombres.length === 0) return this.showNotification("Debe quedar al menos un jugador.", true);
-            const originales = roster.players;
+            const originales = roster?.players || [];
             const nuevosPlayers = nombres.map(nombre => {
-                const orig = originales.find(p => p.name === nombre);
+                const orig = originales.find(p => p.name === nombre) || (team.players || []).find(p => (typeof p === 'string' ? p : p.name) === nombre);
                 return orig ? { ...orig, name: nombre } : { name: nombre, docType: '', docNumber: '', birthDate: '' };
             });
             try {
-                await updateDoc(doc(this.dbInscripciones, 'teams', roster.docId), { players: nuevosPlayers });
-                roster.players = nuevosPlayers;
+                if (roster?.docId) {
+                    try {
+                        await updateDoc(doc(this.dbInscripciones, 'teams', roster.docId), { players: nuevosPlayers });
+                        roster.players = nuevosPlayers;
+                    } catch (externalError) {
+                        console.warn('No se pudo actualizar el roster externo; se guardarán los jugadores en el torneo.', externalError);
+                    }
+                }
+                team.players = nuevosPlayers;
+                await this.saveStateToFirestore();
                 this.hideKnockoutModal();
-                this.showNotification(`Jugadores de "${churchName}" actualizados.`);
+                this.showNotification(`Jugadores de "${team.name}" actualizados.`);
                 this.renderAll();
             } catch (e) {
                 console.error(e);
@@ -1073,6 +1086,50 @@
             });
 
             this.schedule = newSchedule;
+        }
+
+        getRestingTeams(round) {
+            const playing = new Set();
+            (round.matches || []).forEach(match => {
+                if (match.team1) playing.add(match.team1);
+                if (match.team2) playing.add(match.team2);
+            });
+            return this.teams.map(team => team.name).filter(name => !playing.has(name));
+        }
+
+        openTeamSwapModal(rIdx, mIdx) {
+            const match = this.getMatchObj(rIdx, mIdx);
+            if (!match || match.played) return this.showNotification("No puedes cambiar equipos de un partido ya jugado.", true);
+            const resting = this.getRestingTeams(this.schedule[rIdx]);
+            if (resting.length === 0) return this.showNotification("No hay equipos descansando para intercambiar.", true);
+            const options = resting.map(name => `<option value="${name.replace(/"/g, '&quot;')}">${name}</option>`).join('');
+            document.getElementById('knockout-modal-title').textContent = 'Intercambiar equipo y descanso';
+            document.getElementById('knockout-modal-body').innerHTML = `
+                <p class="text-sm text-gray-600 mb-4">El equipo reemplazado pasará a descansar en esta jornada.</p>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Equipo que sale del partido</label>
+                <select id="swap-slot" class="input-field mb-4">
+                    <option value="1">${match.team1}</option>
+                    <option value="2">${match.team2}</option>
+                </select>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Equipo que entra</label>
+                <select id="swap-team" class="input-field mb-6">${options}</select>
+                <button onclick="app.confirmTeamSwap(${rIdx}, ${mIdx})" class="btn btn-primary w-full py-3">Guardar intercambio</button>
+            `;
+            document.getElementById('modal-knockout').classList.remove('hidden');
+        }
+
+        confirmTeamSwap(rIdx, mIdx) {
+            const match = this.getMatchObj(rIdx, mIdx);
+            if (!match || match.played) return this.hideKnockoutModal();
+            const slot = document.getElementById('swap-slot').value;
+            const newTeam = document.getElementById('swap-team').value;
+            if (!newTeam) return;
+            if (slot === '1') match.team1 = newTeam;
+            else match.team2 = newTeam;
+            this.saveStateToFirestore();
+            this.hideKnockoutModal();
+            this.showNotification(`Intercambio guardado: ${newTeam} ahora juega en esta jornada.`);
+            this.renderAll();
         }
 
         // ---- Getters de partidos ----
@@ -1459,7 +1516,7 @@
                             ${churchOptions.map(cn => `<option value="${cn}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
                         </select>
                         ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1">🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
-                        ${t.rosterTeam ? `<button onclick="app.editarJugadoresRoster('${t.rosterTeam.replace(/'/g, "\\'")}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${(this.rosters[t.rosterTeam]?.players || []).length})</button>` : ''}
+                        <button onclick="app.editarJugadoresRoster('${(t.rosterTeam || '').replace(/'/g, "\\'")}', '${t.name.replace(/'/g, "\\'")}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${this.getRosterNames(t.name).length})</button>
                     </div>
                 </div>`).join('');
         }
@@ -1573,6 +1630,11 @@
                                 </div>` : ''}
                             </div>
                         </div>
+                        <div class="mb-4 rounded-lg border-2 border-institucional-amarillo bg-black px-4 py-3 text-center">
+                            <span class="text-xs font-black uppercase tracking-widest text-institucional-amarillo">Descansa:</span>
+                            <span class="ml-2 font-black uppercase text-white">${this.getRestingTeams(r).join(', ') || 'Ningún equipo'}</span>
+                        </div>
+                        ${this.isAuthenticated && r.matches.some(m => !m.played) ? `<div class="mb-4 text-center"><button onclick="app.openTeamSwapModal(${rIdx}, 0)" class="btn btn-warning py-1.5 px-4 text-xs">Intercambiar equipo que descansa</button></div>` : ''}
                         <div class="space-y-4">
                             ${r.matches.map((m, mIdx) => this.renderMatchCard(m, rIdx, mIdx)).join('')}
                         </div>
