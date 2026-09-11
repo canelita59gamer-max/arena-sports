@@ -1214,6 +1214,14 @@
             this.saveStateToFirestore();
         }
 
+        toggleScorers(id) {
+            const panel = document.getElementById(`scorers-panel-${id}`);
+            const icon = document.getElementById(`scorers-icon-${id}`);
+            if (!panel) return;
+            panel.classList.toggle('hidden');
+            if (icon) icon.textContent = panel.classList.contains('hidden') ? '+' : '−';
+        }
+
         // ---- Fase Final (manual) ----
         openSemifinalsModal() {
             if (this.teams.length < 4) return this.showAlert("Necesitas al menos 4 equipos para las semifinales.");
@@ -1746,9 +1754,11 @@
                     <button id="edit-btn-${id}" onclick="app.requestEditMatch(${rIdxParam}, ${mIdx})" class="btn btn-secondary py-1.5 px-4 text-sm ${!match.played ? 'hidden' : ''}">Editar Marcador</button>
                 </div>` : ''}
                 ${(match.played || this.isAuthenticated) ? `
-                <hr class="my-4 border-gray-200">
-                <div class="text-sm">
-                    <h4 class="font-semibold mb-2 text-center text-gray-500 uppercase tracking-wide text-xs">Goles del Partido</h4>
+                <button onclick="app.toggleScorers('${id}')" class="mt-4 w-full flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-semibold text-gray-500 uppercase tracking-wide text-xs hover:text-institucional-azul">
+                    <span>Goles del Partido</span>
+                    <span id="scorers-icon-${id}" class="text-xl leading-none text-institucional-azul">+</span>
+                </button>
+                <div id="scorers-panel-${id}" class="hidden text-sm pt-3">
                     ${this.isAuthenticated ? `
                     <div class="flex flex-col sm:flex-row gap-2 items-center mb-3 max-w-lg mx-auto bg-white p-2 rounded border border-gray-200 shadow-sm">
                         <select id="scorer-team-${id}" onchange="app.actualizarJugadoresSelect('${id}')" class="input-field text-sm py-1 border-none bg-transparent font-medium">
