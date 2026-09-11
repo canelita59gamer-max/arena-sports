@@ -1553,7 +1553,7 @@
                 return;
             }
             body.innerHTML = this.teams.map((t, i) => `
-                <tr class="${i < 4 ? 'bg-green-50' : 'hover:bg-gray-50'} border-b border-gray-100 transition">
+                <tr class="${i < 2 ? 'bg-green-50 border-l-4 border-l-green-300' : i < 6 ? 'bg-sky-50 border-l-4 border-l-sky-300' : i === 6 ? 'bg-red-50 border-l-4 border-l-red-300' : 'hover:bg-gray-50'} border-b border-gray-100 transition">
                     <td class="p-3 font-bold text-institucional-azul">${i + 1}</td>
                     <td class="p-3 font-semibold">${t.name}</td>
                     <td class="p-3 text-center">${t.pj}</td><td class="p-3 text-center">${t.g}</td>
