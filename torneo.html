@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+por que <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -611,6 +611,14 @@
                 .trim();
         }
 
+        obtenerClaveRoster(teamName) {
+            const aliases = {
+                'comunidad de fe': 'comunife'
+            };
+            const normalizedName = this.normalizarTexto(teamName);
+            return aliases[normalizedName] || normalizedName;
+        }
+
         // Intenta vincular automáticamente los equipos que aún no tienen rosterTeam,
         // comparando el nombre del equipo con los nombres registrados en inscripciones.
         // Nunca pisa un vínculo ya elegido a mano.
@@ -620,11 +628,11 @@
             let cambios = false;
             this.teams.forEach(t => {
                 if (t.rosterTeam) return;
-                const nt = this.normalizarTexto(t.name);
-                let match = churchNames.find(cn => this.normalizarTexto(cn) === nt);
+                const nt = this.obtenerClaveRoster(t.name);
+                let match = churchNames.find(cn => this.obtenerClaveRoster(cn) === nt);
                 if (!match) {
                     match = churchNames.find(cn => {
-                        const ncn = this.normalizarTexto(cn);
+                        const ncn = this.obtenerClaveRoster(cn);
                         return ncn.length > 3 && (nt.includes(ncn) || ncn.includes(nt));
                     });
                 }
@@ -637,8 +645,11 @@
             const t = this.teams.find(x => x.name === teamName);
             if (!t) return [];
             if (Array.isArray(t.players) && t.players.length) return t.players.map(p => typeof p === 'string' ? p : p.name).filter(Boolean);
-            if (!t.rosterTeam) return [];
-            return (this.rosters[t.rosterTeam]?.players || []).map(p => p.name);
+            const rosterKeys = Object.keys(this.rosters);
+            const linkedKey = rosterKeys.find(key => key === t.rosterTeam)
+                || rosterKeys.find(key => this.obtenerClaveRoster(key) === this.obtenerClaveRoster(t.rosterTeam))
+                || rosterKeys.find(key => this.obtenerClaveRoster(key) === this.obtenerClaveRoster(t.name));
+            return linkedKey ? (this.rosters[linkedKey].players || []).map(p => p.name).filter(Boolean) : [];
         }
 
         // ---- Edición de jugadores del roster (escribe directo en torneo-interiglesias) ----
@@ -723,13 +734,12 @@
             const nameEl = document.getElementById(`scorer-name-${id}`);
             if (!teamSel || !nameEl) return;
             const roster = this.getRosterNames(teamSel.value);
-            const currentValue = nameEl.value;
             if (roster.length && nameEl.tagName !== 'SELECT') {
                 nameEl.outerHTML = `<select id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow">${roster.map(n => `<option value="${n}">${n}</option>`).join('')}</select>`;
                 return;
             }
             if (!roster.length && nameEl.tagName !== 'INPUT') {
-                nameEl.outerHTML = `<input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador" value="${currentValue.replace(/"/g, '&quot;')}">`;
+                nameEl.outerHTML = `<input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador">`;
             }
         }
 
