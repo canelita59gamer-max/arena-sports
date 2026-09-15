@@ -53,6 +53,12 @@ por que <!DOCTYPE html>
         .day-checkbox + label:hover { border-color: #c8f000; color: #0a0a0a; }
         /* Faith Cup: fondo de página oscuro, pero las tarjetas y modales internos siguen con fondo claro y texto oscuro */
         .card, .bg-white { color: #1f2937; }
+        /* Forzado extra: las tablas de Posiciones y Goleadores a veces heredan el gris claro del fondo oscuro
+           si el navegador tarda en aplicar los colores personalizados de Tailwind. Esto lo evita siempre. */
+        #standings-body td, #top-scorers-body td,
+        #vista-posiciones th, #vista-goleadores th { color: #1f2937 !important; }
+        #standings-body td:first-child, #top-scorers-body td:first-child,
+        #standings-body td:last-child { color: #0a0a0a !important; font-weight: 700; }
         /* Carrusel de patrocinadores */
         .sponsors-marquee-track {
             display: flex;
@@ -670,7 +676,7 @@ por que <!DOCTYPE html>
                     <input type="text" id="roster-new-player" class="input-field flex-grow" placeholder="Nombre del nuevo jugador" onkeypress="if(event.key==='Enter'){event.preventDefault(); app.agregarJugadorRosterInput();}">
                     <button onclick="app.agregarJugadorRosterInput()" class="btn btn-secondary py-2 px-4 text-sm whitespace-nowrap">+ Añadir</button>
                 </div>
-                <button onclick="app.guardarJugadoresRoster('${(churchName || '').replace(/'/g, "\\'")}', '${team.name.replace(/'/g, "\\'")}')" class="btn btn-primary w-full py-3">Guardar cambios</button>
+                <button onclick="app.guardarJugadoresRoster('${(churchName || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${team.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')" class="btn btn-primary w-full py-3">Guardar cambios</button>
             `;
             this._rosterEditCount = players.length;
             document.getElementById('modal-knockout').classList.remove('hidden');
@@ -1536,10 +1542,10 @@ por que <!DOCTYPE html>
                     <div class="mt-2">
                         <select onchange="app.vincularRoster(${i}, this.value)" class="input-field text-xs py-1 border-gray-300">
                             <option value="">⚠️ Sin vincular a inscripciones (goles con texto libre)</option>
-                            ${churchOptions.map(cn => `<option value="${cn}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
+                            ${churchOptions.map(cn => `<option value="${cn.replace(/"/g, '&quot;')}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
                         </select>
                         ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1">🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
-                        <button onclick="app.editarJugadoresRoster('${(t.rosterTeam || '').replace(/'/g, "\\'")}', '${t.name.replace(/'/g, "\\'")}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${this.getRosterNames(t.name).length})</button>
+                        <button onclick="app.editarJugadoresRoster('${(t.rosterTeam || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${t.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${this.getRosterNames(t.name).length})</button>
                     </div>
                 </div>`).join('');
         }
