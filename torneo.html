@@ -95,6 +95,24 @@
             .sponsors-marquee-track { gap: 24px; }
         }
 
+        /* Jugadores del torneo */
+        .jc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        @media (max-width: 980px) { .jc-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+        @media (max-width: 460px) { .jc-grid { grid-template-columns: 1fr; } }
+        .jc-card { background: #fff; border-radius: 14px; border-top: 4px solid #c8f000; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 16px; text-align: center; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .jc-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px -6px rgba(0,0,0,0.25); }
+        .jc-photo { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; background: #0a0a0a; color: #c8f000; font-weight: 800; font-size: 18px; overflow: hidden; flex-shrink: 0; }
+        .jc-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .jc-name { font-weight: 700; color: #0a0a0a; font-size: 14px; line-height: 1.25; }
+        .jc-team { font-size: 11px; color: #6b7280; margin-top: 2px; }
+        .jc-goals { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #0a0a0a; background: #f3f4f6; border-radius: 999px; padding: 3px 9px; margin-top: 8px; }
+        .jc-sponsor { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e5e7eb; text-align: left; }
+        .jc-sponsor img { width: 24px; height: 24px; object-fit: contain; border-radius: 6px; background: #fff; border: 1px solid #e5e7eb; flex-shrink: 0; }
+        .jc-sponsor span { display: block; font-size: 8px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }
+        .jc-sponsor b { display: block; font-size: 11px; color: #0a0a0a; }
+        .jc-empty { grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px 0; font-style: italic; }
+
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
@@ -120,6 +138,14 @@
             <button onclick="app.hideKnockoutModal()" class="text-white hover:text-gray-200 text-3xl leading-none font-bold">&times;</button>
         </div>
         <div class="p-6" id="knockout-modal-body"></div>
+    </div>
+</div>
+
+<!-- Modal Jugador -->
+<div id="modal-jugador" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[70] p-4 hidden backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm border-t-4 border-institucional-amarillo overflow-y-auto max-h-[90vh] relative">
+        <button onclick="app.cerrarModalJugador()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl leading-none font-bold z-10">&times;</button>
+        <div class="p-6 text-center" id="modal-jugador-body"></div>
     </div>
 </div>
 
@@ -172,6 +198,7 @@
             <button class="nav-btn btn bg-institucional-amarillo text-institucional-azul font-bold shadow-md scale-105 px-6 py-2 rounded-full" onclick="app.switchTab('vista-partidos', this)" data-target="vista-partidos">Partidos</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-posiciones', this)" data-target="vista-posiciones">Posiciones</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-goleadores', this)" data-target="vista-goleadores">Goleadores</button>
+            <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-jugadores', this)" data-target="vista-jugadores">Jugadores</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-patrocinadores', this)" data-target="vista-patrocinadores">Patrocinadores</button>
             <button id="nav-btn-admin" class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full hidden" onclick="app.switchTab('vista-admin', this)" data-target="vista-admin">Panel Admin</button>
         </nav>
@@ -224,6 +251,24 @@
                         <tr><td colspan="4" class="p-4 text-center text-gray-500">No hay goles registrados aún.</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- JUGADORES -->
+        <section id="vista-jugadores" class="vista-oculta">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-1 flex items-center text-institucional-azul">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    Jugadores del Torneo
+                </h2>
+                <p class="text-sm text-gray-500 mb-5">Roster oficial de cada equipo inscrito. Los goles se calculan automáticamente con los partidos registrados.</p>
+                <div class="flex flex-col sm:flex-row gap-3 mb-5">
+                    <input type="text" id="jugadores-search" class="input-field flex-grow" placeholder="Buscar jugador...">
+                    <select id="jugadores-team-filter" class="input-field sm:w-64"><option value="">Todos los equipos</option></select>
+                </div>
+                <div class="jc-grid" id="jugadores-grid">
+                    <div class="jc-empty">Cargando jugadores...</div>
+                </div>
             </div>
         </section>
 
@@ -571,6 +616,34 @@
         appId: "1:494456395930:web:5b680697e9460ece05a723"
     };
 
+    function escapeHtml(str) {
+        return String(str ?? '').replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
+    // Patrocinadores reales del torneo (los mismos de la pestaña "Patrocinadores").
+    const PATROCINADORES = {
+        'el-mero-taco': { nombre: 'El Mero Taco', logo: 'assets/images/logos/patrocinadores/el-mero-taco.png' },
+        'comunidad-espresso': { nombre: 'Comunidad Espresso', logo: 'assets/images/logos/patrocinadores/comunidad-espresso.png' },
+        'negron': { nombre: 'Negrón', logo: 'assets/images/logos/patrocinadores/negron.png' },
+        'luminus-car': { nombre: 'Luminus Car', logo: 'assets/images/logos/patrocinadores/luminus-car.png' },
+        'm-autos': { nombre: 'MV Autos', logo: 'assets/images/logos/patrocinadores/m-autos.jpg' },
+        'servicentro': { nombre: 'Servicentro', logo: 'assets/images/logos/patrocinadores/servicentro.png' },
+        'superdrogas-piedecuesta': { nombre: 'Superdrogas Piedecuesta', logo: 'assets/images/logos/patrocinadores/superdrogas-piedecuesta.png' },
+        'avila-market': { nombre: 'Avila Market', logo: 'assets/images/logos/patrocinadores/avila-market.jpg' },
+        'oscar-mendoza': { nombre: 'Dr. Oscar Mendoza', logo: 'assets/images/logos/patrocinadores/oscar-mendoza.jpg' }
+    };
+
+    // Patrocinador asignado a cada jugador (opcional, uno por jugador — como una casaca).
+    // Escribe a la izquierda el nombre EXACTO del jugador (tal como está inscrito) y a la
+    // derecha la clave del patrocinador (de PATROCINADORES arriba). Ejemplo:
+    //   'Juan Pérez': 'servicentro',
+    // Un jugador que no aparezca aquí simplemente no muestra patrocinador en su carta.
+    const PATROCINIOS_JUGADOR = {
+        // 'Nombre del jugador': 'clave-patrocinador',
+    };
+
     // ==========================================
     // CLASE PRINCIPAL
     // ==========================================
@@ -777,7 +850,7 @@
             });
             btnElement.classList.remove('bg-institucional-azulHover', 'text-white', 'opacity-90');
             btnElement.classList.add('bg-institucional-amarillo', 'text-institucional-azul', 'font-bold', 'shadow-md', 'scale-105');
-            ['vista-posiciones', 'vista-goleadores', 'vista-partidos', 'vista-admin', 'vista-patrocinadores'].forEach(id => {
+            ['vista-posiciones', 'vista-goleadores', 'vista-partidos', 'vista-admin', 'vista-patrocinadores', 'vista-jugadores'].forEach(id => {
                 const vista = document.getElementById(id);
                 if (vista) { vista.classList.toggle('vista-activa', id === targetId); vista.classList.toggle('vista-oculta', id !== targetId); }
             });
@@ -822,6 +895,9 @@
                 document.getElementById('eye-slash-icon').classList.toggle('hidden', !isPwd);
             });
             document.getElementById('password-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') this.login(); });
+
+            document.getElementById('jugadores-search')?.addEventListener('input', () => this.renderJugadores());
+            document.getElementById('jugadores-team-filter')?.addEventListener('change', () => this.renderJugadores());
         }
 
         async toggleAuth() {
@@ -1519,6 +1595,8 @@
             this.renderStandings();
             this.renderSchedule();
             this.renderTopScorers();
+            this.populateJugadoresTeamFilter();
+            this.renderJugadores();
         }
 
         renderTeamsAdmin() {
@@ -1592,6 +1670,99 @@
                     <td class="p-3 text-gray-500">${s.team}</td>
                     <td class="p-3 text-center font-bold text-lg">${s.goals}</td>
                 </tr>`).join('');
+        }
+
+        // ---- Jugadores (roster real + goles + patrocinador opcional) ----
+        getAllPlayers() {
+            const golesPorJugador = new Map();
+            const process = (matches) => (matches || []).forEach(m => (m.scorers || []).forEach(s => {
+                const key = `${s.player}||${s.team}`;
+                golesPorJugador.set(key, (golesPorJugador.get(key) || 0) + 1);
+            }));
+            this.schedule.forEach(r => process(r.matches));
+            if (this.knockout?.semifinals) process(this.knockout.semifinals);
+            if (this.knockout?.final) process(this.knockout.final);
+
+            const jugadores = [];
+            this.teams.forEach(t => {
+                this.getRosterNames(t.name).forEach(nombre => {
+                    const patroKey = PATROCINIOS_JUGADOR[nombre];
+                    jugadores.push({
+                        nombre,
+                        equipo: t.name,
+                        goles: golesPorJugador.get(`${nombre}||${t.name}`) || 0,
+                        patrocinador: (patroKey && PATROCINADORES[patroKey]) || null
+                    });
+                });
+            });
+            return jugadores.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+        }
+
+        populateJugadoresTeamFilter() {
+            const sel = document.getElementById('jugadores-team-filter');
+            if (!sel) return;
+            const current = sel.value;
+            sel.innerHTML = '<option value="">Todos los equipos</option>' +
+                this.teams.map(t => `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`).join('');
+            sel.value = current;
+        }
+
+        renderJugadores() {
+            const grid = document.getElementById('jugadores-grid');
+            if (!grid) return;
+            const search = (document.getElementById('jugadores-search')?.value || '').toLowerCase();
+            const teamFilter = document.getElementById('jugadores-team-filter')?.value || '';
+            const filtered = this.getAllPlayers().filter(j =>
+                (!search || j.nombre.toLowerCase().includes(search)) &&
+                (!teamFilter || j.equipo === teamFilter)
+            );
+            this._jugadoresFiltrados = filtered;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="jc-empty">No hay jugadores que coincidan con la búsqueda.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map((j, i) => {
+                const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                const golesHtml = j.goles > 0 ? `<div class="jc-goals">⚽ ${j.goles} gol${j.goles === 1 ? '' : 'es'}</div>` : '';
+                const sponsorHtml = j.patrocinador ? `
+                    <div class="jc-sponsor">
+                        <img src="${escapeHtml(j.patrocinador.logo)}" alt="${escapeHtml(j.patrocinador.nombre)}">
+                        <div><span>Patrocina</span><b>${escapeHtml(j.patrocinador.nombre)}</b></div>
+                    </div>` : '';
+                return `<div class="jc-card" onclick="app.verJugador(${i})">
+                    <div class="jc-photo">${escapeHtml(iniciales)}</div>
+                    <div class="jc-name">${escapeHtml(j.nombre)}</div>
+                    <div class="jc-team">${escapeHtml(j.equipo)}</div>
+                    ${golesHtml}
+                    ${sponsorHtml}
+                </div>`;
+            }).join('');
+        }
+
+        verJugador(idx) {
+            const j = this._jugadoresFiltrados?.[idx];
+            if (!j) return;
+            const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+            const golesHtml = j.goles > 0 ? `<div class="jc-goals" style="margin:10px auto 0;">⚽ ${j.goles} gol${j.goles === 1 ? '' : 'es'} en el torneo</div>` : '';
+            const sponsorHtml = j.patrocinador ? `
+                <div class="jc-sponsor" style="justify-content:center; margin-top:16px;">
+                    <img src="${escapeHtml(j.patrocinador.logo)}" alt="${escapeHtml(j.patrocinador.nombre)}" style="width:34px;height:34px;">
+                    <div><span>Patrocinado por</span><b>${escapeHtml(j.patrocinador.nombre)}</b></div>
+                </div>` : '<p class="text-xs text-gray-400 mt-4">Sin patrocinador asignado.</p>';
+            document.getElementById('modal-jugador-body').innerHTML = `
+                <div class="jc-photo" style="width:96px;height:96px;font-size:26px;margin-bottom:14px;">${escapeHtml(iniciales)}</div>
+                <h3 class="text-xl font-black text-institucional-azul uppercase">${escapeHtml(j.nombre)}</h3>
+                <p class="text-sm text-gray-500 mb-1">${escapeHtml(j.equipo)}</p>
+                ${golesHtml}
+                ${sponsorHtml}
+            `;
+            document.getElementById('modal-jugador').classList.remove('hidden');
+        }
+
+        cerrarModalJugador() {
+            document.getElementById('modal-jugador').classList.add('hidden');
         }
 
         renderSchedule() {
