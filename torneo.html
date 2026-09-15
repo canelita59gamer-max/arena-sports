@@ -729,21 +729,6 @@ por que <!DOCTYPE html>
             this.showNotification(churchName ? `"${this.teams[index].name}" vinculado con "${churchName}".` : 'Vínculo eliminado.');
         }
 
-        actualizarJugadoresSelect(id) {
-            const teamSel = document.getElementById(`scorer-team-${id}`);
-            const nameEl = document.getElementById(`scorer-name-${id}`);
-            if (!teamSel || !nameEl) return;
-            const roster = this.getRosterNames(teamSel.value);
-            if (roster.length && nameEl.tagName !== 'SELECT') {
-                nameEl.outerHTML = `<select id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow">${roster.map(n => `<option value="${n}">${n}</option>`).join('')}</select>`;
-                return;
-            }
-            if (!roster.length && nameEl.tagName !== 'INPUT') {
-                nameEl.outerHTML = `<input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador">`;
-            }
-        }
-
-
         showNotification(msg, isError = false) {
             const toast = document.getElementById('notification-toast');
             document.getElementById('notification-msg').textContent = msg;
@@ -1207,12 +1192,15 @@ por que <!DOCTYPE html>
         addScorer(rIdx, mIdx) {
             const match = this.getMatchObj(rIdx, mIdx);
             const id = `${rIdx}-${mIdx}`;
-            const playerInput = document.getElementById(`scorer-name-${id}`);
-            const playerName = playerInput.value.trim();
-            const teamName = document.getElementById(`scorer-team-${id}`).value;
-            if (!playerName || playerName === '(sin jugadores inscritos para este equipo)') {
-                return this.showNotification("Escribe el nombre del goleador.", true);
+            const nameEl = document.getElementById(`scorer-name-${id}`);
+            const playerName = nameEl.value.trim();
+            let teamName;
+            if (nameEl.tagName === 'SELECT') {
+                teamName = nameEl.options[nameEl.selectedIndex]?.dataset.team;
+            } else {
+                teamName = document.getElementById(`scorer-team-${id}`).value;
             }
+            if (!playerName || !teamName) return;
             if (!match.scorers) match.scorers = [];
             match.scorers.push({ player: playerName, team: teamName });
             document.getElementById(`scorer-name-${id}`).value = '';
@@ -1771,14 +1759,17 @@ por que <!DOCTYPE html>
                 <div id="scorers-panel-${id}" class="hidden text-sm pt-3">
                     ${this.isAuthenticated ? `
                     <div class="flex flex-col sm:flex-row gap-2 items-center mb-3 max-w-lg mx-auto bg-white p-2 rounded border border-gray-200 shadow-sm">
-                        <select id="scorer-team-${id}" onchange="app.actualizarJugadoresSelect('${id}')" class="input-field text-sm py-1 border-none bg-transparent font-medium">
-                            <option value="${match.team1}">${match.team1}</option>
-                            <option value="${match.team2}">${match.team2}</option>
-                        </select>
+                        ${(this.getRosterNames(match.team1).length || this.getRosterNames(match.team2).length) ? `
+                        <select id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow">
+                            ${this.getRosterNames(match.team1).length ? `<optgroup label="${match.team1.replace(/"/g, '&quot;')}">${this.getRosterNames(match.team1).map(n => `<option value="${n.replace(/"/g, '&quot;')}" data-team="${match.team1.replace(/"/g, '&quot;')}">${n}</option>`).join('')}</optgroup>` : ''}
+                            ${this.getRosterNames(match.team2).length ? `<optgroup label="${match.team2.replace(/"/g, '&quot;')}">${this.getRosterNames(match.team2).map(n => `<option value="${n.replace(/"/g, '&quot;')}" data-team="${match.team2.replace(/"/g, '&quot;')}">${n}</option>`).join('')}</optgroup>` : ''}
+                        </select>` : `
+                        <input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador">
                         <div class="h-6 border-r border-gray-300 mx-1 hidden sm:block"></div>
-                        ${this.getRosterNames(match.team1).length
-                            ? `<select id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow">${this.getRosterNames(match.team1).map(n => `<option value="${n}">${n}</option>`).join('')}</select>`
-                            : `<input type="text" id="scorer-name-${id}" class="input-field text-sm py-1 border-none bg-transparent flex-grow" placeholder="Nombre del goleador">`}
+                        <select id="scorer-team-${id}" class="input-field text-sm py-1 border-none bg-transparent font-medium">
+                            <option value="${match.team1.replace(/"/g, '&quot;')}">${match.team1}</option>
+                            <option value="${match.team2.replace(/"/g, '&quot;')}">${match.team2}</option>
+                        </select>`}
                         <button onclick="app.addScorer(${rIdxParam}, ${mIdx})" class="btn btn-primary py-1.5 px-3 text-xs whitespace-nowrap">+ Gol</button>
                     </div>` : ''}
                     <ul class="space-y-1 max-w-sm mx-auto">
