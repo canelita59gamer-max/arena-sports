@@ -95,60 +95,62 @@
             .sponsors-marquee-track { gap: 24px; }
         }
 
-        /* Jugadores del torneo — cartas estilo "player card" */
+        /* Jugadores del torneo — cartas estilo EA FC (bronce/plata/oro/azul) */
         .jc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
         @media (max-width: 980px) { .jc-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
         @media (max-width: 460px) { .jc-grid { grid-template-columns: 1fr; } }
         .jc-empty { grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px 0; font-style: italic; }
 
+        /* Gamas de rareza — bronce, plata, oro y la especial azul (estilo TOTW) */
+        .jc-t-bronce { background: linear-gradient(160deg, #8a5a34 0%, #6b4423 55%, #452c17 100%); }
+        .jc-t-bronce-esp { background: linear-gradient(160deg, #c08847 0%, #96602c 55%, #5c3a1a 100%); }
+        .jc-t-plata { background: linear-gradient(160deg, #cfd4d9 0%, #9aa1a8 55%, #6b7278 100%); }
+        .jc-t-plata-esp { background: linear-gradient(160deg, #f2f5f7 0%, #c6ced4 55%, #8b939a 100%); }
+        .jc-t-oro { background: linear-gradient(160deg, #f3c65a 0%, #cd9a26 55%, #8a5f10 100%); }
+        .jc-t-oro-esp { background: linear-gradient(160deg, #ffe089 0%, #eab030 55%, #a8690f 100%); }
+        .jc-t-totw { background: linear-gradient(160deg, #1fb5c4 0%, #0e6b78 55%, #073338 100%); }
+        .jc-shine { position: relative; }
+        .jc-shine::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(115deg, transparent 25%, rgba(255,255,255,0.35) 42%, rgba(255,255,255,0.05) 50%, transparent 65%);
+            mix-blend-mode: overlay;
+        }
+
         .jc-card {
-            position: relative; border-radius: 16px; padding: 16px 16px 14px; cursor: pointer;
-            background: radial-gradient(120% 90% at 50% 0%, #24406e 0%, #17294a 45%, #0c1730 100%);
-            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.5);
+            position: relative; border-radius: 16px; padding: 14px 14px 12px; cursor: pointer;
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.55);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
             color: #fff; overflow: hidden;
         }
-        .jc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 28px -10px rgba(0,0,0,0.6); }
-        .jc-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .jc-rating { font-size: 26px; font-weight: 800; line-height: 1; color: #fff; }
-        .jc-tier { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #c8f000; margin-top: 2px; }
-        .jc-cat-pill { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; background: linear-gradient(90deg,#6d5bd0,#3f8cd6); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
-        .jc-idcode { position: absolute; top: 16px; right: 16px; font-size: 8px; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
-        .jc-photo { width: 88px; height: 88px; border-radius: 12px; margin: 10px auto 8px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: #fff; font-weight: 800; font-size: 22px; overflow: hidden; flex-shrink: 0; }
-        .jc-photo img { width: 100%; height: 100%; object-fit: cover; }
-        .jc-name2 { font-weight: 800; text-transform: uppercase; font-size: 13px; text-align: center; line-height: 1.2; }
-        .jc-teamcode { font-size: 10px; color: rgba(255,255,255,0.55); text-align: center; margin-top: 1px; letter-spacing: 0.04em; }
-        .jc-xp-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 9px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 12px; }
-        .jc-xp-row b { color: #fff; font-size: 10px; }
-        .jc-xp-bar { position: relative; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.12); margin-top: 4px; overflow: visible; }
-        .jc-xp-fill { height: 100%; border-radius: 999px; background: #c8f000; }
-        .jc-mini-stats { font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 10px; display: flex; justify-content: space-between; }
-        .jc-footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.12); font-size: 9px; font-weight: 700; letter-spacing: 0.03em; color: #fff; }
-        .jc-footer-row span:first-child { color: #c8f000; }
-        .jc-sponsor-strip { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15); }
-        .jc-sponsor-strip img { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; background: #fff; flex-shrink: 0; }
-        .jc-sponsor-strip span { font-size: 8px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
-        .jc-sponsor-strip b { font-size: 9px; color: #fff; }
+        .jc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 28px -10px rgba(0,0,0,0.65); }
+        .jc-card-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+        .jc-rating { font-size: 26px; font-weight: 800; line-height: 1; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .jc-tier-label { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin-top: 2px; }
+        .jc-pos-pill { font-size: 10px; font-weight: 800; letter-spacing: 0.04em; color: #0c1730; background: rgba(255,255,255,0.9); padding: 3px 9px; border-radius: 999px; }
+        .jc-photo-wrap { position: relative; width: 92px; height: 92px; margin: 8px auto 8px; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.15); z-index: 2; }
+        .jc-photo-wrap .jc-sponsor-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+        .jc-photo-wrap .jc-sponsor-bg img { width: 78%; height: 78%; object-fit: contain; opacity: 0.22; filter: grayscale(15%); }
+        .jc-photo-wrap .jc-photo-fg { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .jc-photo-wrap .jc-photo-fg img { width: 100%; height: 100%; object-fit: cover; }
+        .jc-name2 { position: relative; z-index: 2; font-weight: 800; text-transform: uppercase; font-size: 13px; text-align: center; line-height: 1.2; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .jc-teamcode { position: relative; z-index: 2; font-size: 10px; color: rgba(255,255,255,0.75); text-align: center; margin-top: 1px; letter-spacing: 0.04em; }
+        .jc-stat-line { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 10px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,0.25); font-size: 11px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.35); }
 
         /* Modal jugador */
-        .jc-modal-hero { position: relative; padding: 24px 22px 20px; display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: end; background: radial-gradient(120% 90% at 30% 0%, #24406e 0%, #17294a 45%, #0c1730 100%); border-radius: 12px 12px 0 0; }
-        .jc-modal-photo { width: 100px; height: 110px; border-radius: 10px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 26px; overflow: hidden; }
+        .jc-modal-hero { position: relative; padding: 24px 22px 20px; display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: end; border-radius: 12px 12px 0 0; overflow: hidden; }
+        .jc-modal-hero .jc-sponsor-bg-modal { position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; }
+        .jc-modal-hero .jc-sponsor-bg-modal img { width: 120px; height: 120px; object-fit: contain; opacity: 0.16; filter: grayscale(15%); }
+        .jc-modal-photo { position: relative; z-index: 2; width: 100px; height: 110px; border-radius: 10px; background: rgba(0,0,0,0.18); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 26px; overflow: hidden; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
         .jc-modal-photo img { width: 100%; height: 100%; object-fit: cover; }
-        .jc-modal-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .jc-modal-name { color: #fff; font-weight: 800; text-transform: uppercase; font-size: 20px; line-height: 1.15; margin-top: 6px; }
-        .jc-modal-teamcode { color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 2px; }
-        .jc-stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 18px 0; }
-        @media (max-width: 560px) { .jc-stat-grid { grid-template-columns: repeat(3, 1fr); } }
-        .jc-stat-tile { background: #0c1730; border-radius: 10px; padding: 10px 6px; text-align: center; }
-        .jc-stat-tile b { display: block; color: #fff; font-size: 17px; font-weight: 800; }
-        .jc-stat-tile span { display: block; color: rgba(255,255,255,0.55); font-size: 8px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
-        .jc-modal-section { margin-top: 18px; }
-        .jc-modal-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #17294a; margin: 0 0 8px; }
-        .jc-modal-placeholder { background: #f9fafb; border: 1px dashed #e5e7eb; border-radius: 10px; padding: 16px; text-align: center; color: #9ca3af; font-size: 12px; }
-        .jc-modal-discipline { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #17294a; font-weight: 600; }
-        .jc-modal-sponsor { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding: 12px 14px; background: #f9fafb; border-radius: 10px; }
-        .jc-modal-sponsor img { width: 34px; height: 34px; object-fit: contain; border-radius: 6px; background: #fff; border: 1px solid #e5e7eb; }
+        .jc-modal-top { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; }
+        .jc-modal-name { position: relative; z-index: 2; color: #fff; font-weight: 800; text-transform: uppercase; font-size: 20px; line-height: 1.15; margin-top: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .jc-modal-teamcode { position: relative; z-index: 2; color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 2px; }
+        .jc-modal-stat { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 20px 22px 4px; padding: 14px; background: #f3f4f6; border-radius: 10px; }
+        .jc-modal-stat b { font-size: 22px; font-weight: 800; color: #17294a; }
+        .jc-modal-stat span { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; }
+        .jc-modal-sponsor { display: flex; align-items: center; gap: 10px; margin: 14px 22px 22px; padding: 10px 14px; background: #f9fafb; border-radius: 10px; }
+        .jc-modal-sponsor img { width: 30px; height: 30px; object-fit: contain; border-radius: 6px; background: #fff; border: 1px solid #e5e7eb; }
         .jc-modal-sponsor span { display: block; font-size: 9px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }
         .jc-modal-sponsor b { display: block; font-size: 13px; color: #17294a; }
 
@@ -690,17 +692,18 @@
         // 'Nombre del jugador': 'clave-patrocinador',
     };
 
-    // Rating (1-99) de cada jugador — tú lo decides, como en un videojuego deportivo.
-    // Un jugador que no aparezca aquí empieza en 15 ("Novato") hasta que le asignes uno.
+    // Rating (50-99) de cada jugador — tú lo decides, como en un videojuego deportivo.
+    // Todos arrancan en 50 (carta de Bronce) hasta que les asignes uno distinto aquí.
     const RATING_JUGADOR = {
-        // 'Nombre del jugador': 88,
+        // 'Nombre del jugador': 78,
     };
 
-    // Categoría / división de cada EQUIPO (ej. "Preinfantil", "Juvenil", "Libre").
-    // Un equipo que no aparezca aquí simplemente no muestra la etiqueta de categoría.
-    const CATEGORIA_EQUIPO = {
-        // 'Nombre del equipo': 'Juvenil',
-    };
+    // Porteros/arqueros — escribe aquí el nombre EXACTO de cada portero del torneo.
+    // Su estadística en la carta son las vallas invictas del equipo (no goles).
+    // Todo jugador que no aparezca aquí se trata como jugador de campo (su estadística son los goles).
+    const PORTEROS = new Set([
+        // 'Nombre del portero',
+    ]);
 
     function hashTexto(str) {
         let h = 0;
@@ -708,12 +711,17 @@
         return Math.abs(h);
     }
 
+    // Gama de rareza estilo EA FC — el color de la carta sube con el rating:
+    // 50 Bronce · 60 Bronce especial · 65 Plata · 70 Plata especial ·
+    // 75 Oro · 85 Oro especial · 90+ carta especial azul (estilo TOTW/Team of the Week).
     function obtenerTier(rating) {
-        if (rating >= 90) return 'Élite';
-        if (rating >= 75) return 'Destacado';
-        if (rating >= 60) return 'Competidor';
-        if (rating >= 40) return 'Amateur';
-        return 'Novato';
+        if (rating >= 90) return { label: 'Especial', clase: 'jc-t-totw jc-shine' };
+        if (rating >= 85) return { label: 'Oro Especial', clase: 'jc-t-oro-esp jc-shine' };
+        if (rating >= 75) return { label: 'Oro', clase: 'jc-t-oro' };
+        if (rating >= 70) return { label: 'Plata Especial', clase: 'jc-t-plata-esp jc-shine' };
+        if (rating >= 65) return { label: 'Plata', clase: 'jc-t-plata' };
+        if (rating >= 60) return { label: 'Bronce Especial', clase: 'jc-t-bronce-esp jc-shine' };
+        return { label: 'Bronce', clase: 'jc-t-bronce' };
     }
 
     const CLAVES_PATROCINADORES = Object.keys(PATROCINADORES);
@@ -1758,7 +1766,22 @@
                 </tr>`).join('');
         }
 
-        // ---- Jugadores (roster real + goles reales + rating/categoría/patrocinador) ----
+        // ---- Jugadores (roster real + estadística de fútbol + rating/patrocinador) ----
+        // Torneo de una sola disciplina (fútbol): arqueros muestran vallas invictas del
+        // equipo, jugadores de campo muestran sus goles reales.
+        getCleanSheetsByTeam() {
+            const map = new Map();
+            const process = (matches) => (matches || []).forEach(m => {
+                if (!m.played || m.score1 == null || m.score2 == null) return;
+                if (m.score2 === 0) map.set(m.team1, (map.get(m.team1) || 0) + 1);
+                if (m.score1 === 0) map.set(m.team2, (map.get(m.team2) || 0) + 1);
+            });
+            this.schedule.forEach(r => process(r.matches));
+            if (this.knockout?.semifinals) process(this.knockout.semifinals);
+            if (this.knockout?.final) process(this.knockout.final);
+            return map;
+        }
+
         getAllPlayers() {
             const golesPorJugador = new Map();
             const process = (matches) => (matches || []).forEach(m => (m.scorers || []).forEach(s => {
@@ -1768,27 +1791,27 @@
             this.schedule.forEach(r => process(r.matches));
             if (this.knockout?.semifinals) process(this.knockout.semifinals);
             if (this.knockout?.final) process(this.knockout.final);
+            const vallasPorEquipo = this.getCleanSheetsByTeam();
 
             const jugadores = [];
             this.teams.forEach(t => {
                 this.getRosterNames(t.name).forEach(nombre => {
                     const patroKey = PATROCINIOS_JUGADOR[nombre];
-                    const rating = RATING_JUGADOR[nombre] ?? 15;
+                    const rating = RATING_JUGADOR[nombre] ?? 50;
+                    const esPortero = PORTEROS.has(nombre);
                     jugadores.push({
                         nombre,
                         equipo: t.name,
                         equipoCodigo: codigoEquipo(t.name),
-                        categoria: CATEGORIA_EQUIPO[t.name] || '',
-                        goles: golesPorJugador.get(`${nombre}||${t.name}`) || 0,
+                        esPortero,
+                        statValor: esPortero ? (vallasPorEquipo.get(t.name) || 0) : (golesPorJugador.get(`${nombre}||${t.name}`) || 0),
                         rating,
                         tier: obtenerTier(rating),
                         patrocinador: (patroKey && PATROCINADORES[patroKey]) || patrocinadorAleatorio(nombre)
                     });
                 });
             });
-            jugadores.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
-            jugadores.forEach((j, i) => { j.codigo = `FC${String(i + 1).padStart(3, '0')}`; });
-            return jugadores;
+            return jugadores.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
         }
 
         populateJugadoresTeamFilter() {
@@ -1833,29 +1856,26 @@
 
             grid.innerHTML = filtered.map((j, i) => {
                 const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-                const catHtml = j.categoria ? `<span class="jc-cat-pill">${escapeHtml(j.categoria)}</span>` : '<span></span>';
-                const sponsorHtml = j.patrocinador ? `
-                    <div class="jc-sponsor-strip">
-                        <img src="${escapeHtml(j.patrocinador.logo)}" alt="${escapeHtml(j.patrocinador.nombre)}">
-                        <div><span>Patrocina</span><b>${escapeHtml(j.patrocinador.nombre)}</b></div>
-                    </div>` : '';
-                return `<div class="jc-card" onclick="app.verJugador(${i})">
-                    <div class="jc-idcode">${escapeHtml(j.codigo)}</div>
+                const posPill = j.esPortero ? '<span class="jc-pos-pill">POR</span>' : '<span></span>';
+                const statLabel = j.esPortero
+                    ? `🧤 ${j.statValor} valla${j.statValor === 1 ? '' : 's'} invicta${j.statValor === 1 ? '' : 's'}`
+                    : `⚽ ${j.statValor} gol${j.statValor === 1 ? '' : 'es'}`;
+                const sponsorBg = j.patrocinador ? `<div class="jc-sponsor-bg"><img src="${escapeHtml(j.patrocinador.logo)}" alt=""></div>` : '';
+                return `<div class="jc-card ${j.tier.clase}" onclick="app.verJugador(${i})">
                     <div class="jc-card-top">
                         <div>
                             <div class="jc-rating">${j.rating}</div>
-                            <div class="jc-tier">${escapeHtml(j.tier)}</div>
+                            <div class="jc-tier-label">${escapeHtml(j.tier.label)}</div>
                         </div>
-                        ${catHtml}
+                        ${posPill}
                     </div>
-                    <div class="jc-photo">${escapeHtml(iniciales)}</div>
+                    <div class="jc-photo-wrap">
+                        ${sponsorBg}
+                        <div class="jc-photo-fg">${escapeHtml(iniciales)}</div>
+                    </div>
                     <div class="jc-name2">${escapeHtml(j.nombre)}</div>
                     <div class="jc-teamcode">${escapeHtml(j.equipoCodigo)}</div>
-                    <div class="jc-xp-row"><span>Experiencia</span><b>0 XP</b></div>
-                    <div class="jc-xp-bar"><div class="jc-xp-fill" style="width:0%"></div></div>
-                    <div class="jc-mini-stats"><span>Sin estadísticas</span><span>0PJ · 0W</span></div>
-                    <div class="jc-footer-row"><span>★ Rating ${j.rating}</span><span>1 disciplina</span></div>
-                    ${sponsorHtml}
+                    <div class="jc-stat-line">${statLabel}</div>
                 </div>`;
             }).join('');
         }
@@ -1864,10 +1884,9 @@
             const j = this._jugadoresFiltrados?.[idx];
             if (!j) return;
             const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-            const catHtml = j.categoria ? `<span class="jc-cat-pill">${escapeHtml(j.categoria)}</span>` : '';
-            const disciplinaHtml = j.goles > 0
-                ? `<div class="jc-modal-discipline"><span>⚽ Fútbol</span><span>${j.goles} gol${j.goles === 1 ? '' : 'es'}</span></div>`
-                : '<div class="jc-modal-placeholder">Aún no hay resultados registrados para este jugador.</div>';
+            const posPill = j.esPortero ? '<span class="jc-pos-pill">POR</span>' : '';
+            const statLabel = j.esPortero ? 'Vallas invictas del equipo' : 'Goles en el torneo';
+            const sponsorBg = j.patrocinador ? `<div class="jc-sponsor-bg-modal"><img src="${escapeHtml(j.patrocinador.logo)}" alt=""></div>` : '';
             const sponsorHtml = j.patrocinador ? `
                 <div class="jc-modal-sponsor">
                     <img src="${escapeHtml(j.patrocinador.logo)}" alt="${escapeHtml(j.patrocinador.nombre)}">
@@ -1875,43 +1894,26 @@
                 </div>` : '';
 
             document.getElementById('modal-jugador-body').innerHTML = `
-                <div class="jc-modal-hero">
+                <div class="jc-modal-hero ${j.tier.clase}">
+                    ${sponsorBg}
                     <div class="jc-modal-photo">${escapeHtml(iniciales)}</div>
                     <div>
                         <div class="jc-modal-top">
                             <div>
                                 <div class="jc-rating" style="font-size:32px;">${j.rating}</div>
-                                <div class="jc-tier">${escapeHtml(j.tier)}</div>
+                                <div class="jc-tier-label">${escapeHtml(j.tier.label)}</div>
                             </div>
-                            ${catHtml}
+                            ${posPill}
                         </div>
-                        <div style="font-size:8px; color:rgba(255,255,255,0.5); letter-spacing:0.05em; margin-top:4px;">${escapeHtml(j.codigo)}</div>
+                        <h3 class="jc-modal-name">${escapeHtml(j.nombre)}</h3>
+                        <p class="jc-modal-teamcode">${escapeHtml(j.equipo)}</p>
                     </div>
                 </div>
-                <div style="text-align:left; padding:18px 22px 24px;">
-                    <h3 class="jc-modal-name" style="color:#17294a; margin-top:0;">${escapeHtml(j.nombre)}</h3>
-                    <p class="jc-modal-teamcode" style="color:#6b7280;">${escapeHtml(j.equipo)} · ${escapeHtml(j.equipoCodigo)}</p>
-
-                    <div class="jc-stat-grid">
-                        <div class="jc-stat-tile"><b>0</b><span>Partidos</span></div>
-                        <div class="jc-stat-tile"><b>0</b><span>Victorias</span></div>
-                        <div class="jc-stat-tile"><b>0</b><span>Empates</span></div>
-                        <div class="jc-stat-tile"><b>0</b><span>Derrotas</span></div>
-                        <div class="jc-stat-tile"><b>0%</b><span>Efectividad</span></div>
-                    </div>
-
-                    <p style="font-size:13px; color:#17294a; margin:0 0 4px;"><b>0 XP</b> <span style="color:#9ca3af;">Experiencia acumulada</span></p>
-
-                    <div class="jc-modal-section">
-                        <h4>Estadísticas por disciplina</h4>
-                        ${disciplinaHtml}
-                    </div>
-                    <div class="jc-modal-section">
-                        <h4>Últimos resultados</h4>
-                        <div class="jc-modal-placeholder">Cuando participe en partidos finalizados, sus resultados aparecerán aquí.</div>
-                    </div>
-                    ${sponsorHtml}
+                <div class="jc-modal-stat">
+                    <b>${j.statValor}</b>
+                    <span>${statLabel}</span>
                 </div>
+                ${sponsorHtml}
             `;
             document.getElementById('modal-jugador').classList.remove('hidden');
         }
