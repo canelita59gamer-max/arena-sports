@@ -1,0 +1,413 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Inicio Arena Sports" [ref=e3] [cursor=pointer]:
+      - /url: "#top"
+      - img "Arena Sports" [ref=e4]
+      - generic [ref=e5]: Arena Sports
+    - generic [ref=e6]:
+      - link "Servicios" [ref=e7] [cursor=pointer]:
+        - /url: "#servicios"
+      - link "Historial" [ref=e8] [cursor=pointer]:
+        - /url: "#historial"
+      - link "Agenda" [ref=e9] [cursor=pointer]:
+        - /url: "#proximos"
+      - link "Patrocinadores" [ref=e10] [cursor=pointer]:
+        - /url: "#nuestros-patrocinadores"
+      - link "Contacto" [ref=e11] [cursor=pointer]:
+        - /url: "#contacto"
+  - generic [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]: Arena Sports · Organización Profesional de Eventos Deportivos
+      - heading "Donde el juego se vuelve historia" [level=1] [ref=e15]
+      - paragraph [ref=e16]: Creamos experiencias deportivas memorables, con disciplina, identidad y una ejecución impecable. Desde torneos comunitarios hasta grandes propuestas para marcas e instituciones.
+      - generic [ref=e17]:
+        - link "Organiza con Nosotros" [ref=e18] [cursor=pointer]:
+          - /url: "#contacto"
+        - link "Ver Historial" [ref=e19] [cursor=pointer]:
+          - /url: "#historial"
+    - generic [ref=e22]:
+      - generic [ref=e23]: Fútbol
+      - generic [ref=e25]: Básquetbol
+      - generic [ref=e27]: Voleibol
+      - generic [ref=e29]: Multideporte
+    - generic [ref=e31]: Scroll
+  - generic [ref=e34]:
+    - generic [ref=e35]: Arena Sports
+    - generic [ref=e36]: ✦
+    - generic [ref=e37]: Donde el Juego se Vuelve Historia
+    - generic [ref=e38]: ✦
+    - generic [ref=e39]: Eventos Multideporte
+    - generic [ref=e40]: ✦
+    - generic [ref=e41]: Fútbol · Básquetbol · Voleibol
+    - generic [ref=e42]: ✦
+    - generic [ref=e43]: Comunidades · Empresas · Instituciones
+    - generic [ref=e44]: ✦
+    - generic [ref=e45]: Arena Sports
+    - generic [ref=e46]: ✦
+    - generic [ref=e47]: Donde el Juego se Vuelve Historia
+    - generic [ref=e48]: ✦
+    - generic [ref=e49]: Eventos Multideporte
+    - generic [ref=e50]: ✦
+    - generic [ref=e51]: Fútbol · Básquetbol · Voleibol
+    - generic [ref=e52]: ✦
+    - generic [ref=e53]: Comunidades · Empresas · Instituciones
+    - generic [ref=e54]: ✦
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]: Qué ofrecemos
+      - heading "Nuestros Servicios" [level=2] [ref=e58]: NuestrosServicios
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e61]: "01"
+        - generic [ref=e62]: Organización de Torneos
+        - paragraph [ref=e63]: Diseñamos cada competencia con estructura, solvencia y detalle, desde la planificación hasta la premiación final.
+      - generic [ref=e64]:
+        - generic [ref=e65]: "02"
+        - generic [ref=e66]: Cobertura & Difusión
+        - paragraph [ref=e67]: Capturamos cada momento con una mirada profesional para que el evento viva más allá del día de juego.
+      - generic [ref=e68]:
+        - generic [ref=e69]: "03"
+        - generic [ref=e70]: Gestión de Patrocinios
+        - paragraph [ref=e71]: Conectamos marcas con experiencias de alto impacto, creando visibilidad auténtica y valor real para cada alianza.
+      - generic [ref=e72]:
+        - generic [ref=e73]: "04"
+        - generic [ref=e74]: Ligas Corporativas
+        - paragraph [ref=e75]: Diseñamos experiencias deportivas que fortalecen equipos, marcas y culturas institucionales con propósito y energía.
+      - generic [ref=e76]:
+        - generic [ref=e77]: "05"
+        - generic [ref=e78]: Torneos Comunitarios
+        - paragraph [ref=e79]: Impulsamos espacios de encuentro y orgullo comunitario, donde el deporte une y deja huella.
+      - generic [ref=e80]:
+        - generic [ref=e81]: "06"
+        - generic [ref=e82]: Consultoría Deportiva
+        - paragraph [ref=e83]: Acompañamos a instituciones que desean construir torneos con metodología, orden y una propuesta deportiva sólida.
+  - generic [ref=e85]:
+    - img "Copa FE" [ref=e86]
+    - link "Ver Torneo en Vivo" [ref=e87] [cursor=pointer]:
+      - /url: torneo.html
+  - generic [ref=e88]:
+    - generic [ref=e89]:
+      - generic [ref=e90]: Trayectoria
+      - heading "Eventos Realizados" [level=2] [ref=e91]: EventosRealizados
+    - generic [ref=e92]:
+      - 'button "Abril 2026 · Primer Evento Torneo Intercolegiados Beth Shalom Colegio Beth Shalom 5 equipos · 2 meses de competencia · experiencia de alto impacto Intercolegiados Multideporte Campeón: José Celestino Mutis" [ref=e93] [cursor=pointer]':
+        - generic [ref=e94]: Abril 2026 · Primer Evento
+        - heading "Torneo Intercolegiados Beth Shalom" [level=3] [ref=e95]
+        - paragraph [ref=e96]: Colegio Beth Shalom5 equipos · 2 meses de competencia · experiencia de alto impacto
+        - generic [ref=e98]:
+          - generic [ref=e99]: Intercolegiados
+          - generic [ref=e100]: Multideporte
+        - generic [ref=e101]:
+          - text: "Campeón:"
+          - strong [ref=e103]: José Celestino Mutis
+      - generic [ref=e104]:
+        - generic [ref=e105]: +
+        - generic [ref=e106]: Próximo Registro
+        - generic [ref=e107]: Se añadirá al finalizar el torneo actual
+  - generic [ref=e108]:
+    - generic [ref=e109]:
+      - generic [ref=e110]: Agenda
+      - heading "Próximos Eventos" [level=2] [ref=e111]: PróximosEventos
+    - generic [ref=e112]:
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - generic [ref=e115]: Ago
+          - generic [ref=e116]: "2026"
+        - generic [ref=e117]:
+          - heading "Inicio Torneo Interiglesias" [level=4] [ref=e118]
+          - paragraph [ref=e119]: Una nueva propuesta en camino, pensada para conectar competencia, emoción y comunidad.
+        - generic [ref=e120]: Próximo
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - generic [ref=e123]: —
+          - generic [ref=e124]: Por definir
+        - generic [ref=e125]:
+          - heading "Por definir" [level=4] [ref=e126]
+          - paragraph [ref=e127]: Detalles por confirmar
+        - generic [ref=e128]: Por definir
+      - generic [ref=e129]:
+        - generic [ref=e130]:
+          - generic [ref=e131]: —
+          - generic [ref=e132]: Por definir
+        - generic [ref=e133]:
+          - heading "Por definir" [level=4] [ref=e134]
+          - paragraph [ref=e135]: Detalles por confirmar
+        - generic [ref=e136]: Por definir
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - generic [ref=e139]: —
+          - generic [ref=e140]: Por definir
+        - generic [ref=e141]:
+          - heading "Por definir" [level=4] [ref=e142]
+          - paragraph [ref=e143]: Detalles por confirmar
+        - generic [ref=e144]: Por definir
+  - generic [ref=e145]:
+    - generic [ref=e146]:
+      - generic [ref=e147]: Gracias por creer en nosotros
+      - heading "Nuestros Patrocinadores" [level=2] [ref=e148]: NuestrosPatrocinadores
+    - paragraph [ref=e149]: Estas son las empresas que hoy hacen posible que sigamos organizando eventos deportivos y comunitarios. Gracias por su apoyo.
+    - generic [ref=e150]:
+      - generic [ref=e151]:
+        - img "El Mero Taco" [ref=e152]
+        - heading "El Mero Taco" [level=3] [ref=e153]
+        - paragraph [ref=e154]: Taquería mexicana en Piedecuesta — tacos hechos con sazón auténtico.
+        - generic [ref=e155]:
+          - link "Instagram" [ref=e156] [cursor=pointer]:
+            - /url: https://www.instagram.com/elmero.taco/
+            - generic [ref=e157]: 
+          - link "TikTok" [ref=e158] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@elmerotaco6
+            - generic [ref=e159]: 
+          - link "WhatsApp" [ref=e160] [cursor=pointer]:
+            - /url: https://wa.me/573183000593
+            - generic [ref=e161]: 
+      - generic [ref=e162]:
+        - img "Comunidad Espresso" [ref=e163]
+        - heading "Comunidad Espresso" [level=3] [ref=e164]
+        - paragraph [ref=e165]: Iglesia en Piedecuesta comprometida con la comunidad y la juventud.
+        - generic [ref=e166]:
+          - link "Instagram" [ref=e167] [cursor=pointer]:
+            - /url: https://www.instagram.com/comunidadespresso/
+            - generic [ref=e168]: 
+          - link "TikTok" [ref=e169] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@comunidad.espresso
+            - generic [ref=e170]: 
+      - generic [ref=e171]:
+        - img "Negrón" [ref=e172]
+        - heading "Negrón" [level=3] [ref=e173]
+        - paragraph [ref=e174]: Floristería & Chocolatería — detalles y dulces para cada ocasión.
+        - generic [ref=e175]:
+          - link "Sitio web" [ref=e176] [cursor=pointer]:
+            - /url: https://www.amonegron.com
+            - generic [ref=e177]: 
+          - link "Instagram" [ref=e178] [cursor=pointer]:
+            - /url: https://www.instagram.com/negron_oficial/
+            - generic [ref=e179]: 
+          - link "TikTok" [ref=e180] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@negron.oficial
+            - generic [ref=e181]: 
+      - generic [ref=e182]:
+        - img "Luminus Car" [ref=e183]
+        - heading "Luminus Car" [level=3] [ref=e184]
+        - paragraph [ref=e185]: Detailing y embellecimiento automotriz en Bucaramanga.
+        - link "Instagram" [ref=e187] [cursor=pointer]:
+          - /url: https://www.instagram.com/luminuscar_bga/
+          - generic [ref=e188]: 
+      - generic [ref=e189]:
+        - img "MV Autos" [ref=e190]
+        - heading "MV Autos" [level=3] [ref=e191]
+        - paragraph [ref=e192]: Concesionaria de autos en Bucaramanga.
+        - link "Instagram" [ref=e194] [cursor=pointer]:
+          - /url: https://www.instagram.com/mv_autos_/
+          - generic [ref=e195]: 
+      - generic [ref=e196]:
+        - img "Servicentro" [ref=e197]
+        - heading "Servicentro" [level=3] [ref=e198]
+        - paragraph [ref=e199]: Lubricantes, aceites y mantenimiento para tu vehículo.
+        - generic [ref=e200]:
+          - link "Instagram" [ref=e201] [cursor=pointer]:
+            - /url: https://www.instagram.com/servicentromoderno/
+            - generic [ref=e202]: 
+          - link "WhatsApp" [ref=e203] [cursor=pointer]:
+            - /url: https://wa.me/573202791482
+            - generic [ref=e204]: 
+      - generic [ref=e205]:
+        - img "Superdrogas Piedecuesta" [ref=e206]
+        - heading "Superdrogas Piedecuesta" [level=3] [ref=e207]
+        - paragraph [ref=e208]: Droguería — una mano amiga, siempre.
+        - link "TikTok" [ref=e210] [cursor=pointer]:
+          - /url: https://www.tiktok.com/@henryman116
+          - generic [ref=e211]: 
+      - generic [ref=e212]:
+        - img "Avila Market" [ref=e213]
+        - heading "Avila Market" [level=3] [ref=e214]
+        - paragraph [ref=e215]: Mercado ubicado en el sector Versalles.
+        - link "WhatsApp" [ref=e217] [cursor=pointer]:
+          - /url: https://wa.me/573028684769
+          - generic [ref=e218]: 
+      - generic [ref=e219]:
+        - img "Dr. Oscar Mendoza" [ref=e220]
+        - heading "Dr. Oscar Mendoza" [level=3] [ref=e221]
+        - paragraph [ref=e222]: Medicina domiciliaria — atención médica en la comodidad de tu hogar.
+        - generic [ref=e223]:
+          - link "Sitio web" [ref=e224] [cursor=pointer]:
+            - /url: https://oscarmendoza.co/
+            - generic [ref=e225]: 
+          - link "Instagram" [ref=e226] [cursor=pointer]:
+            - /url: https://www.instagram.com/oscarmendoza.co
+            - generic [ref=e227]: 
+          - link "TikTok" [ref=e228] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@oscarmendoza.co/
+            - generic [ref=e229]: 
+          - link "WhatsApp" [ref=e230] [cursor=pointer]:
+            - /url: https://wa.me/573025978424
+            - generic [ref=e231]: 
+  - generic [ref=e232]:
+    - generic [ref=e233]:
+      - generic [ref=e234]: Alianzas Estratégicas
+      - heading "Patrocinadores & Aliados" [level=2] [ref=e235]: Patrocinadores& Aliados
+    - paragraph [ref=e236]: "Tu marca al lado del deporte comunitario. Cada torneo es una plataforma de visibilidad real: familias, jóvenes y comunidades que ven tu empresa como parte de algo que importa."
+    - generic [ref=e237]:
+      - generic [ref=e238]:
+        - generic [ref=e239]: ★ Oro
+        - generic [ref=e240]: Logo en camisetas, banner principal, mención en todas las redes, presentación en ceremonia y transmisión en vivo.
+        - generic [ref=e241]: Precio a convenir
+      - generic [ref=e242]:
+        - generic [ref=e243]: ● Plata
+        - generic [ref=e244]: Logo en banner lateral, mención en redes sociales del evento y reconocimiento en ceremonia de premiación.
+        - generic [ref=e245]: Precio a convenir
+      - generic [ref=e246]:
+        - generic [ref=e247]: ◆ Bronce
+        - generic [ref=e248]: Logo en material digital del evento y mención en publicaciones de redes sociales.
+        - generic [ref=e249]: Precio a convenir
+    - generic [ref=e250]:
+      - img "El Mero Taco" [ref=e252]
+      - img "Comunidad Espresso" [ref=e254]
+      - img "Negrón" [ref=e256]
+      - img "Luminus Car" [ref=e258]
+      - img "MV Autos" [ref=e260]
+      - img "Servicentro" [ref=e262]
+      - img "Superdrogas Piedecuesta" [ref=e264]
+      - img "Avila Market" [ref=e266]
+      - img "Dr. Oscar Mendoza" [ref=e268]
+      - generic [ref=e269] [cursor=pointer]: + Disponible
+      - generic [ref=e270] [cursor=pointer]: + Disponible
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - heading "¿Tu empresa quiere patrocinar?" [level=3] [ref=e273]
+        - paragraph [ref=e274]: Hablemos. Encontramos el paquete que mejor se adapta a tus objetivos y presupuesto.
+      - link "Quiero Patrocinar" [ref=e275] [cursor=pointer]:
+        - /url: "#contacto"
+  - generic [ref=e277]:
+    - generic [ref=e278]:
+      - generic [ref=e279]: Nuestra Visión
+      - heading "Hacia dónde vamos" [level=2] [ref=e280]: Hacia dóndevamos
+      - paragraph [ref=e281]: Somos más que organizadores de torneos. Creemos que el deporte bien organizado transforma comunidades, genera oportunidades y conecta personas.
+      - paragraph [ref=e282]: "Empezamos con un torneo interiglesias porque ahí está nuestra raíz — pero el horizonte es mucho más amplio: ligas corporativas, eventos intercomunidades, torneos abiertos con transmisión en vivo y patrocinadores de alto nivel."
+      - paragraph [ref=e283]: Cada evento que organizamos es un paso hacia construir una organización deportiva de referencia en la región.
+    - generic [ref=e284]:
+      - generic [ref=e285]:
+        - generic [ref=e286]: ✓
+        - generic [ref=e287]:
+          - heading "El Primer Paso Ya Está Dado" [level=4] [ref=e288]
+          - paragraph [ref=e289]: Arrancamos con el I Torneo Interiglesias 2026 — nuestra prueba de concepto. Organización, disciplina y estándares profesionales desde el día uno.
+      - generic [ref=e290]:
+        - generic [ref=e291]: ○
+        - generic [ref=e292]:
+          - heading "Ser la Liga de Referencia en la Región" [level=4] [ref=e293]
+          - paragraph [ref=e294]: Que cuando alguien en Floridablanca o Bucaramanga piense en torneos deportivos serios, piense en Arena Sports. Esa reputación se construye evento a evento.
+      - generic [ref=e295]:
+        - generic [ref=e296]: ○
+        - generic [ref=e297]:
+          - heading "Expandirnos a Todo Colombia" [level=4] [ref=e298]
+          - paragraph [ref=e299]: Llevar el modelo Arena Sports a otras ciudades. Torneos intercomunidades, ligas corporativas e institucionales con producción profesional y transmisión en vivo.
+      - generic [ref=e300]:
+        - generic [ref=e301]: ○
+        - generic [ref=e302]:
+          - heading "Una Marca Deportiva de Nivel Internacional" [level=4] [ref=e303]
+          - paragraph [ref=e304]: "La meta final es clara: que Arena Sports compita en visibilidad y estándares con las grandes organizaciones deportivas de América Latina. El juego apenas empieza."
+  - generic [ref=e305]:
+    - generic [ref=e306]:
+      - generic [ref=e307]: Síguenos
+      - heading "Redes Sociales" [level=2] [ref=e308]: RedesSociales
+    - generic [ref=e309]:
+      - link " Instagram @arenasportsco_ ↗" [ref=e310] [cursor=pointer]:
+        - /url: https://www.instagram.com/arenasportsco_?igsh=MWNieW14cW9seDBkcA%3D%3D&utm_source=qr
+        - generic [ref=e311]: 
+        - heading "Instagram" [level=3] [ref=e313]
+        - generic [ref=e314]: "@arenasportsco_"
+        - generic [ref=e315]: ↗
+      - link " YouTube @ArenaSportsCo ↗" [ref=e316] [cursor=pointer]:
+        - /url: https://www.youtube.com/@ArenaSportsCo
+        - generic [ref=e317]: 
+        - heading "YouTube" [level=3] [ref=e319]
+        - generic [ref=e320]: "@ArenaSportsCo"
+        - generic [ref=e321]: ↗
+      - link " WhatsApp Inscripciones & Consultas ↗" [ref=e322] [cursor=pointer]:
+        - /url: https://wa.me/57TUNUMERO
+        - generic [ref=e323]: 
+        - heading "WhatsApp" [level=3] [ref=e325]
+        - generic [ref=e326]: Inscripciones & Consultas
+        - generic [ref=e327]: ↗
+      - link " TikTok @arenasportsco_ ↗" [ref=e328] [cursor=pointer]:
+        - /url: https://www.tiktok.com/@arenasportsco_
+        - generic [ref=e329]: 
+        - heading "TikTok" [level=3] [ref=e331]
+        - generic [ref=e332]: "@arenasportsco_"
+        - generic [ref=e333]: ↗
+  - generic [ref=e335]:
+    - generic [ref=e336]:
+      - generic [ref=e337]: Trabajemos Juntos
+      - heading "Contáctanos" [level=2] [ref=e338]
+      - paragraph [ref=e339]: ¿Quieres organizar un torneo, patrocinar un evento o recibir más información? Escríbenos y te respondemos pronto.
+      - generic [ref=e340]:
+        - generic [ref=e341]: arenasports.eventos@gmail.com
+        - generic [ref=e344]: +57 322 246 2392
+        - generic [ref=e347]: Colombia
+      - link " Escribir por WhatsApp" [ref=e350] [cursor=pointer]:
+        - /url: https://wa.me/573222462392?text=Hola%20Arena%20Sports%2C%20quiero%20más%20información%20sobre%20sus%20eventos.
+        - generic [ref=e351]: 
+        - text: Escribir por WhatsApp
+    - generic [ref=e354]:
+      - generic [ref=e355]:
+        - generic [ref=e356]: Nombre completo
+        - textbox "Nombre completo" [ref=e357]:
+          - /placeholder: Tu nombre
+      - generic [ref=e358]:
+        - generic [ref=e359]: Correo / WhatsApp
+        - textbox "Correo / WhatsApp" [ref=e360]:
+          - /placeholder: tu@correo.com o +57 300...
+      - generic [ref=e361]:
+        - generic [ref=e362]: ¿Qué necesitas?
+        - combobox "¿Qué necesitas?" [ref=e363]:
+          - option "Selecciona una opción" [selected]
+          - option "Organizar un torneo"
+          - option "Patrocinar un evento"
+          - option "Liga corporativa o institucional"
+          - option "Información general"
+          - option "Otro"
+      - generic [ref=e364]:
+        - generic [ref=e365]: Mensaje
+        - textbox "Mensaje" [ref=e366]:
+          - /placeholder: Cuéntanos de tu proyecto o evento...
+      - button "Enviar Mensaje" [ref=e367] [cursor=pointer]
+      - paragraph [ref=e368]
+  - contentinfo [ref=e369]:
+    - generic [ref=e370]:
+      - emphasis [ref=e371]: ARENA
+      - text: SPORTS
+    - paragraph [ref=e372]: Donde el juego se vuelve historia · Organización Profesional de Eventos Deportivos
+    - paragraph [ref=e373]: © 2026 Arena Sports · Todos los derechos reservados
+  - generic [ref=e374]:
+    - button "SPONSORS ‹" [ref=e375] [cursor=pointer]:
+      - generic [ref=e376]: SPONSORS
+      - generic [ref=e377]: ‹
+    - generic [ref=e378]:
+      - generic:
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e379] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e380] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e381] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e382] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e383] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e384] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e385] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e386] [cursor=pointer]
+        - link "Patrocinador":
+          - /url: "#nuestros-patrocinadores"
+          - img "Patrocinador" [ref=e387] [cursor=pointer]

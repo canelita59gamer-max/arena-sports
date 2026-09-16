@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faith Cup 2026 - Arena Sports</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -24,9 +25,11 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #cccccc; }
-        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.5rem; border-top: 4px solid #c8f000; }
-        .btn { border-radius: 0.75rem; font-weight: 700; transition: all 0.2s ease-in-out; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.5rem; border-top: 4px solid #c8f000; transition: transform .25s ease, box-shadow .25s ease; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 16px 30px -8px rgba(0,0,0,0.35), 0 0 0 1px rgba(200,240,0,0.35); }
+        .btn { border-radius: 0.75rem; font-weight: 700; transition: all 0.2s ease-in-out; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); letter-spacing: .01em; }
         .btn:active:not(:disabled) { transform: scale(0.96); }
+        .btn:focus-visible { outline: 2px solid #c8f000; outline-offset: 2px; }
         .btn:disabled { background-color: #cbd5e1 !important; color: #475569 !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; border: none !important; }
         .btn-primary { background-color: #0a0a0a; color: #c8f000; border: 1px solid #c8f000; }
         .btn-primary:hover:not(:disabled) { background-color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(200,240,0,0.3); }
@@ -40,6 +43,7 @@
         .btn-warning:hover:not(:disabled) { background-color: #b45309; transform: translateY(-2px); }
         .input-field { width: 100%; padding: 0.6rem; border: 1px solid #d1d5db; border-radius: 0.5rem; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
         .input-field:focus { border-color: #c8f000; box-shadow: 0 0 0 2px rgba(200,240,0,0.3); }
+        .icon-inline { width: 1em; height: 1em; vertical-align: -0.15em; display: inline-block; stroke-width: 2.2; }
         .vista-oculta { display: none !important; }
         .vista-activa { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -336,12 +340,12 @@
                         </button>
                     </div>
                     <p id="team-tournament-notice" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-2 mb-3">
-                        ⚠️ El torneo ya inició. Solo puedes <strong>editar</strong> nombres o <strong>retirar</strong> equipos. Al retirar, los partidos pendientes se reorganizarán.
+                        <i data-lucide="triangle-alert" class="icon-inline"></i> El torneo ya inició. Solo puedes <strong>editar</strong> nombres o <strong>retirar</strong> equipos. Al retirar, los partidos pendientes se reorganizarán.
                     </p>
                     <div class="space-y-2" id="teams-list"></div>
                     <div id="import-legacy-wrapper" class="mt-4 pt-4 border-t border-dashed border-gray-300 hidden">
                         <p class="text-xs text-gray-500 mb-2">¿Ya tenías un calendario corriendo en el sistema anterior? Impórtalo una sola vez, sin perder fechas ni resultados ya jugados.</p>
-                        <button onclick="app.migrarDatosAntiguos()" class="btn btn-warning w-full py-2 text-sm">📥 Importar calendario del sistema anterior</button>
+                        <button onclick="app.migrarDatosAntiguos()" class="btn btn-warning w-full py-2 text-sm"><i data-lucide="download" class="icon-inline"></i> Importar calendario del sistema anterior</button>
                     </div>
                 </div>
 
@@ -388,7 +392,7 @@
                         <button id="generate-schedule-btn" onclick="app.generateSchedule()" class="btn btn-secondary w-full py-3 mb-4" disabled>Generar Calendario (Round Robin)</button>
                     </div>
                     <div class="pt-4 border-t border-gray-200">
-                        <button id="reset-tournament-btn" onclick="app.resetTournament()" class="btn btn-danger w-full py-3 hidden">⚠️ Reiniciar Todo el Torneo</button>
+                        <button id="reset-tournament-btn" onclick="app.resetTournament()" class="btn btn-danger w-full py-3 hidden"><i data-lucide="triangle-alert" class="icon-inline"></i> Reiniciar Todo el Torneo</button>
                     </div>
                 </div>
             </div>
@@ -402,10 +406,10 @@
                 <p class="text-sm text-gray-600 mb-5">Selecciona manualmente los equipos y fechas para cada instancia.</p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <button onclick="app.openSemifinalsModal()" class="btn btn-primary flex-1 py-3" id="btn-config-semi">
-                        🏆 Configurar Semifinales
+                        <i data-lucide="trophy" class="icon-inline"></i> Configurar Semifinales
                     </button>
                     <button onclick="app.openFinalModal()" class="btn btn-secondary flex-1 py-3" id="btn-config-final">
-                        ⚡ Configurar Gran Final
+                        <i data-lucide="zap" class="icon-inline"></i> Configurar Gran Final
                     </button>
                 </div>
             </div>
@@ -1511,7 +1515,7 @@
             document.getElementById('knockout-modal-body').innerHTML = `
                 <div class="space-y-5">
                     <div class="bg-yellow-50 rounded-xl p-4 border-2 border-institucional-amarillo">
-                        <h4 class="font-black text-institucional-azul uppercase text-sm tracking-widest mb-4 text-center">⚡ Gran Final ⚡</h4>
+                        <h4 class="font-black text-institucional-azul uppercase text-sm tracking-widest mb-4 text-center"><i data-lucide="zap" class="icon-inline"></i> Gran Final</h4>
                         <div class="grid grid-cols-2 gap-3 mb-4">
                             <div>
                                 <label class="text-xs font-semibold text-gray-500 uppercase block mb-1">Equipo A (Finalista 1)</label>
@@ -1713,11 +1717,11 @@
                     </div>
                     <div class="mt-2">
                         <select onchange="app.vincularRoster(${i}, this.value)" class="input-field text-xs py-1 border-gray-300">
-                            <option value="">⚠️ Sin vincular a inscripciones (goles con texto libre)</option>
-                            ${churchOptions.map(cn => `<option value="${cn.replace(/"/g, '&quot;')}" ${t.rosterTeam === cn ? 'selected' : ''}>👤 Jugadores de: ${cn}</option>`).join('')}
+                            <option value="">Sin vincular a inscripciones (goles con texto libre)</option>
+                            ${churchOptions.map(cn => `<option value="${cn.replace(/"/g, '&quot;')}" ${t.rosterTeam === cn ? 'selected' : ''}>Jugadores de: ${cn}</option>`).join('')}
                         </select>
-                        ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1">🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
-                        <button onclick="app.editarJugadoresRoster('${(t.rosterTeam || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${t.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')" class="btn btn-secondary py-1 px-3 text-xs mt-2">✏️ Editar jugadores (${this.getRosterNames(t.name).length})</button>
+                        ${t.rosterTeam && t._autoVinculado ? `<p class="text-[10px] text-amber-600 mt-1 flex items-center gap-1"><i data-lucide="refresh-cw" class="icon-inline"></i> Vinculado automáticamente por nombre parecido — revisa que sea correcto.</p>` : ''}
+                        <button onclick="app.editarJugadoresRoster('${(t.rosterTeam || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${t.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')" class="btn btn-secondary py-1 px-3 text-xs mt-2"><i data-lucide="pencil" class="icon-inline"></i> Editar jugadores (${this.getRosterNames(t.name).length})</button>
                     </div>
                 </div>`).join('');
         }
@@ -1833,7 +1837,7 @@
                 filtros?.classList.add('hidden');
                 grid.innerHTML = `
                     <div class="jc-teaser">
-                        <div class="jc-teaser-icon">✨</div>
+                        <div class="jc-teaser-icon"><i data-lucide="sparkles" class="icon-inline"></i></div>
                         <h3>Algo increíble está por llegar a la Arena</h3>
                         <p>Estamos preparando las cartas oficiales de cada jugador del torneo. ¡Vuelve pronto!</p>
                     </div>`;
@@ -1858,8 +1862,8 @@
                 const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
                 const posPill = j.esPortero ? '<span class="jc-pos-pill">POR</span>' : '<span></span>';
                 const statLabel = j.esPortero
-                    ? `🧤 ${j.statValor} valla${j.statValor === 1 ? '' : 's'} invicta${j.statValor === 1 ? '' : 's'}`
-                    : `⚽ ${j.statValor} gol${j.statValor === 1 ? '' : 'es'}`;
+                    ? `<i data-lucide="hand" class="icon-inline"></i> ${j.statValor} valla${j.statValor === 1 ? '' : 's'} invicta${j.statValor === 1 ? '' : 's'}`
+                    : `<i data-lucide="goal" class="icon-inline"></i> ${j.statValor} gol${j.statValor === 1 ? '' : 'es'}`;
                 const sponsorBg = j.patrocinador ? `<div class="jc-sponsor-bg"><img src="${escapeHtml(j.patrocinador.logo)}" alt=""></div>` : '';
                 return `<div class="jc-card ${j.tier.clase}" onclick="app.verJugador(${i})">
                     <div class="jc-card-top">
@@ -2109,7 +2113,7 @@
                     <ul class="space-y-1 max-w-sm mx-auto">
                         ${(match.scorers || []).map((scorer, sIdx) => `
                         <li class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 shadow-sm">
-                            <span>⚽ <span class="font-semibold text-institucional-azul">${scorer.player}</span> <span class="text-xs text-gray-500">(${scorer.team})</span></span>
+                            <span><i data-lucide="goal" class="icon-inline"></i> <span class="font-semibold text-institucional-azul">${scorer.player}</span> <span class="text-xs text-gray-500">(${scorer.team})</span></span>
                             ${this.isAuthenticated ? `<button onclick="app.removeScorer(${rIdxParam}, ${mIdx}, ${sIdx})" class="text-red-500 hover:text-red-700 font-bold text-lg leading-none p-1">&times;</button>` : ''}
                         </li>`).join('')}
                         ${(match.scorers || []).length === 0 ? '<li class="text-center text-gray-400 italic text-xs mt-2">Sin goles registrados</li>' : ''}
@@ -2120,7 +2124,17 @@
     }
 
     window.app = new TournamentApp();
-    document.addEventListener('DOMContentLoaded', () => window.app.init());
+    document.addEventListener('DOMContentLoaded', () => {
+        window.app.init();
+        // Los íconos (Lucide) reemplazan los <i data-lucide="..."> que se generan
+        // dinámicamente en cada re-render del torneo. El MutationObserver los
+        // detecta y los dibuja sin necesidad de tocar la lógica del torneo.
+        if (window.lucide) {
+            lucide.createIcons();
+            new MutationObserver(() => lucide.createIcons())
+                .observe(document.body, { childList: true, subtree: true });
+        }
+    });
 </script>
 </body>
 </html>

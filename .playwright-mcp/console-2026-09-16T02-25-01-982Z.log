@@ -1,0 +1,11 @@
+[     142ms] [WARNING] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation @ https://cdn.tailwindcss.com/:63
+[     438ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:8934/torneo.html:0
+[     464ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8934/favicon.ico:0
+[     961ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBrHqD7Bg-ejuu230HV5pvBkR7FJGP_okI:0
+[     962ms] [ERROR] Error Auth: FirebaseError: Firebase: Error (auth/admin-restricted-operation).
+    at createErrorInternal (https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js:1:29451)
+    at _fail (https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js:1:28537)
+    at _performFetchWithErrorHandling (https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js:1:36209)
+    at async _performSignInRequest (https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js:1:36382)
+    at async signInAnonymously (https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js:1:93721)
+    at async TournamentApp.init (http://localhost:8934/torneo.html:979:26) @ http://localhost:8934/torneo.html:979
