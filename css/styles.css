@@ -316,6 +316,15 @@ section[id] {
   aspect-ratio: 608 / 427;
   animation: fadeUp 1.05s ease both;
 }
+@media (min-width: 768px) {
+  .hero-wordmark-wrap { max-width: 760px; }
+}
+@media (min-width: 1200px) {
+  .hero-wordmark-wrap { max-width: 940px; }
+}
+@media (min-width: 1600px) {
+  .hero-wordmark-wrap { max-width: 1080px; }
+}
 .hero-logo-draw-svg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
