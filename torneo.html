@@ -374,23 +374,65 @@
             padding: 2rem 0 0;
         }
         /* El body tiene padding (p-4 / sm:p-6 / md:p-8): se compensa hacia
-           arriba para que la foto llegue al borde real de la pantalla. */
+           arriba para que el hero llegue al borde real de la pantalla. */
         .fc-hero-media {
             position: absolute;
             top: -1rem; bottom: 0;
             left: calc(50% - 50vw); width: 100vw;
             z-index: 0; overflow: hidden;
+            pointer-events: none;
         }
         @media (min-width: 640px) { .fc-hero-media { top: -1.5rem; } }
         @media (min-width: 768px) { .fc-hero-media { top: -2rem; } }
-        .fc-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 32%; filter: grayscale(0.5) contrast(1.08) brightness(0.92); }
-        /* Dos capas: una vertical que asienta el texto abajo y otra lateral
-           que oscurece el costado izquierdo, donde vive el titular. */
+
+        /* El balón: entra girando y se frena. El recorte ya viene con los
+           bordes desvanecidos, así que se funde solo con el fondo negro. */
+        .fc-ball {
+            position: absolute;
+            right: -6%;
+            top: 50%;
+            width: min(46vw, 620px);
+            aspect-ratio: 1;
+            height: auto;
+            object-fit: contain;
+            transform-origin: center;
+            will-change: transform, opacity, filter;
+            animation:
+                fcBallIn 1.25s cubic-bezier(0.16, 1, 0.3, 1) both,
+                fcBallFloat 7s ease-in-out 1.25s infinite;
+        }
+        @keyframes fcBallIn {
+            0%   { opacity: 0; transform: translateY(-50%) translateX(12%) scale(1.42) rotate(-26deg); filter: blur(18px); }
+            55%  { opacity: 1; filter: blur(0); }
+            72%  { transform: translateY(-50%) translateX(-1.5%) scale(0.975) rotate(3deg); }
+            100% { opacity: 1; transform: translateY(-50%) translateX(0) scale(1) rotate(0deg); filter: blur(0); }
+        }
+        /* Una vez quieto, respira apenas: da vida sin distraer. */
+        @keyframes fcBallFloat {
+            0%, 100% { transform: translateY(-50%) translateX(0) scale(1) rotate(0deg); }
+            50%      { transform: translateY(-52%) translateX(0) scale(1.012) rotate(-1.2deg); }
+        }
+        /* Halo tenue detrás: separa el balón del negro plano */
+        .fc-hero-media::before {
+            content: ""; position: absolute;
+            right: -6%; top: 50%; transform: translateY(-50%);
+            width: min(46vw, 620px); aspect-ratio: 1;
+            background: radial-gradient(circle at 50% 45%, rgba(200,240,0,0.075) 0%, rgba(200,240,0,0.02) 42%, transparent 68%);
+            pointer-events: none;
+        }
+        /* Degradado lateral: asegura que el titular nunca compita con el balón */
         .fc-hero-media::after {
             content: ""; position: absolute; inset: 0;
-            background:
-                linear-gradient(to right, #0a0a0a 0%, rgba(10,10,10,0.88) 28%, rgba(10,10,10,0.45) 62%, rgba(10,10,10,0.35) 100%),
-                linear-gradient(to top, #0a0a0a 4%, rgba(10,10,10,0.6) 38%, rgba(10,10,10,0.35) 100%);
+            background: linear-gradient(to right, #0a0a0a 0%, rgba(10,10,10,0.92) 26%, rgba(10,10,10,0.35) 52%, transparent 72%);
+        }
+        @media (max-width: 700px) {
+            .fc-ball, .fc-hero-media::before { width: 78vw; right: -22%; top: 34%; }
+            .fc-hero-media::after {
+                background: linear-gradient(to top, #0a0a0a 26%, rgba(10,10,10,0.82) 52%, rgba(10,10,10,0.25) 100%);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .fc-ball { animation: none; transform: translateY(-50%); opacity: 1; }
         }
         .fc-hero-inner { position: relative; z-index: 2; }
         .fc-hero h1 { font-size: clamp(3.25rem, 11vw, 8rem); }
@@ -417,6 +459,94 @@
         #schedule-section h2 { font-family: 'Anton', 'Inter', sans-serif; font-weight: 400; letter-spacing: 0.02em; }
 
         footer { background-color: var(--fc-bg) !important; border-top: 1px solid var(--fc-hairline) !important; }
+
+        /* --- Calendario: filas de partido --- */
+        .fc-schedule-title { font-size: clamp(2.25rem, 6vw, 4.5rem); }
+        .fc-venue {
+            font-size: 0.75rem; color: var(--fc-muted);
+            margin-top: 0.25rem; letter-spacing: 0.04em;
+        }
+        .fc-match {
+            border-top: 1px solid var(--fc-hairline);
+            padding: 1.1rem 0.25rem;
+            transition: background-color 0.2s ease;
+        }
+        .fc-match:hover { background-color: rgba(244,244,240,0.025); }
+        .fc-match-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto;
+            align-items: center;
+            gap: 1rem;
+        }
+        .fc-match-team {
+            font-family: 'Anton', 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: clamp(1.05rem, 2.2vw, 1.6rem);
+            letter-spacing: 0.01em;
+            color: var(--fc-text);
+            line-height: 1.05;
+        }
+        .fc-match-team--local  { text-align: right; }
+        .fc-match-team--visita { text-align: left; }
+        .fc-match-mid { display: flex; align-items: center; justify-content: center; gap: 0.6rem; min-width: 5.5rem; }
+        .fc-score {
+            font-family: 'Anton', 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 2.6vw, 1.85rem);
+            color: var(--fc-text);
+            white-space: nowrap;
+        }
+        .fc-score-dash { color: var(--fc-faint); margin: 0 0.15rem; }
+        .fc-vs {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--fc-lime);
+        }
+        .fc-score-input {
+            width: 3.25rem; text-align: center;
+            font-size: 1.05rem; font-weight: 700;
+            padding: 0.35rem;
+        }
+        .fc-match-flag { min-width: 5.5rem; text-align: right; }
+        .fc-chip {
+            display: inline-block;
+            border: 1px solid var(--fc-lime);
+            color: var(--fc-lime);
+            font-size: 0.625rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            padding: 0.25rem 0.55rem;
+            border-radius: var(--fc-radius);
+            white-space: nowrap;
+        }
+        /* En móvil el partido se apila: nombres arriba, marcador debajo */
+        @media (max-width: 640px) {
+            .fc-match-row {
+                grid-template-columns: 1fr auto;
+                grid-template-areas: "local mid" "visita flag";
+                row-gap: 0.4rem;
+            }
+            .fc-match-team--local  { grid-area: local;  text-align: left; }
+            .fc-match-team--visita { grid-area: visita; text-align: left; }
+            .fc-match-mid  { grid-area: mid; }
+            .fc-match-flag { grid-area: flag; }
+        }
+
+        /* Bloque del equipo que descansa: el único relleno lima de la sección */
+        .fc-descansa {
+            background: var(--fc-lime);
+            color: #0a0a0a;
+            padding: 0.85rem 1.15rem;
+            border-radius: var(--fc-radius);
+            margin-bottom: 1.25rem;
+            display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap;
+        }
+        .fc-descansa-label {
+            font-size: 0.6875rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.14em;
+            opacity: 0.7;
+        }
+        .fc-descansa-team {
+            font-family: 'Anton', 'Inter', sans-serif;
+            font-size: 1.05rem; letter-spacing: 0.01em;
+        }
 
     </style>
 </head>
@@ -495,7 +625,11 @@
         </button>
         <div class="fc-hero">
             <div class="fc-hero-media" aria-hidden="true">
-                <img src="assets/images/premiacion.jpeg" alt="">
+                <img class="fc-ball"
+                     src="assets/images/balon-arena.webp"
+                     srcset="assets/images/balon-arena-sm.webp 640w, assets/images/balon-arena.webp 1280w"
+                     sizes="(max-width: 700px) 90vw, 46vw"
+                     alt="" fetchpriority="high" decoding="async">
             </div>
             <div class="fc-hero-inner pt-16 sm:pt-6 pb-8">
                 <div class="flex items-center gap-3 mb-8">
@@ -2272,17 +2406,25 @@
                 const matchesInWeek = weeksMap.get(ts);
                 html += `
                 <div class="mb-12">
-                    <div class="flex items-center mb-6">
-                        <h2 class="text-3xl font-extrabold text-white uppercase tracking-wider">Semana ${weekNumber}</h2>
-                        <div class="flex-grow h-1 bg-institucional-amarillo ml-4 rounded-full"></div>
-                    </div>
+                    ${weekNumber === 1 ? `
+                    <div class="text-center mb-10">
+                        <p class="fc-kicker mb-2">Semana ${weekNumber}</p>
+                        <h2 class="fc-display fc-schedule-title">Próximos partidos</h2>
+                    </div>` : `
+                    <div class="flex items-baseline gap-4 mb-6">
+                        <h2 class="fc-display text-2xl">Semana ${weekNumber}</h2>
+                        <span class="flex-grow h-px bg-white/10"></span>
+                    </div>`}
                     <div class="grid grid-cols-1 gap-6">`;
 
                 matchesInWeek.forEach(({ r, rIdx }) => {
                     html += `
                     <div class="card !bg-white border-l-4 border-l-institucional-azul !border-t-0 rounded-l-none shadow-sm hover:shadow-md transition-shadow">
                         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 pb-4 border-b border-gray-100">
-                            <h3 class="text-xl font-black text-institucional-azul uppercase tracking-wider mb-2 sm:mb-0">Jornada ${r.round}</h3>
+                            <div class="mb-2 sm:mb-0">
+                                <h3 class="fc-display text-2xl">Jornada ${r.round}</h3>
+                                <p class="fc-venue">River Side Campus</p>
+                            </div>
                             <div class="flex flex-col items-center sm:items-end text-gray-600 font-medium">
                                 <div class="flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -2297,9 +2439,9 @@
                                 </div>` : ''}
                             </div>
                         </div>
-                        <div class="mb-4 rounded-lg border-2 border-institucional-amarillo bg-black px-4 py-3 text-center">
-                            <span class="text-xs font-black uppercase tracking-widest text-institucional-amarillo">Descansa:</span>
-                            <span class="ml-2 font-black uppercase text-white">${this.getRestingTeams(r).join(', ') || 'Ningún equipo'}</span>
+                        <div class="fc-descansa">
+                            <span class="fc-descansa-label">Descansa:</span>
+                            <span class="fc-descansa-team">${this.getRestingTeams(r).join(', ') || 'Ningún equipo'}</span>
                         </div>
                         ${this.isAuthenticated && r.matches.some(m => !m.played) ? `<div class="mb-4 text-center"><button onclick="app.openTeamSwapModal(${rIdx}, 0)" class="btn btn-warning py-1.5 px-4 text-xs">Intercambiar equipo que descansa</button></div>` : ''}
                         <div class="space-y-4">
@@ -2380,15 +2522,22 @@
             const ro = (match.played || !this.isAuthenticated) ? 'readonly' : '';
             const rIdxParam = typeof rIdx === 'string' ? `'${rIdx}'` : rIdx;
             return `
-            <div class="bg-gray-50 border p-4 rounded-lg shadow-sm ${match.played ? 'border-l-4 border-l-institucional-amarillo' : ''}">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div class="sm:w-1/3 text-center sm:text-right font-bold text-xl text-institucional-azul">${match.team1}</div>
-                    <div class="flex items-center justify-center gap-2">
-                        <input type="number" min="0" id="score1-${id}" class="input-field text-center w-16 text-xl font-bold bg-white" value="${match.score1 ?? ''}" ${ro}>
-                        <span class="font-bold text-gray-400">vs</span>
-                        <input type="number" min="0" id="score2-${id}" class="input-field text-center w-16 text-xl font-bold bg-white" value="${match.score2 ?? ''}" ${ro}>
+            <div class="fc-match ${match.played ? 'is-played' : ''}">
+                <div class="fc-match-row">
+                    <span class="fc-match-team fc-match-team--local">${match.team1}</span>
+                    <div class="fc-match-mid">
+                        ${this.isAuthenticated ? `
+                            <input type="number" min="0" id="score1-${id}" class="input-field fc-score-input" value="${match.score1 ?? ''}" ${ro}>
+                            <span class="fc-vs">vs</span>
+                            <input type="number" min="0" id="score2-${id}" class="input-field fc-score-input" value="${match.score2 ?? ''}" ${ro}>
+                        ` : match.played ? `
+                            <span class="fc-score">${match.score1} <span class="fc-score-dash">—</span> ${match.score2}</span>
+                        ` : `
+                            <span class="fc-vs">vs</span>
+                        `}
                     </div>
-                    <div class="sm:w-1/3 text-center sm:text-left font-bold text-xl text-institucional-azul">${match.team2}</div>
+                    <span class="fc-match-team fc-match-team--visita">${match.team2}</span>
+                    <span class="fc-match-flag">${match.played ? '' : '<span class="fc-chip">Próximo</span>'}</span>
                 </div>
                 ${this.isAuthenticated ? `
                 <div class="mt-4 flex justify-center gap-2">
