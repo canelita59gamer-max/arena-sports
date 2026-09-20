@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faith Cup 2026 - Arena Sports</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -160,6 +162,262 @@
         .jc-teaser h3 { font-family: inherit; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 8px; color: #fff; }
         .jc-teaser p { color: rgba(255,255,255,0.6); font-size: 13px; max-width: 380px; margin: 0 auto; }
 
+        /* =====================================================================
+           SISTEMA VISUAL FAITH CUP 2026
+           Capa de superficies oscuras. Va al final a propósito: neutraliza las
+           utilidades claras de Tailwind que genera el JS (bg-white, bg-gray-100,
+           text-gray-500...) sin tener que tocar una sola línea de esa lógica.
+           La especificidad con #app-container le gana a las utilidades con "!".
+           ===================================================================== */
+
+        :root {
+            --fc-bg:        #0a0a0a;
+            --fc-surface:   #121212;
+            --fc-surface-2: #161616;
+            --fc-text:      #f4f4f0;
+            --fc-muted:     #8a8a85;
+            --fc-faint:     #4a4a47;
+            --fc-lime:      #c8f000;
+            --fc-danger:    #7a2e2e;
+            --fc-hairline:  rgba(244,244,240,0.10);
+            --fc-radius:    4px;
+        }
+
+        /* Grano sutil sobre el fondo: rompe la planitud sin costar una petición */
+        body::before {
+            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        #app-container, footer { position: relative; z-index: 1; }
+
+        body { color: var(--fc-text); }
+        html { scroll-behavior: smooth; }
+
+        /* --- Tipografía: display condensado contra grotesca limpia --- */
+        .fc-display {
+            font-family: 'Anton', 'Inter', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            line-height: 0.92;
+            text-transform: uppercase;
+        }
+        .fc-kicker {
+            font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.18em; color: var(--fc-lime);
+        }
+        #app-container table { font-variant-numeric: tabular-nums; }
+
+        /* --- Superficies: de islas blancas a superficies oscuras --- */
+        #app-container .card,
+        #app-container .card.\!bg-white,
+        #app-container .bg-white,
+        #app-container .bg-gray-50 {
+            background-color: var(--fc-surface) !important;
+            color: var(--fc-text) !important;
+            border-radius: var(--fc-radius);
+            border-top: none;
+            border-bottom: 1px solid var(--fc-hairline);
+            box-shadow: none;
+        }
+        #app-container .card { padding: 1.75rem; }
+
+        /* Texto heredado del tema claro. text-institucional-azul es #0a0a0a:
+           sobre superficie oscura sería invisible, así que se reescribe. */
+        #app-container .text-institucional-azul,
+        #app-container .text-gray-800,
+        #app-container .text-gray-900 { color: var(--fc-text) !important; }
+        #app-container .text-gray-500,
+        #app-container .text-gray-600,
+        #app-container .text-gray-400 { color: var(--fc-muted) !important; }
+
+        /* --- Tablas: rejilla suiza, sin cajas ni sombras --- */
+        #app-container thead.bg-gray-100,
+        #app-container .bg-gray-100 {
+            background-color: transparent !important;
+            border-bottom: 1px solid var(--fc-hairline) !important;
+        }
+        #vista-posiciones th, #vista-goleadores th {
+            color: var(--fc-muted) !important;
+            font-size: 0.6875rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            padding-top: 0.75rem; padding-bottom: 0.75rem;
+        }
+        #standings-body td, #top-scorers-body td { color: var(--fc-text) !important; }
+        #standings-body td:first-child, #top-scorers-body td:first-child {
+            color: var(--fc-faint) !important;
+            font-family: 'Anton', 'Inter', sans-serif;
+            font-size: 1.5rem; font-weight: 400; width: 1%; padding-right: 1.25rem;
+        }
+        #standings-body td:last-child { color: var(--fc-text) !important; font-weight: 700; }
+        #standings-body tr, #top-scorers-body tr {
+            border-bottom: 1px solid var(--fc-hairline) !important;
+            border-top: none !important;
+            transition: background-color 0.2s ease;
+        }
+        #standings-body tr:hover, #top-scorers-body tr:hover {
+            background-color: rgba(244,244,240,0.03) !important;
+        }
+
+        /* Clasificación: un filo de color, no un bloque de color */
+        #standings-body tr.bg-green-50 {
+            background-color: transparent !important;
+            border-left: 2px solid var(--fc-lime) !important;
+        }
+        #standings-body tr.bg-sky-50 {
+            background-color: transparent !important;
+            border-left: 2px solid var(--fc-faint) !important;
+        }
+        #standings-body tr.bg-red-50 {
+            background-color: transparent !important;
+            border-left: 2px solid var(--fc-danger) !important;
+        }
+        #standings-body tr.bg-green-50 td:last-child { color: var(--fc-lime) !important; }
+
+        /* Primer goleador destacado */
+        #top-scorers-body tr:first-child td:first-child,
+        #top-scorers-body tr:first-child td:last-child { color: var(--fc-lime) !important; }
+
+        /* --- Tarjetas de partido --- */
+        #schedule-section .card {
+            border-left: 2px solid var(--fc-hairline) !important;
+            border-radius: 0 var(--fc-radius) var(--fc-radius) 0;
+            transition: border-color 0.25s ease, background-color 0.25s ease;
+        }
+        #schedule-section .card:hover {
+            border-left-color: var(--fc-lime) !important;
+            background-color: var(--fc-surface-2) !important;
+        }
+        #schedule-section .border-gray-100 { border-color: var(--fc-hairline) !important; }
+
+        /* --- Formularios y modales --- */
+        .input-field {
+            background-color: var(--fc-surface-2);
+            border: 1px solid var(--fc-hairline);
+            color: var(--fc-text);
+            border-radius: var(--fc-radius);
+        }
+        .input-field::placeholder { color: var(--fc-faint); }
+        .input-field:focus {
+            border-color: var(--fc-lime);
+            box-shadow: 0 0 0 2px rgba(200,240,0,0.18);
+        }
+        #modal > div, #modal-knockout > div, #modal-jugador > div, #login-screen > div {
+            background-color: var(--fc-surface) !important;
+            color: var(--fc-text) !important;
+            border: 1px solid var(--fc-hairline);
+            border-radius: var(--fc-radius);
+        }
+        #modal-message { color: var(--fc-text) !important; }
+
+        /* --- Botones: radios filosos, sin sombras genéricas --- */
+        .btn { border-radius: var(--fc-radius); box-shadow: none; }
+        /* .btn declara display:inline-flex. Si la hoja del CDN de Tailwind entra
+           antes que este bloque, .hidden pierde y el botón de admin alcanza a
+           verse mientras carga. Este candado lo evita pase lo que pase. */
+        .btn.hidden, .nav-btn.hidden { display: none !important; }
+        .btn-primary:hover:not(:disabled),
+        .btn-secondary:hover:not(:disabled) { box-shadow: none; }
+        .btn:focus-visible {
+            outline: 2px solid var(--fc-lime);
+            outline-offset: 2px;
+        }
+        .btn:disabled {
+            background-color: var(--fc-surface-2) !important;
+            color: var(--fc-faint) !important;
+        }
+
+        /* --- Navegación por pestañas: filo inferior en vez de píldoras --- */
+        .nav-btn {
+            background-color: transparent !important;
+            color: var(--fc-muted) !important;
+            border-radius: 0 !important;
+            border-bottom: 2px solid transparent;
+            padding: 0.5rem 0.25rem !important;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transform: none !important;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .nav-btn:hover { color: var(--fc-text) !important; }
+        .nav-btn.nav-activa,
+        .nav-btn.bg-institucional-amarillo {
+            color: var(--fc-lime) !important;
+            border-bottom-color: var(--fc-lime);
+        }
+
+        /* --- Restos de la marca azul anterior --- */
+        .jc-teaser {
+            background: radial-gradient(120% 90% at 50% 0%, #1c1c1c 0%, #121212 45%, #0a0a0a 100%);
+            border: 1px solid var(--fc-hairline);
+            border-radius: var(--fc-radius);
+        }
+        .jc-modal-stat { background: var(--fc-surface-2); border-radius: var(--fc-radius); }
+        .jc-modal-stat b { color: var(--fc-lime); }
+        .jc-modal-stat span { color: var(--fc-muted); }
+        .jc-modal-sponsor { background: var(--fc-surface-2); border-radius: var(--fc-radius); }
+        .jc-modal-sponsor b { color: var(--fc-text); }
+        .jc-pos-pill { background: var(--fc-lime); color: #0a0a0a; border-radius: var(--fc-radius); }
+        .jc-empty { color: var(--fc-faint); }
+
+        /* --- Hero --- */
+        /* El contenedor es max-w-6xl; la foto se sale a ancho completo,
+           el texto se queda alineado a la reja. */
+        html, body { overflow-x: hidden; }
+        .fc-hero {
+            position: relative;
+            min-height: 68dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem 0 0;
+        }
+        /* El body tiene padding (p-4 / sm:p-6 / md:p-8): se compensa hacia
+           arriba para que la foto llegue al borde real de la pantalla. */
+        .fc-hero-media {
+            position: absolute;
+            top: -1rem; bottom: 0;
+            left: calc(50% - 50vw); width: 100vw;
+            z-index: 0; overflow: hidden;
+        }
+        @media (min-width: 640px) { .fc-hero-media { top: -1.5rem; } }
+        @media (min-width: 768px) { .fc-hero-media { top: -2rem; } }
+        .fc-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 32%; filter: grayscale(0.5) contrast(1.08) brightness(0.92); }
+        /* Dos capas: una vertical que asienta el texto abajo y otra lateral
+           que oscurece el costado izquierdo, donde vive el titular. */
+        .fc-hero-media::after {
+            content: ""; position: absolute; inset: 0;
+            background:
+                linear-gradient(to right, #0a0a0a 0%, rgba(10,10,10,0.88) 28%, rgba(10,10,10,0.45) 62%, rgba(10,10,10,0.35) 100%),
+                linear-gradient(to top, #0a0a0a 4%, rgba(10,10,10,0.6) 38%, rgba(10,10,10,0.35) 100%);
+        }
+        .fc-hero-inner { position: relative; z-index: 2; }
+        .fc-hero h1 { font-size: clamp(3.25rem, 11vw, 8rem); }
+        .fc-hero-sub { color: var(--fc-muted); max-width: 34ch; text-wrap: balance; }
+
+        /* Entrada escalonada, no todo de golpe */
+        @keyframes fcRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        .fc-rise { animation: fcRise 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+        .fc-rise-1 { animation-delay: 0.05s; }
+        .fc-rise-2 { animation-delay: 0.15s; }
+        .fc-rise-3 { animation-delay: 0.25s; }
+        .fc-rise-4 { animation-delay: 0.35s; }
+        @media (prefers-reduced-motion: reduce) {
+            .fc-rise { animation: none; }
+            html { scroll-behavior: auto; }
+            .sponsors-marquee-track { animation: none; }
+        }
+
+        /* --- Encabezados de sección --- */
+        .fc-section-head { margin-bottom: 1.75rem; }
+        .fc-section-head h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); color: var(--fc-text); }
+
+        /* Franja de semana en el calendario */
+        #schedule-section h2 { font-family: 'Anton', 'Inter', sans-serif; font-weight: 400; letter-spacing: 0.02em; }
+
+        footer { background-color: var(--fc-bg) !important; border-top: 1px solid var(--fc-hairline) !important; }
+
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
@@ -231,22 +489,35 @@
 
 <!-- Contenedor principal -->
 <div id="app-container" class="max-w-6xl mx-auto">
-    <header class="text-center mb-8 relative">
+    <header class="mb-10 relative">
         <button id="btn-top-auth" onclick="app.toggleAuth()" class="absolute top-0 right-0 btn border-2 border-institucional-amarillo text-institucional-amarillo bg-transparent hover:bg-institucional-amarillo hover:text-institucional-azul px-4 py-2 mt-2 text-sm rounded-full z-10">
             Ingresar Admin
         </button>
-        <div class="flex flex-col items-center justify-center gap-2 pt-16 sm:pt-4">
-            <div class="flex items-center justify-center gap-3 mb-1">
-                <img src="assets/images/logo-arena-full.png" alt="Arena Sports" class="h-12 sm:h-14 w-auto object-contain">
-                <span class="w-px h-8 bg-white/15"></span>
-                <img src="assets/images/faith-cup-logo.jpg" alt="Faith Cup 2026" class="h-12 sm:h-14 w-auto object-contain rounded-md">
+        <div class="fc-hero">
+            <div class="fc-hero-media" aria-hidden="true">
+                <img src="assets/images/premiacion.jpeg" alt="">
             </div>
-            <div class="text-center">
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-white uppercase tracking-wide leading-tight">Faith Cup<br class="hidden sm:block"> 2026</h1>
-                <p class="text-lg sm:text-xl text-institucional-amarillo mt-2 font-medium">Torneo Oficial · Resultados en vivo</p>
+            <div class="fc-hero-inner pt-16 sm:pt-6 pb-8">
+                <div class="flex items-center gap-3 mb-8">
+                    <img src="assets/images/logo-arena-full.png" alt="Arena Sports" class="h-10 sm:h-12 w-auto object-contain">
+                    <span class="w-px h-7 bg-white/15"></span>
+                    <img src="assets/images/faith-cup-logo.jpg" alt="Faith Cup 2026" class="h-10 sm:h-12 w-auto object-contain rounded">
+                </div>
+                <p class="fc-kicker fc-rise fc-rise-1 mb-3">Arena Sports · Torneo Interiglesias</p>
+                <h1 class="fc-display text-white fc-rise fc-rise-2">Faith Cup<br>2026</h1>
+                <p class="fc-hero-sub mt-5 text-base sm:text-lg fc-rise fc-rise-3">Siete equipos. Veintiún partidos. Un campeón.</p>
+                <div class="flex flex-wrap items-center gap-5 mt-7 fc-rise fc-rise-4">
+                    <button onclick="app.switchTab('vista-partidos', document.querySelector('[data-target=&quot;vista-partidos&quot;]'))" class="btn border border-institucional-amarillo text-institucional-amarillo bg-transparent hover:bg-institucional-amarillo hover:text-institucional-azul px-5 py-2 text-sm">
+                        Ver calendario
+                    </button>
+                    <button onclick="app.switchTab('vista-posiciones', document.querySelector('[data-target=&quot;vista-posiciones&quot;]'))" class="text-institucional-amarillo text-sm font-semibold hover:underline underline-offset-4 inline-flex items-center gap-1.5 bg-transparent">
+                        Tabla de posiciones
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </button>
+                </div>
             </div>
         </div>
-        <nav class="flex justify-center flex-wrap gap-3 mt-8">
+        <nav class="flex flex-wrap gap-6 mt-2 border-b border-white/10 pb-0">
             <button class="nav-btn btn bg-institucional-amarillo text-institucional-azul font-bold shadow-md scale-105 px-6 py-2 rounded-full" onclick="app.switchTab('vista-partidos', this)" data-target="vista-partidos">Partidos</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-posiciones', this)" data-target="vista-posiciones">Posiciones</button>
             <button class="nav-btn btn bg-institucional-azulHover text-white opacity-90 px-6 py-2 rounded-full" onclick="app.switchTab('vista-goleadores', this)" data-target="vista-goleadores">Goleadores</button>
@@ -267,10 +538,15 @@
         <!-- POSICIONES -->
         <section id="vista-posiciones" class="vista-oculta">
             <div class="card">
-                <h2 class="text-2xl font-bold mb-4 flex items-center text-institucional-azul">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                    Tabla de Posiciones
-                </h2>
+                <div class="fc-section-head flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="fc-kicker mb-2">Posiciones</p>
+                        <h2 class="fc-display">Tabla general</h2>
+                    </div>
+                    <p class="text-xs leading-relaxed max-w-[15rem]" style="color: var(--fc-muted)">
+                        1º y 2º a semifinal · 3º a 6º repechaje · 7º eliminado
+                    </p>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm text-left">
                         <thead class="bg-gray-100 font-semibold border-b-2 border-institucional-azul">
@@ -291,10 +567,10 @@
         <!-- GOLEADORES -->
         <section id="vista-goleadores" class="vista-oculta">
             <div class="card">
-                <h2 class="text-2xl font-bold mb-4 flex items-center text-institucional-azul">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
-                    Goleadores del Torneo
-                </h2>
+                <div class="fc-section-head">
+                    <p class="fc-kicker mb-2">Goleadores</p>
+                    <h2 class="fc-display">Tabla de artilleros</h2>
+                </div>
                 <table class="min-w-full text-sm text-left">
                     <thead class="bg-gray-100 font-semibold border-b-2 border-institucional-azul">
                         <tr><th class="p-3">Pos</th><th class="p-3">Jugador</th><th class="p-3">Equipo</th><th class="p-3 text-center">Goles</th></tr>
