@@ -100,11 +100,8 @@
         /* Jugadores del torneo — cartas estilo EA FC (bronce/plata/oro/azul) */
         .jc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
         @media (max-width: 980px) { .jc-grid { grid-template-columns: repeat(3, 1fr); } }
-        /* En celular se mantienen DOS columnas: a una sola, la carta se estira
-           a todo el ancho y deja de parecer una carta. Solo se baja a una
-           columna en pantallas muy angostas. */
-        @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
-        @media (max-width: 380px) { .jc-grid { grid-template-columns: 1fr; gap: 14px; } }
+        @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+        @media (max-width: 460px) { .jc-grid { grid-template-columns: 1fr; } }
         .jc-empty { grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px 0; font-style: italic; }
 
         /* Gamas de rareza — bronce, plata, oro y la especial azul (estilo TOTW) */
@@ -782,6 +779,19 @@
         .fj-total dd { color: var(--fc-lime) !important; font-size: 0.9375rem !important; }
         .fj-manual { border-top: none; padding-top: 0; margin-top: 0; }
         .fj-manual dd { color: #f0c14b !important; }
+
+        /* Descarga de la carta (solo administrador) */
+        .fj-descarga {
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            margin: 18px 22px 0; padding: 14px;
+            background: var(--fc-surface-2);
+            border: 1px solid var(--fc-hairline);
+            border-radius: var(--fc-radius);
+        }
+        .fj-descarga span {
+            font-size: 0.6875rem; color: var(--fc-muted);
+            letter-spacing: 0.04em;
+        }
 
         /* Corrección manual de la valoración (solo administrador) */
         .fj-ajuste {
@@ -1940,6 +1950,159 @@
             });
         }
 
+        // ---- Descarga de la carta como imagen (solo administrador) ----
+        // Se dibuja en un canvas en vez de capturar el DOM: así no hace falta
+        // ninguna librería externa y la imagen sale a 900x1200, tamaño de
+        // sobra para publicar en historias o en el feed.
+        async descargarCarta(nombre) {
+            const j = (this._jugadoresFiltrados || []).find(x => x.nombre === nombre);
+            if (!j) return;
+            const btn = document.getElementById('fj-descargar');
+            if (btn) { btn.disabled = true; btn.textContent = 'Generando...'; }
+            try {
+                const W = 900, H = 1200;
+                const lienzo = document.createElement('canvas');
+                lienzo.width = W; lienzo.height = H;
+                const ctx = lienzo.getContext('2d');
+
+                const cargarImagen = (src) => new Promise((ok, mal) => {
+                    const im = new Image();
+                    im.onload = () => ok(im);
+                    im.onerror = () => mal(new Error('No se pudo cargar ' + src));
+                    im.src = src;
+                });
+
+                // Mismo marco que usa la carta en pantalla
+                const archivos = {
+                    'jc-t-bronce': 'bronce', 'jc-t-bronce-esp': 'bronce',
+                    'jc-t-plata': 'plata', 'jc-t-plata-esp': 'plata',
+                    'jc-t-oro': 'oro', 'jc-t-oro-esp': 'oro',
+                    'jc-t-totw': 'diamante'
+                };
+                const claveTier = j.tier.clase.split(' ')[0];
+                const marco = await cargarImagen(
+                    `assets/images/cartas/marco-${archivos[claveTier] || 'bronce'}.webp`);
+                ctx.drawImage(marco, 0, 0, W, H);
+
+                // Las fuentes deben estar listas o el texto sale en Times
+                if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+                const pct = (x, total) => (x / 100) * total;
+
+                // --- Valoración, con su halo suave ---
+                const rx = pct(9 + 15.5 / 2, W), ry = pct(9 + 12.4 / 2, H);
+                const halo = ctx.createRadialGradient(rx, ry, 0, rx, ry, pct(11, W));
+                halo.addColorStop(0, 'rgba(0,0,0,0.62)');
+                halo.addColorStop(0.52, 'rgba(0,0,0,0.34)');
+                halo.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = halo;
+                ctx.beginPath(); ctx.arc(rx, ry, pct(11, W), 0, Math.PI * 2); ctx.fill();
+
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.font = `700 ${pct(12.5, W)}px 'Saira Condensed', sans-serif`;
+                ctx.shadowColor = 'rgba(0,0,0,0.85)'; ctx.shadowBlur = pct(1.2, W);
+                ctx.shadowOffsetY = 2;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(String(j.rating), rx, ry);
+                ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+
+                // --- Ventana: foto si existe, si no las iniciales ---
+                const fx = pct(30.4, W), fy = pct(14, H);
+                const fw = pct(53, W), fh = pct(48.4, H);
+                if (j.foto) {
+                    try {
+                        const foto = await cargarImagen(j.foto);
+                        // recorte tipo object-fit: cover
+                        const escala = Math.max(fw / foto.width, fh / foto.height);
+                        const dw = foto.width * escala, dh = foto.height * escala;
+                        ctx.save();
+                        ctx.beginPath(); ctx.rect(fx, fy, fw, fh); ctx.clip();
+                        ctx.drawImage(foto, fx + (fw - dw) / 2, fy + (fh - dh) / 2, dw, dh);
+                        ctx.restore();
+                    } catch (e) { /* si la foto falla, quedan las iniciales */ }
+                } else {
+                    const iniciales = j.nombre.trim().split(/\s+/)
+                        .map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                    ctx.font = `700 ${pct(15, W)}px 'Saira Condensed', sans-serif`;
+                    ctx.fillStyle = 'rgba(255,255,255,0.88)';
+                    ctx.fillText(iniciales, fx + fw / 2, fy + fh / 2);
+                }
+
+                // --- Banda: nombre y escudo ---
+                const bx = pct(18, W), by = pct(71, H);
+                const bw = pct(64, W), bh = pct(19.6, H);
+                const cxBanda = bx + bw / 2;
+                const altoEscudo = pct(12.5, W);
+                const altoNombre = pct(5.8, W);
+                const hueco = pct(1.8, W);
+                const bloque = altoNombre + hueco + altoEscudo;
+                const yNombre = by + (bh - bloque) / 2 + altoNombre / 2;
+                const yEscudo = yNombre + altoNombre / 2 + hueco;
+
+                ctx.font = `600 ${altoNombre}px 'Saira Condensed', sans-serif`;
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = pct(1, W);
+                ctx.shadowOffsetY = 2;
+                let texto = nombreCorto(j.nombre).toUpperCase();
+                while (ctx.measureText(texto).width > bw && texto.length > 4) {
+                    texto = texto.slice(0, -2) + '…';
+                }
+                ctx.fillText(texto, cxBanda, yNombre);
+                ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+
+                if (j.escudo) {
+                    try {
+                        const esc = await cargarImagen(j.escudo);
+                        const escala = Math.min(altoEscudo / esc.height, pct(34, W) / esc.width);
+                        const ew = esc.width * escala, eh = esc.height * escala;
+                        ctx.drawImage(esc, cxBanda - ew / 2, yEscudo, ew, eh);
+                    } catch (e) { /* sin escudo, se omite */ }
+                } else {
+                    // Aro con las iniciales del equipo, igual que en pantalla
+                    const alto = pct(11.5, W);
+                    ctx.font = `700 ${pct(6, W)}px 'Saira Condensed', sans-serif`;
+                    const ancho = Math.max(alto, ctx.measureText(j.equipoCodigo).width + pct(6.8, W));
+                    const ex = cxBanda - ancho / 2, ey = yEscudo;
+                    const r = alto / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(ex + r, ey);
+                    ctx.arcTo(ex + ancho, ey, ex + ancho, ey + alto, r);
+                    ctx.arcTo(ex + ancho, ey + alto, ex, ey + alto, r);
+                    ctx.arcTo(ex, ey + alto, ex, ey, r);
+                    ctx.arcTo(ex, ey, ex + ancho, ey, r);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(0,0,0,0.34)'; ctx.fill();
+                    const acentos = {
+                        'jc-t-bronce': '#c8834a', 'jc-t-bronce-esp': '#c8834a',
+                        'jc-t-plata': '#d8dde2', 'jc-t-plata-esp': '#d8dde2',
+                        'jc-t-oro': '#f0c14b', 'jc-t-oro-esp': '#f0c14b',
+                        'jc-t-totw': '#6fd8ff'
+                    };
+                    const acento = acentos[claveTier] || '#c8834a';
+                    ctx.strokeStyle = acento; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.fillStyle = acento;
+                    ctx.fillText(j.equipoCodigo, cxBanda, ey + alto / 2);
+                }
+
+                // --- Descarga ---
+                const blob = await new Promise(ok => lienzo.toBlob(ok, 'image/png'));
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'carta-' + j.nombre.toLowerCase()
+                    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 2000);
+                this.showNotification('Carta descargada.');
+            } catch (e) {
+                console.error(e);
+                this.showAlert('No se pudo generar la carta: ' + e.message);
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Descargar carta'; }
+            }
+        }
+
         // ---- Ajuste manual de la valoración (por si el cálculo falla) ----
         async fijarRatingManual(nombre) {
             const input = document.getElementById('fj-rating-input');
@@ -2876,6 +3039,12 @@
                 ['Menos goleado de la jornada', j.desglose.menosGoleado]
             ].filter(f => f[1] > 0);
             const nombreJs = j.nombre.replace(/'/g, "\\'");
+            const descargaHtml = this.isAuthenticated ? `
+                <div class="fj-descarga">
+                    <button id="fj-descargar" class="btn btn-secondary py-2 px-5 text-sm"
+                            onclick="app.descargarCarta('${nombreJs}')">Descargar carta</button>
+                    <span>PNG de 900 × 1200, listo para publicar</span>
+                </div>` : '';
             const ajusteHtml = this.isAuthenticated ? `
                 <div class="fj-ajuste">
                     <label for="fj-rating-input">Corregir a mano</label>
@@ -2961,6 +3130,7 @@
                     </div>
                     ${tercerDato}
                 </div>
+                ${descargaHtml}
                 ${puntosHtml}
                 ${sponsorHtml}
             `;
