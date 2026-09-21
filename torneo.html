@@ -100,8 +100,11 @@
         /* Jugadores del torneo — cartas estilo EA FC (bronce/plata/oro/azul) */
         .jc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
         @media (max-width: 980px) { .jc-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
-        @media (max-width: 460px) { .jc-grid { grid-template-columns: 1fr; } }
+        /* En celular se mantienen DOS columnas: a una sola, la carta se estira
+           a todo el ancho y deja de parecer una carta. Solo se baja a una
+           columna en pantallas muy angostas. */
+        @media (max-width: 700px) { .jc-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+        @media (max-width: 380px) { .jc-grid { grid-template-columns: 1fr; gap: 14px; } }
         .jc-empty { grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px 0; font-style: italic; }
 
         /* Gamas de rareza — bronce, plata, oro y la especial azul (estilo TOTW) */
@@ -1501,14 +1504,18 @@
 
     // ------------------------------------------------------------------
     // SISTEMA DE PUNTOS — así sube la valoración de cada carta
-    //   · 1 gol ................................. +1 al goleador
-    //   · Ganar un partido ...................... +2 a todo el equipo
-    //   · Portero que no recibe goles ........... +3
-    //   · Portero menos goleado de la jornada ... +2 (si empatan, suman ambos)
+    //   · 1 gol ................................. +2 al goleador
+    //   · Ganar un partido ...................... +4 a todo el equipo
+    //   · Portero que no recibe goles ........... +6
+    //   · Portero menos goleado de la jornada ... +4 (si empatan, suman ambos)
     // La valoración es RATING_BASE + puntos acumulados, con tope en 99.
+    //
+    // Para subir o bajar el ritmo de todo el sistema basta con cambiar los
+    // números de aquí: no hay ninguna cifra repetida en otra parte del
+    // archivo, la ficha del jugador lee estos mismos valores.
     // ------------------------------------------------------------------
     const RATING_BASE = 50;
-    const PUNTOS = { gol: 1, victoria: 2, vallaInvicta: 3, menosGoleado: 2 };
+    const PUNTOS = { gol: 2, victoria: 4, vallaInvicta: 6, menosGoleado: 4 };
 
     // Valoración fija: solo para casos puntuales. Si un nombre aparece aquí,
     // su número manda y el sistema de puntos se ignora para ese jugador.
@@ -2939,7 +2946,6 @@
                         </div>
                         <dl class="fj-lista">
                             <div><dt>Posición</dt><dd>${posicion}</dd></div>
-                            <div><dt>Dorsal</dt><dd>#${j.dorsal}</dd></div>
                             <div><dt>Valoración</dt><dd>${j.rating}</dd></div>
                         </dl>
                     </div>
