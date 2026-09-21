@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Saira+Condensed:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -548,6 +548,366 @@
             font-size: 1.05rem; letter-spacing: 0.01em;
         }
 
+        /* =====================================================================
+           CARTAS DE JUGADOR
+           Base negra con un barrido diagonal cuyo color lo sigue marcando el
+           rating (se conserva el sistema de tiers), más una ranura fija para
+           el escudo de cada iglesia.
+           ===================================================================== */
+        /* Cada tier usa su propio marco ilustrado. Las ranuras (valoración,
+           ventana de foto, banda inferior) están en las mismas coordenadas
+           relativas en los cuatro marcos, así que el contenido se posiciona
+           en porcentajes y sirve para todos. */
+        /* Sin .jc-card delante: así las variables sirven igual para la carta
+           de la rejilla y para la carta grande de la ficha ampliada. */
+        .jc-t-bronce, .jc-t-bronce-esp {
+            --jc-marco: url('assets/images/cartas/marco-bronce.webp');
+            --jc-acento: #c8834a;
+        }
+        .jc-t-plata, .jc-t-plata-esp {
+            --jc-marco: url('assets/images/cartas/marco-plata.webp');
+            --jc-acento: #d8dde2;
+        }
+        .jc-t-oro, .jc-t-oro-esp {
+            --jc-marco: url('assets/images/cartas/marco-oro.webp');
+            --jc-acento: #f0c14b;
+        }
+        .jc-t-totw {
+            --jc-marco: url('assets/images/cartas/marco-diamante.webp');
+            --jc-acento: #6fd8ff;
+        }
+
+        /* ---------------------------------------------------------------
+           ZONAS DEL MARCO
+           Los cuatro marcos se generan por recoloreado a partir de un mismo
+           maestro (assets/images/cartas/), así que comparten geometría al
+           pixel y estas medidas valen para todos por igual:
+             valoración  left  9%    top  9%     15.5% × 12.4%
+             foto        left 30.4%  top 14%     53%   × 48.4%
+             banda       left 18%    top 71%     64%   × 19.6%
+           Si se cambia un marco, hay que volver a medir.
+           --------------------------------------------------------------- */
+        .jc-card {
+            /* El marco NO se declara aquí: tendría la misma especificidad que
+               .jc-t-oro y, al ir después, ganaría siempre. Va como respaldo
+               dentro de var(). */
+            position: relative;
+            aspect-ratio: 3 / 4;
+            padding: 0;
+            border: none;
+            border-radius: 12px;
+            box-shadow: none;
+            overflow: hidden;
+            background-image: var(--jc-marco, url('assets/images/cartas/marco-bronce.webp'));
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            /* Todo el texto se dimensiona contra el ancho de la carta (cqw),
+               así se ve idéntica en la rejilla y en la ficha ampliada. */
+            container-type: inline-size;
+            transition: transform 0.45s cubic-bezier(0.32,0.72,0,1),
+                        filter 0.45s cubic-bezier(0.32,0.72,0,1);
+        }
+        .jc-card:hover { transform: translateY(-8px) scale(1.012); filter: brightness(1.1); }
+        .jc-card:active { transform: translateY(-4px) scale(0.995); }
+        .jc-card:focus-visible { outline: 2px solid var(--fc-lime); outline-offset: 4px; }
+
+        /* Valoración — sin caja rígida: un halo suave la despega del metal */
+        .jc-rating-slot {
+            position: absolute;
+            left: 9%; top: 9%; width: 15.5%; height: 12.4%;
+            display: grid; place-items: center;
+            line-height: 1;
+        }
+        .jc-rating-slot::before {
+            content: ""; position: absolute; inset: -28%;
+            border-radius: 50%;
+            background: radial-gradient(closest-side,
+                rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.34) 52%, transparent 78%);
+        }
+        .jc-rating-slot .jc-rating {
+            position: relative;
+            font-family: 'Saira Condensed', 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 12.5cqw;
+            color: #fff;
+            letter-spacing: -0.015em;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        /* Ventana central — foto del jugador */
+        .jc-photo-wrap {
+            position: absolute;
+            left: 30.4%; top: 14%; width: 53%; height: 48.4%;
+            margin: 0; border-radius: 5px; overflow: hidden;
+            /* Sin fondo propio: la ventana ya la dibuja el marco. Pintar otra
+               caja encima producía el efecto de recuadro dentro de recuadro.
+               Solo queda el recorte para cuando entren las fotos reales. */
+            background: transparent;
+            display: grid; place-items: center;
+        }
+        .jc-photo-wrap .jc-photo-fg {
+            font-family: 'Saira Condensed', 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 15cqw;
+            letter-spacing: 0.01em;
+            color: rgba(255,255,255,0.88);
+            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+        }
+        /* La posición no se marca en la carta: va en la ficha ampliada. */
+        .jc-pos-pill { display: none; }
+
+        /* Banda inferior — nombre y, debajo, el escudo en grande */
+        .jc-banda {
+            position: absolute;
+            left: 18%; top: 71%; width: 64%; height: 19.6%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 1.8cqw;
+            padding: 0 1cqw;
+        }
+        .jc-name2 {
+            font-family: 'Saira Condensed', 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 5.8cqw;
+            letter-spacing: 0.04em;
+            text-transform: uppercase; color: #fff;
+            text-align: center; line-height: 1;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.55);
+            /* Una sola línea: nunca empuja al escudo fuera de la banda */
+            width: 100%;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            border: none; padding: 0; margin: 0;
+        }
+        .jc-banda-logos {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%;
+        }
+        /* El escudo manda en la banda: es lo que dice a qué iglesia representa */
+        .jc-crest {
+            height: 12.5cqw; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .jc-crest-img {
+            max-height: 12.5cqw; max-width: 34cqw;
+            width: auto; height: auto; object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.7));
+        }
+        .jc-crest-fallback {
+            height: 11.5cqw; min-width: 11.5cqw; padding: 0 3.4cqw;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--jc-acento) 65%, transparent);
+            color: var(--jc-acento);
+            background: rgba(0,0,0,0.34);
+            font-family: 'Saira Condensed', 'Inter', sans-serif;
+            font-size: 6cqw; font-weight: 700; letter-spacing: 0.08em;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        /* --- Ficha ampliada del jugador (al hacer clic en la carta) --- */
+        .fj-hero {
+            display: grid; grid-template-columns: 190px minmax(0, 1fr);
+            gap: 24px; padding: 22px 22px 6px;
+        }
+        .fj-carta {
+            position: relative; aspect-ratio: 3/4; width: 100%;
+            border-radius: 10px; overflow: hidden;
+            background-image: var(--jc-marco, url('assets/images/cartas/marco-bronce.webp'));
+            background-size: 100% 100%; background-repeat: no-repeat;
+            container-type: inline-size;   /* mismas proporciones que en la rejilla */
+        }
+        .fj-datos { min-width: 0; padding-top: 4px; }
+        .fj-nombre {
+            font-family: 'Anton', 'Inter', sans-serif; font-weight: 400;
+            font-size: clamp(1.15rem, 2.6vw, 1.75rem);
+            text-transform: uppercase; color: var(--fc-text);
+            line-height: 1.04; margin: 6px 0 12px;
+            text-wrap: balance;
+            overflow-wrap: anywhere;   /* nombres largos no se salen de la ficha */
+            padding-right: 30px;       /* deja aire para la X de cerrar */
+        }
+        .fj-club {
+            display: flex; align-items: center; gap: 9px;
+            color: var(--fc-muted); font-size: 0.875rem;
+            padding-bottom: 14px; border-bottom: 1px solid var(--fc-hairline);
+        }
+        .fj-escudo { height: 26px; width: auto; max-width: 46px; object-fit: contain; }
+        /* Fuera de la carta no hay contenedor, así que las unidades cqw
+           caerían al ancho de la ventana y el escudo saldría enorme.
+           Aquí va en píxeles. */
+        .fj-club .jc-crest-fallback {
+            height: 26px; min-width: 26px; padding: 0 9px;
+            font-size: 11px; letter-spacing: 0.06em;
+        }
+        .fj-lista { margin-top: 14px; display: grid; gap: 9px; }
+        .fj-lista > div { display: flex; justify-content: space-between; gap: 12px; }
+        .fj-lista dt { color: var(--fc-muted); font-size: 0.8125rem; }
+        .fj-lista dd { color: var(--fc-text); font-size: 0.8125rem; font-weight: 600; margin: 0; }
+        .fj-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--fc-hairline);
+            margin: 18px 22px 0; border: 1px solid var(--fc-hairline);
+            border-radius: var(--fc-radius); overflow: hidden;
+        }
+        .fj-stat {
+            background: var(--fc-surface-2);
+            padding: 14px 10px; text-align: center;
+        }
+        .fj-stat b {
+            display: block; font-family: 'Anton', 'Inter', sans-serif;
+            font-weight: 400; font-size: 1.65rem; color: var(--fc-lime);
+            line-height: 1;
+        }
+        .fj-stat span {
+            display: block; margin-top: 5px;
+            font-size: 0.625rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--fc-muted);
+        }
+        .fj-patros-titulo {
+            font-size: 0.5625rem; color: var(--fc-muted);
+            text-transform: uppercase; letter-spacing: 0.14em;
+            margin-bottom: 10px;
+        }
+        .fj-puntos { margin: 18px 22px 0; }
+        .fj-puntos .fj-lista { margin-top: 0; gap: 7px; }
+        .fj-puntos .fj-lista dt, .fj-puntos .fj-lista dd { font-size: 0.78125rem; }
+        .fj-total {
+            border-top: 1px solid var(--fc-hairline);
+            padding-top: 8px; margin-top: 3px;
+        }
+        .fj-total dt { color: var(--fc-text) !important; font-weight: 600; }
+        .fj-total dd { color: var(--fc-lime) !important; font-size: 0.9375rem !important; }
+        .fj-manual { border-top: none; padding-top: 0; margin-top: 0; }
+        .fj-manual dd { color: #f0c14b !important; }
+
+        /* Corrección manual de la valoración (solo administrador) */
+        .fj-ajuste {
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px dashed var(--fc-hairline);
+        }
+        .fj-ajuste label {
+            display: block; font-size: 0.5625rem; color: var(--fc-muted);
+            text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px;
+        }
+        .fj-ajuste-fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .fj-ajuste-fila .input-field { width: 5.5rem; text-align: center; font-weight: 700; }
+
+        /* Franja de patrocinadores al pie de la ficha */
+        .fj-patros {
+            margin: 20px 22px 22px; padding-top: 16px;
+            border-top: 1px solid var(--fc-hairline);
+        }
+        .fj-patros-fila {
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 8px;
+        }
+        .fj-patro-logo {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; flex-shrink: 0;
+            background: #fff; border-radius: 50%; padding: 5px;
+            transition: transform 0.18s ease;
+        }
+        .fj-patro-logo:hover { transform: scale(1.09); }
+        .fj-patro-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        @media (max-width: 560px) {
+            .fj-patro-logo { width: 34px; height: 34px; }
+        }
+
+        /* =====================================================================
+           PATROCINADORES — muro de vallas perimetrales
+           Eran nueve tarjetas iguales en modo claro (borde + sombra + fondo
+           gris), el patrón más genérico que hay. Se convierten en un muro sin
+           gutters, como las vallas que rodean una cancha: cada patrocinador es
+           una placa, la primera ocupa el doble de ancho.
+           ===================================================================== */
+        #vista-patrocinadores .card { padding: 0; background: transparent !important; border: none; }
+        /* Tres columnas fijas: con nueve patrocinadores dan tres filas
+           exactas y el muro no queda con celdas huecas. */
+        #vista-patrocinadores .grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1px !important;
+            background: var(--fc-hairline);
+            border: 1px solid var(--fc-hairline);
+            border-radius: var(--fc-radius);
+            overflow: hidden;
+        }
+        @media (max-width: 900px) {
+            #vista-patrocinadores .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 580px) {
+            #vista-patrocinadores .grid { grid-template-columns: 1fr; }
+        }
+        #vista-patrocinadores .grid > div {
+            background: var(--fc-surface) !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 1.35rem 1.4rem !important;
+            text-align: left !important;
+            position: relative;
+            display: grid;
+            grid-template-columns: 54px minmax(0, 1fr);
+            grid-template-areas: "logo nombre" "logo desc" "links links";
+            align-content: center;
+            column-gap: 0.95rem; row-gap: 0.2rem;
+            transition: background-color 0.35s cubic-bezier(0.32,0.72,0,1);
+        }
+        /* Filo LED superior, como el canto iluminado de una valla */
+        #vista-patrocinadores .grid > div::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: var(--fc-lime);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.32,0.72,0,1);
+        }
+        #vista-patrocinadores .grid > div:hover { background: var(--fc-surface-2) !important; }
+        #vista-patrocinadores .grid > div:hover::before { transform: scaleX(1); }
+
+        #vista-patrocinadores .grid > div img {
+            grid-area: logo;
+            width: 54px !important; height: 54px !important;
+            margin: 0 !important;
+            object-fit: contain;
+            background: #fff; border-radius: 3px; padding: 5px;
+            align-self: center;
+        }
+        #vista-patrocinadores .grid > div h3 {
+            grid-area: nombre; align-self: end;
+            font-family: 'Saira Condensed', 'Inter', sans-serif;
+            font-weight: 600; font-size: 1.0625rem !important;
+            letter-spacing: 0.02em; text-transform: uppercase;
+            color: var(--fc-text) !important; margin: 0 !important;
+        }
+        #vista-patrocinadores .grid > div p {
+            grid-area: desc; align-self: start;
+            font-size: 0.75rem !important; line-height: 1.35;
+            color: var(--fc-muted) !important; margin: 0 !important;
+        }
+        #vista-patrocinadores .grid > div > div {
+            grid-area: links;
+            display: flex; flex-wrap: wrap; gap: 0.4rem;
+            justify-content: flex-start !important;
+            margin-top: 0.85rem;
+        }
+        #vista-patrocinadores .grid > div a {
+            font-size: 0.625rem !important;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--fc-muted) !important;
+            border: 1px solid var(--fc-hairline) !important;
+            border-radius: var(--fc-radius) !important;
+            padding: 0.25rem 0.6rem !important;
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+        #vista-patrocinadores .grid > div a:hover {
+            color: var(--fc-lime) !important;
+            border-color: color-mix(in srgb, var(--fc-lime) 55%, transparent) !important;
+        }
+        @media (max-width: 560px) {
+            .fj-hero { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+            .fj-carta { max-width: 190px; }
+            .fj-club { justify-content: center; }
+            .fj-lista > div { justify-content: center; gap: 8px; }
+        }
+
     </style>
 </head>
 <body class="p-4 sm:p-6 md:p-8">
@@ -578,7 +938,7 @@
 
 <!-- Modal Jugador -->
 <div id="modal-jugador" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[70] p-4 hidden backdrop-blur-sm">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm border-t-4 border-institucional-amarillo overflow-y-auto max-h-[90vh] relative">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-xl border-t-4 border-institucional-amarillo overflow-y-auto max-h-[90vh] relative">
         <button onclick="app.cerrarModalJugador()" class="absolute top-3 right-3 text-white hover:text-gray-200 text-2xl leading-none font-bold z-10">&times;</button>
         <div id="modal-jugador-body"></div>
     </div>
@@ -718,7 +1078,8 @@
 
         <!-- JUGADORES -->
         <section id="vista-jugadores" class="vista-oculta">
-            <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
+            <!-- Teaser público: lo ve quien NO ha iniciado sesión como admin -->
+            <div id="jugadores-teaser" class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
                 <div class="relative overflow-hidden min-h-[100dvh] flex items-center justify-center text-center bg-institucional-azul px-6">
                     <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(circle at 50% 28%, rgba(200,240,0,0.16), transparent 60%);"></div>
                     <div class="pointer-events-none absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(0deg, #fff 0px, transparent 1px, transparent 2px, #fff 3px); mix-blend-mode: overlay;"></div>
@@ -741,13 +1102,17 @@
                     </div>
                 </div>
             </div>
-            <!-- Contenido original de Jugadores (oculto temporalmente, no eliminado, para restaurar fácil):
-            <div class="card">
-                <h2 class="text-2xl font-bold mb-1 flex items-center text-institucional-azul">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    Jugadores del Torneo
-                </h2>
-                <p class="text-sm text-gray-500 mb-5">Roster oficial de cada equipo inscrito. Los goles se calculan automáticamente con los partidos registrados.</p>
+            <!-- Panel de cartas: solo visible en modo administrador -->
+            <div id="jugadores-panel" class="card hidden">
+                <div class="fc-section-head flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="fc-kicker mb-2">Plantillas</p>
+                        <h2 class="fc-display">Jugadores del torneo</h2>
+                    </div>
+                    <p class="text-xs max-w-xs" style="color: var(--fc-muted)">
+                        Vista de administrador. El público sigue viendo el anuncio hasta que decidas publicarlas.
+                    </p>
+                </div>
                 <div class="flex flex-col sm:flex-row gap-3 mb-5 hidden" id="jugadores-filtros">
                     <input type="text" id="jugadores-search" class="input-field flex-grow" placeholder="Buscar jugador...">
                     <select id="jugadores-team-filter" class="input-field sm:w-64"><option value="">Todos los equipos</option></select>
@@ -756,7 +1121,6 @@
                     <div class="jc-empty">Cargando jugadores...</div>
                 </div>
             </div>
-            -->
         </section>
 
         <!-- ADMIN -->
@@ -854,11 +1218,10 @@
         <!-- PATROCINADORES -->
         <section id="vista-patrocinadores" class="vista-oculta">
             <div class="card">
-                <h2 class="text-2xl font-bold mb-1 flex items-center text-institucional-azul">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-institucional-amarillo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Nuestros Patrocinadores
-                </h2>
-                <p class="text-sm text-gray-500 mb-6">Gracias a estas empresas que hacen posible este torneo.</p>
+                <div class="fc-section-head">
+                    <p class="fc-kicker mb-2">Patrocinadores</p>
+                    <h2 class="fc-display">Quienes hacen posible la copa</h2>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
 
                     <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
@@ -1136,8 +1499,19 @@
         // 'Nombre del jugador': 'clave-patrocinador',
     };
 
-    // Rating (50-99) de cada jugador — tú lo decides, como en un videojuego deportivo.
-    // Todos arrancan en 50 (carta de Bronce) hasta que les asignes uno distinto aquí.
+    // ------------------------------------------------------------------
+    // SISTEMA DE PUNTOS — así sube la valoración de cada carta
+    //   · 1 gol ................................. +1 al goleador
+    //   · Ganar un partido ...................... +2 a todo el equipo
+    //   · Portero que no recibe goles ........... +3
+    //   · Portero menos goleado de la jornada ... +2 (si empatan, suman ambos)
+    // La valoración es RATING_BASE + puntos acumulados, con tope en 99.
+    // ------------------------------------------------------------------
+    const RATING_BASE = 50;
+    const PUNTOS = { gol: 1, victoria: 2, vallaInvicta: 3, menosGoleado: 2 };
+
+    // Valoración fija: solo para casos puntuales. Si un nombre aparece aquí,
+    // su número manda y el sistema de puntos se ignora para ese jugador.
     const RATING_JUGADOR = {
         // 'Nombre del jugador': 78,
     };
@@ -1149,10 +1523,47 @@
         // 'Nombre del portero',
     ]);
 
+    // Escudo de cada iglesia. Pide el logo a cada equipo, guárdalo en
+    // assets/images/escudos/ y agrega aquí una línea con el nombre EXACTO
+    // del equipo tal como aparece en el panel de administración.
+    // Mientras un equipo no tenga escudo, la carta muestra sus iniciales
+    // dentro de un aro lima — no se rompe nada.
+    const ESCUDOS_EQUIPO = {
+        // 'Monte Sion': 'assets/images/escudos/monte-sion.png',
+        // 'Nueva Vida': 'assets/images/escudos/nueva-vida.png',
+    };
+
+    // Dorsal de cada jugador. El que no tenga número asignado recibe uno
+    // estable derivado de su nombre (siempre el mismo, nunca cambia solo).
+    const DORSAL_JUGADOR = {
+        // 'Nombre del jugador': 10,
+    };
+
     function hashTexto(str) {
         let h = 0;
         for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
         return Math.abs(h);
+    }
+
+    function dorsalDe(nombre) {
+        if (DORSAL_JUGADOR[nombre] != null) return DORSAL_JUGADOR[nombre];
+        return (hashTexto(nombre) % 30) + 2;   // 2–31, estable por nombre
+    }
+
+    // Si algún nombre corto no queda como quieres, escríbelo aquí y manda.
+    const NOMBRE_CORTO = {
+        // 'Juan Esteban Rojas Pérez': 'Juan Rojas',
+    };
+
+    // Nombre para la carta: primer nombre + primer apellido.
+    // Con 4 o más palabras asume "nombre nombre apellido apellido";
+    // con 2 o 3 asume "nombre apellido [apellido]".
+    function nombreCorto(completo) {
+        if (NOMBRE_CORTO[completo]) return NOMBRE_CORTO[completo];
+        const p = (completo || '').trim().split(/\s+/).filter(Boolean);
+        if (p.length <= 1) return completo || '';
+        const apellido = p.length >= 4 ? p[2] : p[1];
+        return `${p[0]} ${apellido}`;
     }
 
     // Gama de rareza estilo EA FC — el color de la carta sube con el rating:
@@ -1196,6 +1607,9 @@
             this.appId = 'faithcup2026';
             this.unsubscribe = null;
             this.rosters = {}; // { churchName: ['Jugador 1', 'Jugador 2', ...] }
+            // Ajustes manuales de valoración: { 'Nombre del jugador': 82 }.
+            // Mandan sobre el cálculo automático. Se guardan en Firebase.
+            this.ratingsManuales = {};
         }
 
         // ---- Jugadores inscritos (proyecto Firebase separado: torneo-interiglesias) ----
@@ -1498,8 +1912,10 @@
                     this.teams = state.teams || [];
                     this.schedule = state.schedule || [];
                     this.knockout = state.knockout || null;
+                    this.ratingsManuales = state.ratingsManuales || {};
                 } else {
                     this.teams = []; this.schedule = []; this.knockout = null;
+                    this.ratingsManuales = {};
                 }
                 this.autoVincularRosters();
                 this.renderAll();
@@ -1512,8 +1928,38 @@
             await setDoc(ref, {
                 teams: JSON.parse(JSON.stringify(this.teams)),
                 schedule: JSON.parse(JSON.stringify(this.schedule)),
-                knockout: this.knockout ? JSON.parse(JSON.stringify(this.knockout)) : null
+                knockout: this.knockout ? JSON.parse(JSON.stringify(this.knockout)) : null,
+                ratingsManuales: JSON.parse(JSON.stringify(this.ratingsManuales || {}))
             });
+        }
+
+        // ---- Ajuste manual de la valoración (por si el cálculo falla) ----
+        async fijarRatingManual(nombre) {
+            const input = document.getElementById('fj-rating-input');
+            if (!input) return;
+            const valor = parseInt(input.value, 10);
+            if (isNaN(valor) || valor < 1 || valor > 99) {
+                return this.showAlert('La valoración debe ser un número entre 1 y 99.');
+            }
+            this.ratingsManuales[nombre] = valor;
+            await this.saveStateToFirestore();
+            this.showNotification(`Valoración de ${nombre} fijada en ${valor}.`);
+            this.renderJugadores();
+            this.reabrirFicha(nombre);
+        }
+
+        async quitarRatingManual(nombre) {
+            delete this.ratingsManuales[nombre];
+            await this.saveStateToFirestore();
+            this.showNotification(`${nombre} vuelve al cálculo automático.`);
+            this.renderJugadores();
+            this.reabrirFicha(nombre);
+        }
+
+        // Tras cambiar la valoración, vuelve a abrir la ficha del mismo jugador
+        reabrirFicha(nombre) {
+            const idx = (this._jugadoresFiltrados || []).findIndex(j => j.nombre === nombre);
+            if (idx >= 0) this.verJugador(idx);
         }
 
         // ---- Gestión de equipos ----
@@ -2237,12 +2683,67 @@
             if (this.knockout?.final) process(this.knockout.final);
             const vallasPorEquipo = this.getCleanSheetsByTeam();
 
+            // Partidos ya jugados por cada equipo (fase regular + fase final)
+            const partidosPorEquipo = new Map();
+            const contarPartidos = (matches) => (matches || []).forEach(m => {
+                if (!m.played) return;
+                [m.team1, m.team2].forEach(eq => {
+                    if (eq) partidosPorEquipo.set(eq, (partidosPorEquipo.get(eq) || 0) + 1);
+                });
+            });
+            this.schedule.forEach(r => contarPartidos(r.matches));
+            if (this.knockout?.semifinals) contarPartidos(this.knockout.semifinals);
+            if (this.knockout?.final) contarPartidos(this.knockout.final);
+
+            // --- Puntos por victoria (van a todo el equipo) ---
+            const victoriasPorEquipo = new Map();
+            const contarVictorias = (matches) => (matches || []).forEach(m => {
+                if (!m.played || m.score1 == null || m.score2 == null) return;
+                if (m.score1 > m.score2) victoriasPorEquipo.set(m.team1, (victoriasPorEquipo.get(m.team1) || 0) + 1);
+                else if (m.score2 > m.score1) victoriasPorEquipo.set(m.team2, (victoriasPorEquipo.get(m.team2) || 0) + 1);
+            });
+            this.schedule.forEach(r => contarVictorias(r.matches));
+            if (this.knockout?.semifinals) contarVictorias(this.knockout.semifinals);
+            if (this.knockout?.final) contarVictorias(this.knockout.final);
+
+            // --- Portero menos goleado de cada jornada (si empatan, suman todos) ---
+            const menosGoleadoPorEquipo = new Map();
+            this.schedule.forEach(r => {
+                const recibidos = new Map();
+                (r.matches || []).forEach(m => {
+                    if (!m.played || m.score1 == null || m.score2 == null) return;
+                    recibidos.set(m.team1, (recibidos.get(m.team1) || 0) + m.score2);
+                    recibidos.set(m.team2, (recibidos.get(m.team2) || 0) + m.score1);
+                });
+                if (recibidos.size === 0) return;
+                const minimo = Math.min(...recibidos.values());
+                recibidos.forEach((goles, equipo) => {
+                    if (goles === minimo) {
+                        menosGoleadoPorEquipo.set(equipo, (menosGoleadoPorEquipo.get(equipo) || 0) + 1);
+                    }
+                });
+            });
+
             const jugadores = [];
             this.teams.forEach(t => {
                 this.getRosterNames(t.name).forEach(nombre => {
                     const patroKey = PATROCINIOS_JUGADOR[nombre];
-                    const rating = RATING_JUGADOR[nombre] ?? 50;
                     const esPortero = PORTEROS.has(nombre);
+
+                    // Desglose de puntos — se reutiliza en la ficha ampliada
+                    const golesJugador = golesPorJugador.get(`${nombre}||${t.name}`) || 0;
+                    const desglose = {
+                        goles: golesJugador * PUNTOS.gol,
+                        victorias: (victoriasPorEquipo.get(t.name) || 0) * PUNTOS.victoria,
+                        vallas: esPortero ? (vallasPorEquipo.get(t.name) || 0) * PUNTOS.vallaInvicta : 0,
+                        menosGoleado: esPortero ? (menosGoleadoPorEquipo.get(t.name) || 0) * PUNTOS.menosGoleado : 0
+                    };
+                    const puntos = desglose.goles + desglose.victorias + desglose.vallas + desglose.menosGoleado;
+                    const automatico = Math.min(99, RATING_BASE + puntos);
+                    // Prioridad: ajuste manual desde el panel > valor fijo en
+                    // código > cálculo automático por puntos.
+                    const manual = this.ratingsManuales?.[nombre];
+                    const rating = manual ?? RATING_JUGADOR[nombre] ?? automatico;
                     jugadores.push({
                         nombre,
                         equipo: t.name,
@@ -2251,6 +2752,14 @@
                         statValor: esPortero ? (vallasPorEquipo.get(t.name) || 0) : (golesPorJugador.get(`${nombre}||${t.name}`) || 0),
                         rating,
                         tier: obtenerTier(rating),
+                        dorsal: dorsalDe(nombre),
+                        escudo: ESCUDOS_EQUIPO[t.name] || null,
+                        goles: golesJugador,
+                        partidos: partidosPorEquipo.get(t.name) || 0,
+                        puntos,
+                        desglose,
+                        automatico,
+                        ajusteManual: manual ?? null,
                         patrocinador: (patroKey && PATROCINADORES[patroKey]) || patrocinadorAleatorio(nombre)
                     });
                 });
@@ -2272,18 +2781,20 @@
             const filtros = document.getElementById('jugadores-filtros');
             if (!grid) return;
 
-            // Al público aún no se le muestra el roster completo — solo un teaser.
+            const teaser = document.getElementById('jugadores-teaser');
+            const panel = document.getElementById('jugadores-panel');
+
+            // Al público aún no se le muestra el roster — solo el anuncio.
+            // El administrador sí ve las cartas, para revisarlas y editarlas.
             if (!this.isAuthenticated) {
+                teaser?.classList.remove('hidden');
+                panel?.classList.add('hidden');
                 filtros?.classList.add('hidden');
-                grid.innerHTML = `
-                    <div class="jc-teaser">
-                        <div class="jc-teaser-icon">✨</div>
-                        <h3>Algo increíble está por llegar a la Arena</h3>
-                        <p>Estamos preparando las cartas oficiales de cada jugador del torneo. ¡Vuelve pronto!</p>
-                    </div>`;
                 return;
             }
 
+            teaser?.classList.add('hidden');
+            panel?.classList.remove('hidden');
             filtros?.classList.remove('hidden');
             const search = (document.getElementById('jugadores-search')?.value || '').toLowerCase();
             const teamFilter = document.getElementById('jugadores-team-filter')?.value || '';
@@ -2304,22 +2815,27 @@
                 const statLabel = j.esPortero
                     ? `🧤 ${j.statValor} valla${j.statValor === 1 ? '' : 's'} invicta${j.statValor === 1 ? '' : 's'}`
                     : `⚽ ${j.statValor} gol${j.statValor === 1 ? '' : 'es'}`;
-                const sponsorBg = j.patrocinador ? `<div class="jc-sponsor-bg"><img src="${escapeHtml(j.patrocinador.logo)}" alt=""></div>` : '';
-                return `<div class="jc-card ${j.tier.clase}" onclick="app.verJugador(${i})">
-                    <div class="jc-card-top">
-                        <div>
-                            <div class="jc-rating">${j.rating}</div>
-                            <div class="jc-tier-label">${escapeHtml(j.tier.label)}</div>
-                        </div>
-                        ${posPill}
+                // Escudo de la iglesia; si todavía no lo han enviado, van las iniciales.
+                const escudo = j.escudo
+                    ? `<img class="jc-crest-img" src="${escapeHtml(j.escudo)}" alt="${escapeHtml(j.equipo)}">`
+                    : `<span class="jc-crest-fallback" title="${escapeHtml(j.equipo)}">${escapeHtml(j.equipoCodigo)}</span>`;
+                return `<div class="jc-card ${j.tier.clase}" role="button" tabindex="0"
+                             aria-label="Ver ficha de ${escapeHtml(j.nombre)}"
+                             onclick="app.verJugador(${i})"
+                             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();app.verJugador(${i});}">
+                    <div class="jc-rating-slot">
+                        <span class="jc-rating">${j.rating}</span>
                     </div>
                     <div class="jc-photo-wrap">
-                        ${sponsorBg}
                         <div class="jc-photo-fg">${escapeHtml(iniciales)}</div>
+                        ${posPill}
                     </div>
-                    <div class="jc-name2">${escapeHtml(j.nombre)}</div>
-                    <div class="jc-teamcode">${escapeHtml(j.equipoCodigo)}</div>
-                    <div class="jc-stat-line">${statLabel}</div>
+                    <div class="jc-banda">
+                        <div class="jc-name2">${escapeHtml(nombreCorto(j.nombre))}</div>
+                        <div class="jc-banda-logos">
+                            <span class="jc-crest">${escudo}</span>
+                        </div>
+                    </div>
                 </div>`;
             }).join('');
         }
@@ -2328,35 +2844,118 @@
             const j = this._jugadoresFiltrados?.[idx];
             if (!j) return;
             const iniciales = j.nombre.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-            const posPill = j.esPortero ? '<span class="jc-pos-pill">POR</span>' : '';
-            const statLabel = j.esPortero ? 'Vallas invictas del equipo' : 'Goles en el torneo';
-            const sponsorBg = j.patrocinador ? `<div class="jc-sponsor-bg-modal"><img src="${escapeHtml(j.patrocinador.logo)}" alt=""></div>` : '';
-            const sponsorHtml = j.patrocinador ? `
-                <div class="jc-modal-sponsor">
-                    <img src="${escapeHtml(j.patrocinador.logo)}" alt="${escapeHtml(j.patrocinador.nombre)}">
-                    <div><span>Patrocinado por</span><b>${escapeHtml(j.patrocinador.nombre)}</b></div>
+            const posicion = j.esPortero ? 'Portero' : 'Jugador de campo';
+            const escudo = j.escudo
+                ? `<img class="fj-escudo" src="${escapeHtml(j.escudo)}" alt="">`
+                : `<span class="jc-crest-fallback">${escapeHtml(j.equipoCodigo)}</span>`;
+            // Todos los patrocinadores del torneo, en línea al pie de la ficha
+            const listaPatros = Object.values(PATROCINADORES);
+            const sponsorHtml = listaPatros.length ? `
+                <div class="fj-patros">
+                    <p class="fj-patros-titulo">Patrocinadores del torneo</p>
+                    <div class="fj-patros-fila">
+                        ${listaPatros.map(p => `
+                            <span class="fj-patro-logo" title="${escapeHtml(p.nombre)}">
+                                <img src="${escapeHtml(p.logo)}" alt="${escapeHtml(p.nombre)}" loading="lazy">
+                            </span>`).join('')}
+                    </div>
                 </div>` : '';
 
-            document.getElementById('modal-jugador-body').innerHTML = `
-                <div class="jc-modal-hero ${j.tier.clase}">
-                    ${sponsorBg}
-                    <div class="jc-modal-photo">${escapeHtml(iniciales)}</div>
-                    <div>
-                        <div class="jc-modal-top">
-                            <div>
-                                <div class="jc-rating" style="font-size:32px;">${j.rating}</div>
-                                <div class="jc-tier-label">${escapeHtml(j.tier.label)}</div>
-                            </div>
-                            ${posPill}
+            // Desglose de cómo se formó la valoración
+            const filasPuntos = [
+                ['Goles', j.desglose.goles],
+                ['Victorias del equipo', j.desglose.victorias],
+                ['Vallas invictas', j.desglose.vallas],
+                ['Menos goleado de la jornada', j.desglose.menosGoleado]
+            ].filter(f => f[1] > 0);
+            const nombreJs = j.nombre.replace(/'/g, "\\'");
+            const ajusteHtml = this.isAuthenticated ? `
+                <div class="fj-ajuste">
+                    <label for="fj-rating-input">Corregir a mano</label>
+                    <div class="fj-ajuste-fila">
+                        <input type="number" id="fj-rating-input" class="input-field"
+                               min="1" max="99" value="${j.rating}"
+                               onkeypress="if(event.key==='Enter'){event.preventDefault();app.fijarRatingManual('${nombreJs}');}">
+                        <button class="btn btn-secondary py-2 px-4 text-sm"
+                                onclick="app.fijarRatingManual('${nombreJs}')">Guardar</button>
+                        ${j.ajusteManual != null ? `
+                        <button class="btn btn-primary py-2 px-4 text-sm"
+                                onclick="app.quitarRatingManual('${nombreJs}')">Volver a automático</button>` : ''}
+                    </div>
+                </div>` : '';
+
+            const puntosHtml = `
+                <div class="fj-puntos">
+                    <p class="fj-patros-titulo">Cómo se formó la valoración</p>
+                    <dl class="fj-lista">
+                        <div><dt>Base</dt><dd>${RATING_BASE}</dd></div>
+                        ${filasPuntos.map(f => `<div><dt>${f[0]}</dt><dd>+${f[1]}</dd></div>`).join('')}
+                        ${filasPuntos.length === 0 ? '<div><dt>Sin puntos todavía</dt><dd>+0</dd></div>' : ''}
+                        <div class="fj-total">
+                            <dt>${j.ajusteManual != null ? 'Cálculo automático' : 'Valoración'}</dt>
+                            <dd>${j.automatico}</dd>
                         </div>
-                        <h3 class="jc-modal-name">${escapeHtml(j.nombre)}</h3>
-                        <p class="jc-modal-teamcode">${escapeHtml(j.equipo)}</p>
+                        ${j.ajusteManual != null ? `
+                        <div class="fj-total fj-manual">
+                            <dt>Ajustada a mano</dt><dd>${j.ajusteManual}</dd>
+                        </div>` : ''}
+                    </dl>
+                    ${ajusteHtml}
+                </div>`;
+
+            // La estadística principal cambia según la posición
+            const statPrincipal = j.esPortero
+                ? { valor: j.statValor, etiqueta: j.statValor === 1 ? 'Valla invicta' : 'Vallas invictas' }
+                : { valor: j.goles, etiqueta: j.goles === 1 ? 'Gol' : 'Goles' };
+            // El promedio de goles solo tiene sentido para jugadores de campo:
+            // al portero se le muestran dos casillas en vez de una vacía.
+            const tercerDato = (!j.esPortero && j.partidos > 0)
+                ? `<div class="fj-stat">
+                       <b>${(j.goles / j.partidos).toFixed(2).replace('.', ',')}</b>
+                       <span>Goles por partido</span>
+                   </div>`
+                : '';
+
+            document.getElementById('modal-jugador-body').innerHTML = `
+                <div class="fj-hero">
+                    <div class="fj-carta ${j.tier.clase}">
+                        <div class="jc-rating-slot">
+                            <span class="jc-rating">${j.rating}</span>
+                        </div>
+                        <div class="jc-photo-wrap">
+                            <div class="jc-photo-fg">${escapeHtml(iniciales)}</div>
+                            ${j.esPortero ? '<span class="jc-pos-pill">POR</span>' : ''}
+                        </div>
+                        <div class="jc-banda">
+                            <div class="jc-name2">${escapeHtml(nombreCorto(j.nombre))}</div>
+                        </div>
+                    </div>
+                    <div class="fj-datos">
+                        <p class="fc-kicker">${escapeHtml(j.tier.label)}</p>
+                        <h3 class="fj-nombre">${escapeHtml(j.nombre)}</h3>
+                        <div class="fj-club">
+                            ${escudo}
+                            <span>${escapeHtml(j.equipo)}</span>
+                        </div>
+                        <dl class="fj-lista">
+                            <div><dt>Posición</dt><dd>${posicion}</dd></div>
+                            <div><dt>Dorsal</dt><dd>#${j.dorsal}</dd></div>
+                            <div><dt>Valoración</dt><dd>${j.rating}</dd></div>
+                        </dl>
                     </div>
                 </div>
-                <div class="jc-modal-stat">
-                    <b>${j.statValor}</b>
-                    <span>${statLabel}</span>
+                <div class="fj-stats" style="grid-template-columns: repeat(${tercerDato ? 3 : 2}, 1fr)">
+                    <div class="fj-stat">
+                        <b>${statPrincipal.valor}</b>
+                        <span>${statPrincipal.etiqueta}</span>
+                    </div>
+                    <div class="fj-stat">
+                        <b>${j.partidos}</b>
+                        <span>${j.partidos === 1 ? 'Partido jugado' : 'Partidos jugados'}</span>
+                    </div>
+                    ${tercerDato}
                 </div>
+                ${puntosHtml}
                 ${sponsorHtml}
             `;
             document.getElementById('modal-jugador').classList.remove('hidden');
