@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e426]: ¡Bienvenido al panel de administración!
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - button "Cerrar Sesión" [ref=e427] [cursor=pointer]
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Arena Sports" [ref=e8]
+          - img "Faith Cup 2026" [ref=e10]
+        - paragraph [ref=e11]: Arena Sports · Torneo Interiglesias
+        - heading "Faith Cup 2026" [level=1] [ref=e12]: Faith Cup2026
+        - paragraph [ref=e13]: Siete equipos. Veintiún partidos. Un campeón.
+        - generic [ref=e14]:
+          - button "Ver calendario" [ref=e15] [cursor=pointer]
+          - button "Tabla de posiciones" [ref=e16] [cursor=pointer]
+      - navigation [ref=e19]:
+        - button "Partidos" [ref=e20] [cursor=pointer]
+        - button "Posiciones" [ref=e21] [cursor=pointer]
+        - button "Goleadores" [ref=e22] [cursor=pointer]
+        - button "Jugadores" [ref=e23] [cursor=pointer]
+        - button "Patrocinadores" [ref=e24] [cursor=pointer]
+        - button "Panel Admin" [ref=e428] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e429]:
+        - generic [ref=e430]:
+          - generic [ref=e431]:
+            - heading "1. Equipos" [level=2] [ref=e432]
+            - generic [ref=e435]:
+              - textbox "Nombre del equipo" [disabled] [ref=e436]
+              - button "Añadir" [disabled] [ref=e437]
+            - paragraph [ref=e440]:
+              - text: ⚠️ El torneo ya inició. Solo puedes
+              - strong [ref=e441]: editar
+              - text: nombres o
+              - strong [ref=e442]: retirar
+              - text: equipos. Al retirar, los partidos pendientes se reorganizarán.
+            - generic [ref=e443]:
+              - generic [ref=e444]:
+                - generic [ref=e445]:
+                  - generic [ref=e446]: Comunidad Espresso - Espresso F.C.
+                  - generic [ref=e447]:
+                    - button "Editar" [ref=e448] [cursor=pointer]
+                    - button "Retirar" [ref=e449] [cursor=pointer]
+                - generic [ref=e450]:
+                  - combobox [ref=e451]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C." [selected]'
+                  - paragraph [ref=e452]: 🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.
+                  - button "✏️ Editar jugadores (14)" [ref=e453] [cursor=pointer]
+              - generic [ref=e454]:
+                - generic [ref=e455]:
+                  - generic [ref=e456]: Casa Sobre la Roca - Bajo el nombre TMT
+                  - generic [ref=e457]:
+                    - button "Editar" [ref=e458] [cursor=pointer]
+                    - button "Retirar" [ref=e459] [cursor=pointer]
+                - generic [ref=e460]:
+                  - combobox [ref=e461]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\"" [selected]'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - button "✏️ Editar jugadores (14)" [ref=e462] [cursor=pointer]
+              - generic [ref=e463]:
+                - generic [ref=e464]:
+                  - generic [ref=e465]: Espresso F.C. Youth
+                  - generic [ref=e466]:
+                    - button "Editar" [ref=e467] [cursor=pointer]
+                    - button "Retirar" [ref=e468] [cursor=pointer]
+                - generic [ref=e469]:
+                  - combobox [ref=e470]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth" [selected]'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - button "✏️ Editar jugadores (10)" [ref=e471] [cursor=pointer]
+              - generic [ref=e472]:
+                - generic [ref=e473]:
+                  - generic [ref=e474]: Livingroom
+                  - generic [ref=e475]:
+                    - button "Editar" [ref=e476] [cursor=pointer]
+                    - button "Retirar" [ref=e477] [cursor=pointer]
+                - generic [ref=e478]:
+                  - combobox [ref=e479]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM" [selected]'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - paragraph [ref=e480]: 🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.
+                  - button "✏️ Editar jugadores (15)" [ref=e481] [cursor=pointer]
+              - generic [ref=e482]:
+                - generic [ref=e483]:
+                  - generic [ref=e484]: Iglesia Cuadrangular Plenitud de Vida
+                  - generic [ref=e485]:
+                    - button "Editar" [ref=e486] [cursor=pointer]
+                    - button "Retirar" [ref=e487] [cursor=pointer]
+                - generic [ref=e488]:
+                  - combobox [ref=e489]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida" [selected]'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - paragraph [ref=e490]: 🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.
+                  - button "✏️ Editar jugadores (10)" [ref=e491] [cursor=pointer]
+              - generic [ref=e492]:
+                - generic [ref=e493]:
+                  - generic [ref=e494]: Comunidad de Fe
+                  - generic [ref=e495]:
+                    - button "Editar" [ref=e496] [cursor=pointer]
+                    - button "Retirar" [ref=e497] [cursor=pointer]
+                - generic [ref=e498]:
+                  - combobox [ref=e499]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)"'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife" [selected]'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - paragraph [ref=e500]: 🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.
+                  - button "✏️ Editar jugadores (12)" [ref=e501] [cursor=pointer]
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - generic [ref=e504]: Iglesia Cristiana Reformada de Piedecuesta
+                  - generic [ref=e505]:
+                    - button "Editar" [ref=e506] [cursor=pointer]
+                    - button "Ajustar retiro" [ref=e507] [cursor=pointer]
+                - generic [ref=e508]:
+                  - combobox [ref=e509]:
+                    - option "⚠️ Sin vincular a inscripciones (goles con texto libre)"
+                    - 'option "👤 Jugadores de: comunidad espresso youth"'
+                    - 'option "👤 Jugadores de: Iglesia cristiana reformada de piedecuesta (ICRP)" [selected]'
+                    - 'option "👤 Jugadores de: Casa sobre la Roca - Bajo el nombre de \"TMT\""'
+                    - 'option "👤 Jugadores de: Iglesia cuadrangular plenitud de vida"'
+                    - 'option "👤 Jugadores de: Comunife"'
+                    - 'option "👤 Jugadores de: LIVINGROOM"'
+                    - 'option "👤 Jugadores de: Comunidad Espresso - Espresso F.C."'
+                  - paragraph [ref=e510]: 🔄 Vinculado automáticamente por nombre parecido — revisa que sea correcto.
+                  - button "✏️ Editar jugadores (9)" [ref=e511] [cursor=pointer]
+          - generic [ref=e512]:
+            - generic [ref=e513]:
+              - heading "2. Calendario del Torneo" [level=2] [ref=e514]
+              - generic [ref=e517]:
+                - generic [ref=e518]:
+                  - generic [ref=e519]: Inicio de Temporada
+                  - textbox [disabled] [ref=e520]
+                - generic [ref=e521]:
+                  - generic [ref=e522]: Fin de Temporada
+                  - textbox [disabled] [ref=e523]
+              - generic [ref=e524]:
+                - generic [ref=e525]: Días permitidos para partidos
+                - generic [ref=e526]:
+                  - generic [ref=e527] [cursor=pointer]: Lun
+                  - generic [ref=e528] [cursor=pointer]: Mar
+                  - generic [ref=e529] [cursor=pointer]: Mié
+                  - generic [ref=e530] [cursor=pointer]: Jue
+                  - generic [ref=e531] [cursor=pointer]: Vie
+                  - generic [ref=e532] [cursor=pointer]: Sáb
+                  - generic [ref=e533] [cursor=pointer]: Dom
+                - paragraph [ref=e534]: Los festivos colombianos se excluyen automáticamente.
+              - button "Generar Calendario (Round Robin)" [disabled] [ref=e535]
+            - button "⚠️ Reiniciar Todo el Torneo" [ref=e537] [cursor=pointer]
+        - generic [ref=e538]:
+          - heading "3. Fase Final (Knockout)" [level=2] [ref=e539]
+          - paragraph [ref=e542]: Selecciona manualmente los equipos y fechas para cada instancia.
+          - generic [ref=e543]:
+            - button "🏆 Configurar Semifinales" [ref=e544] [cursor=pointer]
+            - button "⚡ Configurar Gran Final" [ref=e545] [cursor=pointer]
+  - generic [ref=e30]:
+    - paragraph [ref=e31]: Nuestros Sponsors
+    - generic [ref=e32]:
+      - button [ref=e33] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e34]
+      - button [ref=e35] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e36]
+      - button [ref=e37] [cursor=pointer]:
+        - img "Negrón" [ref=e38]
+      - button [ref=e39] [cursor=pointer]:
+        - img "Luminus Car" [ref=e40]
+      - button [ref=e41] [cursor=pointer]:
+        - img "MV Autos" [ref=e42]
+      - button [ref=e43] [cursor=pointer]:
+        - img "Servicentro" [ref=e44]
+      - button [ref=e45] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e46]
+      - button [ref=e47] [cursor=pointer]:
+        - img "Avila Market" [ref=e48]
+      - button [ref=e49] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e50]
+      - button [ref=e51] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e52]
+      - button [ref=e53] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e54]
+      - button [ref=e55] [cursor=pointer]:
+        - img "Negrón" [ref=e56]
+      - button [ref=e57] [cursor=pointer]:
+        - img "Luminus Car" [ref=e58]
+      - button [ref=e59] [cursor=pointer]:
+        - img "MV Autos" [ref=e60]
+      - button [ref=e61] [cursor=pointer]:
+        - img "Servicentro" [ref=e62]
+      - button [ref=e63] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e64]
+      - button [ref=e65] [cursor=pointer]:
+        - img "Avila Market" [ref=e66]
+      - button [ref=e67] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e68]
+  - contentinfo [ref=e69]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - img "Arena Sports" [ref=e73]
+        - generic [ref=e74]:
+          - generic [ref=e75]: Desarrollado por
+          - generic [ref=e76]: Arena Sports
+          - paragraph [ref=e77]: © 2026 · Todos los derechos reservados
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: "Una idea de: Juan Pablo Mendoza Villamizar"
+        - generic [ref=e80]: Faith Cup 2026
+      - link "Visitar Arena Sports" [ref=e83] [cursor=pointer]:
+        - /url: https://arena-sports-cyan.vercel.app/

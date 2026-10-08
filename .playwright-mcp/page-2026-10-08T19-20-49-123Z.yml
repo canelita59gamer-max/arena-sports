@@ -1,0 +1,329 @@
+- generic [ref=e1]:
+  - generic: Mensaje
+  - generic [ref=e405]:
+    - generic [ref=e406]:
+      - button "×" [ref=e407] [cursor=pointer]
+      - heading "Acceso Admin" [level=2] [ref=e411]
+    - generic [ref=e412]:
+      - generic [ref=e413]:
+        - generic [ref=e414]:
+          - generic [ref=e415]: Correo Electrónico
+          - textbox "admin@ejemplo.com" [active] [ref=e416]: arenasports.eventos@gmail.com
+        - generic [ref=e417]:
+          - generic [ref=e418]: Contraseña
+          - textbox "••••••••" [ref=e419]: Juanpa_59
+          - button [ref=e420] [cursor=pointer]
+      - paragraph [ref=e424]
+      - button "Ingresar al Sistema" [ref=e425] [cursor=pointer]
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - button "Ingresar Admin" [ref=e4] [cursor=pointer]
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Arena Sports" [ref=e8]
+          - img "Faith Cup 2026" [ref=e10]
+        - paragraph [ref=e11]: Arena Sports · Torneo Interiglesias
+        - heading "Faith Cup 2026" [level=1] [ref=e12]: Faith Cup2026
+        - paragraph [ref=e13]: Siete equipos. Veintiún partidos. Un campeón.
+        - generic [ref=e14]:
+          - button "Ver calendario" [ref=e15] [cursor=pointer]
+          - button "Tabla de posiciones" [ref=e16] [cursor=pointer]
+      - navigation [ref=e19]:
+        - button "Partidos" [ref=e20] [cursor=pointer]
+        - button "Posiciones" [ref=e21] [cursor=pointer]
+        - button "Goleadores" [ref=e22] [cursor=pointer]
+        - button "Jugadores" [ref=e23] [cursor=pointer]
+        - button "Patrocinadores" [ref=e24] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - paragraph [ref=e89]: Semana 1
+            - heading "Próximos partidos" [level=2] [ref=e90]
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - heading "Jornada 1" [level=3] [ref=e95]
+                - paragraph [ref=e96]: River Side Campus
+              - generic [ref=e97]: Domingo, 30 de agosto
+            - generic [ref=e102]:
+              - generic [ref=e103]: "Descansa:"
+              - generic [ref=e104]: Livingroom
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - generic [ref=e108]: Iglesia Cuadrangular Plenitud de Vida
+                  - generic [ref=e109]: 7 — 3
+                  - generic [ref=e111]: Iglesia Cristiana Reformada de Piedecuesta
+                - button "Goles del Partido +" [ref=e112] [cursor=pointer]:
+                  - generic [ref=e113]: Goles del Partido
+                  - generic [ref=e114]: +
+              - generic [ref=e115]:
+                - generic [ref=e116]:
+                  - generic [ref=e117]: Comunidad Espresso - Espresso F.C.
+                  - generic [ref=e118]: 7 — 3
+                  - generic [ref=e120]: Comunidad de Fe
+                - button "Goles del Partido +" [ref=e121] [cursor=pointer]:
+                  - generic [ref=e122]: Goles del Partido
+                  - generic [ref=e123]: +
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - generic [ref=e126]: Casa Sobre la Roca - Bajo el nombre TMT
+                  - generic [ref=e127]: 4 — 4
+                  - generic [ref=e129]: Espresso F.C. Youth
+                - button "Goles del Partido +" [ref=e130] [cursor=pointer]:
+                  - generic [ref=e131]: Goles del Partido
+                  - generic [ref=e132]: +
+        - generic [ref=e133]:
+          - heading "Semana 2" [level=2] [ref=e135]
+          - generic [ref=e138]:
+            - generic [ref=e139]:
+              - generic [ref=e140]:
+                - heading "Jornada 2" [level=3] [ref=e141]
+                - paragraph [ref=e142]: River Side Campus
+              - generic [ref=e143]: Domingo, 6 de septiembre
+            - generic [ref=e148]:
+              - generic [ref=e149]: "Descansa:"
+              - generic [ref=e150]: Comunidad de Fe
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - generic [ref=e154]: Livingroom
+                  - generic [ref=e155]: 9 — 3
+                  - generic [ref=e157]: Iglesia Cristiana Reformada de Piedecuesta
+                - button "Goles del Partido +" [ref=e158] [cursor=pointer]:
+                  - generic [ref=e159]: Goles del Partido
+                  - generic [ref=e160]: +
+              - generic [ref=e161]:
+                - generic [ref=e162]:
+                  - generic [ref=e163]: Iglesia Cuadrangular Plenitud de Vida
+                  - generic [ref=e164]: 6 — 9
+                  - generic [ref=e166]: Espresso F.C. Youth
+                - button "Goles del Partido +" [ref=e167] [cursor=pointer]:
+                  - generic [ref=e168]: Goles del Partido
+                  - generic [ref=e169]: +
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - generic [ref=e172]: Comunidad Espresso - Espresso F.C.
+                  - generic [ref=e173]: 3 — 9
+                  - generic [ref=e175]: Casa Sobre la Roca - Bajo el nombre TMT
+                - button "Goles del Partido +" [ref=e176] [cursor=pointer]:
+                  - generic [ref=e177]: Goles del Partido
+                  - generic [ref=e178]: +
+        - generic [ref=e179]:
+          - heading "Semana 3" [level=2] [ref=e181]
+          - generic [ref=e184]:
+            - generic [ref=e185]:
+              - generic [ref=e186]:
+                - heading "Jornada 3" [level=3] [ref=e187]
+                - paragraph [ref=e188]: River Side Campus
+              - generic [ref=e189]: Domingo, 13 de septiembre
+            - generic [ref=e194]:
+              - generic [ref=e195]: "Descansa:"
+              - generic [ref=e196]: Espresso F.C. Youth
+            - generic [ref=e197]:
+              - generic [ref=e198]:
+                - generic [ref=e199]:
+                  - generic [ref=e200]: Livingroom
+                  - generic [ref=e201]: 8 — 2
+                  - generic [ref=e203]: Comunidad de Fe
+                - button "Goles del Partido +" [ref=e204] [cursor=pointer]:
+                  - generic [ref=e205]: Goles del Partido
+                  - generic [ref=e206]: +
+              - generic [ref=e207]:
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Iglesia Cristiana Reformada de Piedecuesta
+                  - generic [ref=e210]: 5 — 11
+                  - generic [ref=e212]: Casa Sobre la Roca - Bajo el nombre TMT
+                - button "Goles del Partido +" [ref=e213] [cursor=pointer]:
+                  - generic [ref=e214]: Goles del Partido
+                  - generic [ref=e215]: +
+              - generic [ref=e216]:
+                - generic [ref=e217]:
+                  - generic [ref=e218]: Iglesia Cuadrangular Plenitud de Vida
+                  - generic [ref=e219]: 2 — 11
+                  - generic [ref=e221]: Comunidad Espresso - Espresso F.C.
+                - button "Goles del Partido +" [ref=e222] [cursor=pointer]:
+                  - generic [ref=e223]: Goles del Partido
+                  - generic [ref=e224]: +
+        - generic [ref=e225]:
+          - heading "Semana 4" [level=2] [ref=e227]
+          - generic [ref=e230]:
+            - generic [ref=e231]:
+              - generic [ref=e232]:
+                - heading "Jornada 4" [level=3] [ref=e233]
+                - paragraph [ref=e234]: River Side Campus
+              - generic [ref=e235]: Domingo, 27 de septiembre
+            - generic [ref=e240]:
+              - generic [ref=e241]: "Descansa:"
+              - generic [ref=e242]: Iglesia Cuadrangular Plenitud de Vida
+            - generic [ref=e243]:
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]: Livingroom
+                  - generic [ref=e247]: 6 — 10
+                  - generic [ref=e249]: Espresso F.C. Youth
+                - button "Goles del Partido +" [ref=e250] [cursor=pointer]:
+                  - generic [ref=e251]: Goles del Partido
+                  - generic [ref=e252]: +
+              - generic [ref=e253]:
+                - generic [ref=e254]:
+                  - generic [ref=e255]: Comunidad de Fe
+                  - generic [ref=e256]: 1 — 11
+                  - generic [ref=e258]: Casa Sobre la Roca - Bajo el nombre TMT
+                - button "Goles del Partido +" [ref=e259] [cursor=pointer]:
+                  - generic [ref=e260]: Goles del Partido
+                  - generic [ref=e261]: +
+              - generic [ref=e262]:
+                - generic [ref=e263]:
+                  - generic [ref=e264]: Iglesia Cristiana Reformada de Piedecuesta
+                  - generic [ref=e265]: 3 — 5
+                  - generic [ref=e267]: Comunidad Espresso - Espresso F.C.
+                - button "Goles del Partido +" [ref=e268] [cursor=pointer]:
+                  - generic [ref=e269]: Goles del Partido
+                  - generic [ref=e270]: +
+        - generic [ref=e271]:
+          - heading "Semana 5" [level=2] [ref=e273]
+          - generic [ref=e276]:
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - heading "Jornada 5" [level=3] [ref=e279]
+                - paragraph [ref=e280]: River Side Campus
+              - generic [ref=e281]: Domingo, 4 de octubre
+            - generic [ref=e286]:
+              - generic [ref=e287]: "Descansa:"
+              - generic [ref=e288]: Ningún equipo
+            - generic [ref=e289]:
+              - generic [ref=e291]:
+                - generic [ref=e292]: Casa Sobre la Roca - Bajo el nombre TMT
+                - generic [ref=e293]: vs
+                - generic [ref=e295]: Livingroom
+                - generic [ref=e296]: Próximo
+              - generic [ref=e298]:
+                - generic [ref=e299]:
+                  - generic [ref=e300]: Espresso F.C. Youth
+                  - generic [ref=e301]: 2 — 6
+                  - generic [ref=e303]: Comunidad Espresso - Espresso F.C.
+                - button "Goles del Partido +" [ref=e304] [cursor=pointer]:
+                  - generic [ref=e305]: Goles del Partido
+                  - generic [ref=e306]: +
+              - generic [ref=e307]:
+                - generic [ref=e308]:
+                  - generic [ref=e309]: Comunidad de Fe
+                  - generic [ref=e310]: 5 — 10
+                  - generic [ref=e312]: Iglesia Cuadrangular Plenitud de Vida
+                - button "Goles del Partido +" [ref=e313] [cursor=pointer]:
+                  - generic [ref=e314]: Goles del Partido
+                  - generic [ref=e315]: +
+        - generic [ref=e316]:
+          - heading "Semana 6" [level=2] [ref=e318]
+          - generic [ref=e321]:
+            - generic [ref=e322]:
+              - generic [ref=e323]:
+                - heading "Jornada 6" [level=3] [ref=e324]
+                - paragraph [ref=e325]: River Side Campus
+              - generic [ref=e326]: Domingo, 11 de octubre
+            - generic [ref=e331]:
+              - generic [ref=e332]: "Descansa:"
+              - generic [ref=e333]: Ningún equipo
+            - generic [ref=e334]:
+              - generic [ref=e336]:
+                - generic [ref=e337]: Comunidad Espresso - Espresso F.C.
+                - generic [ref=e338]: vs
+                - generic [ref=e340]: Livingroom
+                - generic [ref=e341]: Próximo
+              - generic [ref=e344]:
+                - generic [ref=e345]: Casa Sobre la Roca - Bajo el nombre TMT
+                - generic [ref=e346]: vs
+                - generic [ref=e348]: Iglesia Cuadrangular Plenitud de Vida
+                - generic [ref=e349]: Próximo
+              - generic [ref=e351]:
+                - generic [ref=e352]:
+                  - generic [ref=e353]: Espresso F.C. Youth
+                  - generic [ref=e354]: 3 — 0
+                  - generic [ref=e356]: Iglesia Cristiana Reformada de Piedecuesta
+                - button "Goles del Partido +" [ref=e357] [cursor=pointer]:
+                  - generic [ref=e358]: Goles del Partido
+                  - generic [ref=e359]: +
+              - generic [ref=e360]:
+                - generic [ref=e361]:
+                  - generic [ref=e362]: Comunidad de Fe
+                  - generic [ref=e363]: 3 — 0
+                  - generic [ref=e365]: Iglesia Cristiana Reformada de Piedecuesta
+                - button "Goles del Partido +" [ref=e366] [cursor=pointer]:
+                  - generic [ref=e367]: Goles del Partido
+                  - generic [ref=e368]: +
+        - generic [ref=e369]:
+          - heading "Semana 7" [level=2] [ref=e371]
+          - generic [ref=e374]:
+            - generic [ref=e375]:
+              - generic [ref=e376]:
+                - heading "Jornada 7" [level=3] [ref=e377]
+                - paragraph [ref=e378]: River Side Campus
+              - generic [ref=e379]: Domingo, 18 de octubre
+            - generic [ref=e384]:
+              - generic [ref=e385]: "Descansa:"
+              - generic [ref=e386]: Comunidad Espresso - Espresso F.C., Casa Sobre la Roca - Bajo el nombre TMT
+            - generic [ref=e387]:
+              - generic [ref=e389]:
+                - generic [ref=e390]: Livingroom
+                - generic [ref=e391]: vs
+                - generic [ref=e393]: Iglesia Cuadrangular Plenitud de Vida
+                - generic [ref=e394]: Próximo
+              - generic [ref=e397]:
+                - generic [ref=e398]: Espresso F.C. Youth
+                - generic [ref=e399]: vs
+                - generic [ref=e401]: Comunidad de Fe
+                - generic [ref=e402]: Próximo
+  - generic [ref=e30]:
+    - paragraph [ref=e31]: Nuestros Sponsors
+    - generic [ref=e32]:
+      - button [ref=e33] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e34]
+      - button [ref=e35] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e36]
+      - button [ref=e37] [cursor=pointer]:
+        - img "Negrón" [ref=e38]
+      - button [ref=e39] [cursor=pointer]:
+        - img "Luminus Car" [ref=e40]
+      - button [ref=e41] [cursor=pointer]:
+        - img "MV Autos" [ref=e42]
+      - button [ref=e43] [cursor=pointer]:
+        - img "Servicentro" [ref=e44]
+      - button [ref=e45] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e46]
+      - button [ref=e47] [cursor=pointer]:
+        - img "Avila Market" [ref=e48]
+      - button [ref=e49] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e50]
+      - button [ref=e51] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e52]
+      - button [ref=e53] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e54]
+      - button [ref=e55] [cursor=pointer]:
+        - img "Negrón" [ref=e56]
+      - button [ref=e57] [cursor=pointer]:
+        - img "Luminus Car" [ref=e58]
+      - button [ref=e59] [cursor=pointer]:
+        - img "MV Autos" [ref=e60]
+      - button [ref=e61] [cursor=pointer]:
+        - img "Servicentro" [ref=e62]
+      - button [ref=e63] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e64]
+      - button [ref=e65] [cursor=pointer]:
+        - img "Avila Market" [ref=e66]
+      - button [ref=e67] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e68]
+  - contentinfo [ref=e69]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - img "Arena Sports" [ref=e73]
+        - generic [ref=e74]:
+          - generic [ref=e75]: Desarrollado por
+          - generic [ref=e76]: Arena Sports
+          - paragraph [ref=e77]: © 2026 · Todos los derechos reservados
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: "Una idea de: Juan Pablo Mendoza Villamizar"
+        - generic [ref=e80]: Faith Cup 2026
+      - link "Visitar Arena Sports" [ref=e83] [cursor=pointer]:
+        - /url: https://arena-sports-cyan.vercel.app/
