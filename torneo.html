@@ -2952,7 +2952,7 @@
                         <div class="flex gap-2">
                             <button onclick="app.editTeam(${i})" class="btn btn-primary py-1 px-3 text-xs">Editar</button>
                             ${!started ? `<button onclick="app.removeTeam(${i})" class="btn btn-danger py-1 px-3 text-xs">Eliminar</button>` : ''}
-                            ${started && !t.retirado ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
+                            ${started ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">${t.retirado ? 'Ajustar retiro' : 'Retirar'}</button>` : ''}
                         </div>
                     </div>
                     <div class="mt-2">
