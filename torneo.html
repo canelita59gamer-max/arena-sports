@@ -2202,24 +2202,55 @@
 
         withdrawTeam(teamName) {
             this.showConfirm(`¿Retirar a "${teamName}" del torneo? Los partidos pendientes se reorganizarán.`, () => {
-                // 1. Marcar como retirado (se conserva en la tabla con sus partidos y goleadores)
-                const team = this.teams.find(t => t.name === teamName);
-                if (team) team.retirado = true;
-                // 2. Eliminar solo los partidos NO jugados donde participe
-                this.schedule.forEach(round => {
-                    round.matches = round.matches.filter(match => {
-                        if (match.played) return true;
-                        return match.team1 !== teamName && match.team2 !== teamName;
-                    });
-                });
-                this.schedule = this.schedule.filter(r => r.matches.length > 0);
-                // 3. Reacomodar los pendientes de los demás equipos sin repetir cruces
-                const plan = this.planScheduleRepair();
-                if (plan) this.applyRepairPlan(plan);
-                this.saveStateToFirestore();
-                this.renderAll();
-                this.showNotification(`Equipo "${teamName}" retirado y calendario reorganizado.`);
+                // Rivales con los que aún no se jugó (estén o no programados)
+                const yaJugaron = new Set();
+                this.schedule.forEach(r => (r.matches || []).forEach(m => {
+                    if (!m.played) return;
+                    if (m.team1 === teamName) yaJugaron.add(m.team2);
+                    else if (m.team2 === teamName) yaJugaron.add(m.team1);
+                }));
+                const rivales = this.getActiveTeamNames().filter(n => n !== teamName && !yaJugaron.has(n));
+                if (!rivales.length) return this.executeWithdraw(teamName, []);
+                const esc = s => s.replace(/"/g, '&quot;');
+                document.getElementById('knockout-modal-title').textContent = `Retiro de ${teamName}`;
+                document.getElementById('knockout-modal-body').innerHTML = `
+                    <p class="text-sm text-gray-600 mb-3">Marca los rivales a los que se les da el partido pendiente como <strong>victoria 3–0 por W.O.</strong> Los no marcados simplemente no se juegan.</p>
+                    <div class="mb-6 space-y-2">
+                        ${rivales.map(n => `<label class="flex items-center gap-2 text-sm font-semibold text-gray-700"><input type="checkbox" class="wo-rival" value="${esc(n)}"> ${n}</label>`).join('')}
+                    </div>
+                    <button id="confirm-withdraw-btn" class="btn btn-primary w-full py-3">Retirar equipo</button>`;
+                document.getElementById('modal-knockout').classList.remove('hidden');
+                document.getElementById('confirm-withdraw-btn').onclick = () => {
+                    const conWO = [...document.querySelectorAll('.wo-rival:checked')].map(c => c.value);
+                    this.hideKnockoutModal();
+                    this.executeWithdraw(teamName, conWO);
+                };
             });
+        }
+
+        executeWithdraw(teamName, ganadoresWO) {
+            // 1. Marcar como retirado (se conserva en la tabla con sus partidos y goleadores)
+            const team = this.teams.find(t => t.name === teamName);
+            if (team) team.retirado = true;
+            // 2. Eliminar solo los partidos NO jugados donde participe
+            this.schedule.forEach(round => {
+                round.matches = round.matches.filter(match => {
+                    if (match.played) return true;
+                    return match.team1 !== teamName && match.team2 !== teamName;
+                });
+            });
+            this.schedule = this.schedule.filter(r => r.matches.length > 0);
+            // 3. W.O. 3–0 como último partido de la próxima fecha pendiente
+            const proxima = this.schedule.find(r => r.matches.some(m => !m.played));
+            if (proxima) {
+                ganadoresWO.forEach(g => proxima.matches.push({ team1: g, team2: teamName, score1: 3, score2: 0, played: true, scorers: [], wo: true }));
+            }
+            // 4. Reacomodar los pendientes de los demás equipos sin repetir cruces
+            const plan = this.planScheduleRepair();
+            if (plan) this.applyRepairPlan(plan);
+            this.saveStateToFirestore();
+            this.renderAll();
+            this.showNotification(`Equipo "${teamName}" retirado y calendario reorganizado.`);
         }
 
         getActiveTeamNames() { return this.teams.filter(t => !t.retirado).map(t => t.name); }
@@ -2440,12 +2471,16 @@
             const playedKeys = new Set();
             const busy = this.schedule.map(() => new Set());
             const slots = [];
+            const dropped = [];
+            // Un round robin con N equipos (contando retirados) tiene N jornadas si N es impar, N-1 si es par
+            const maxRounds = this.teams.length % 2 ? this.teams.length : this.teams.length - 1;
             this.schedule.forEach((r, rIdx) => (r.matches || []).forEach(m => {
                 if (m.played) {
                     // Un partido jugado contra un equipo retirado (p. ej. W.O.) no cuenta como cruce del calendario
                     if (!retirados.has(m.team1) && !retirados.has(m.team2)) playedKeys.add(this.pairKey(m.team1, m.team2));
-                    busy[rIdx].add(m.team1); busy[rIdx].add(m.team2);
-                } else slots.push({ rIdx, match: m, cur: this.pairKey(m.team1, m.team2) });
+                    if (!retirados.has(m.team1) && !retirados.has(m.team2)) { busy[rIdx].add(m.team1); busy[rIdx].add(m.team2); }
+                } else if (rIdx >= maxRounds) dropped.push(m); // jornada extra: no se usa, sus partidos se reubican
+                else slots.push({ rIdx, match: m, cur: this.pairKey(m.team1, m.team2) });
             }));
 
             const needed = [];
@@ -2477,7 +2512,7 @@
             while (target > 0 && !dfs(0, 0)) target--;
 
             return {
-                slots, needed, result,
+                slots, needed, result, dropped,
                 leftovers: needed.filter((_, i) => !used[i])
             };
         }
@@ -2492,7 +2527,7 @@
             const changes = plan.slots.map((s, i) => ({ s, p: plan.result[i] === null ? null : plan.needed[plan.result[i]] }))
                 .filter(({ s, p }) => !p || this.pairKey(...p) !== s.cur);
             const lines = changes.map(({ s, p }) => `Jornada ${this.schedule[s.rIdx].round}: ${lbl(s.match.team1, s.match.team2)} → ${p ? lbl(...p) : '(se elimina, sobraba)'}`);
-            if (plan.leftovers.length) lines.push(...plan.leftovers.map(p => `Nueva jornada al final: ${lbl(...p)}`));
+            if (plan.leftovers.length) lines.push(...plan.leftovers.map(p => `Al final de la última jornada: ${lbl(...p)}`));
             const warn = dupPlayed.length
                 ? `<br><br><strong>Atención:</strong> hay ${dupPlayed.length} cruce(s) repetido(s) con resultado ya jugado (${dupPlayed.map(d => `Jornada ${d.round.round}: ${lbl(d.match.team1, d.match.team2)}`).join('; ')}). Esos no se tocan; revísalos manualmente.`
                 : '';
@@ -2508,6 +2543,7 @@
         }
 
         applyRepairPlan(plan) {
+            (plan.dropped || []).forEach(m => { m.__remove = true; });
             plan.slots.forEach((s, i) => {
                 const p = plan.result[i] === null ? null : plan.needed[plan.result[i]];
                 if (!p) { s.match.__remove = true; return; }
@@ -2515,14 +2551,14 @@
             });
             this.schedule.forEach(r => { r.matches = r.matches.filter(m => !m.__remove); });
             this.schedule = this.schedule.filter(r => r.matches.length > 0);
-            if (plan.leftovers.length) {
-                const dates = this.schedule.map(r => r.date).filter(Boolean).sort();
-                const d = new Date((dates[dates.length - 1] || new Date().toISOString().split('T')[0]) + 'T12:00:00');
-                plan.leftovers.forEach(p => {
-                    d.setDate(d.getDate() + 7);
-                    this.schedule.push({ round: this.schedule.length + 1, date: d.toISOString().split('T')[0], matches: [{ team1: p[0], team2: p[1], score1: null, score2: null, played: false, scorers: [] }] });
-                });
-            }
+            // Los cruces que no caben van al final de la ÚLTIMA jornada existente (sin crear fechas nuevas),
+            // aunque algún equipo juegue dos veces ese día.
+            plan.leftovers.forEach(p => {
+                const nuevo = { team1: p[0], team2: p[1], score1: null, score2: null, played: false, scorers: [] };
+                const ultima = this.schedule[this.schedule.length - 1];
+                if (ultima) ultima.matches.push(nuevo);
+                else this.schedule.push({ round: 1, date: new Date().toISOString().split('T')[0], matches: [nuevo] });
+            });
         }
 
         // ---- Getters de partidos ----
