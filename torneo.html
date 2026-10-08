@@ -2210,40 +2210,60 @@
                     else if (m.team2 === teamName) yaJugaron.add(m.team1);
                 }));
                 const rivales = this.getActiveTeamNames().filter(n => n !== teamName && !yaJugaron.has(n));
-                if (!rivales.length) return this.executeWithdraw(teamName, []);
+                // Partidos "jugados" contra este equipo sin goleadores (típicamente un W.O. mal registrado)
+                const anulables = [];
+                this.schedule.forEach((r, rIdx) => (r.matches || []).forEach((m, mIdx) => {
+                    if (m.played && !m.wo && !(m.scorers || []).length && (m.team1 === teamName || m.team2 === teamName))
+                        anulables.push({ rIdx, mIdx, label: `Jornada ${r.round}: ${m.team1} ${m.score1}–${m.score2} ${m.team2}` });
+                }));
+                if (!rivales.length && !anulables.length) return this.executeWithdraw(teamName, []);
                 const esc = s => s.replace(/"/g, '&quot;');
                 document.getElementById('knockout-modal-title').textContent = `Retiro de ${teamName}`;
                 document.getElementById('knockout-modal-body').innerHTML = `
-                    <p class="text-sm text-gray-600 mb-3">Marca los rivales a los que se les da el partido pendiente como <strong>victoria 3–0 por W.O.</strong> Los no marcados simplemente no se juegan.</p>
+                    ${anulables.length ? `
+                    <p class="text-sm text-gray-600 mb-2">Marca los partidos que <strong>no debieron existir</strong>. Se borran y su fecha queda libre para reacomodar otro partido.</p>
+                    <div class="mb-4 space-y-2">
+                        ${anulables.map(a => `<label class="flex items-center gap-2 text-sm font-semibold text-gray-700"><input type="checkbox" class="anular-partido" value="${a.rIdx}-${a.mIdx}"> ${a.label}</label>`).join('')}
+                    </div>` : ''}
+                    ${rivales.length ? `
+                    <p class="text-sm text-gray-600 mb-2">Marca los rivales a los que se les da el partido pendiente como <strong>victoria 3–0 por W.O.</strong> Los no marcados simplemente no se juegan.</p>
                     <div class="mb-6 space-y-2">
                         ${rivales.map(n => `<label class="flex items-center gap-2 text-sm font-semibold text-gray-700"><input type="checkbox" class="wo-rival" value="${esc(n)}"> ${n}</label>`).join('')}
-                    </div>
+                    </div>` : ''}
                     <button id="confirm-withdraw-btn" class="btn btn-primary w-full py-3">Retirar equipo</button>`;
                 document.getElementById('modal-knockout').classList.remove('hidden');
                 document.getElementById('confirm-withdraw-btn').onclick = () => {
                     const conWO = [...document.querySelectorAll('.wo-rival:checked')].map(c => c.value);
+                    const anular = [...document.querySelectorAll('.anular-partido:checked')].map(c => c.value.split('-').map(Number));
                     this.hideKnockoutModal();
-                    this.executeWithdraw(teamName, conWO);
+                    this.executeWithdraw(teamName, conWO, anular);
                 };
             });
         }
 
-        executeWithdraw(teamName, ganadoresWO) {
+        executeWithdraw(teamName, ganadoresWO, anular = []) {
+            // 0. Partidos que no debieron existir: pasan a ser un espacio libre en su jornada
+            anular.forEach(([rIdx, mIdx]) => {
+                const m = this.schedule[rIdx]?.matches[mIdx];
+                if (!m) return;
+                Object.assign(m, { score1: null, score2: null, played: false, scorers: [], libre: true });
+            });
             // 1. Marcar como retirado (se conserva en la tabla con sus partidos y goleadores)
             const team = this.teams.find(t => t.name === teamName);
             if (team) team.retirado = true;
-            // 2. Eliminar solo los partidos NO jugados donde participe
+            // 2. Eliminar solo los partidos NO jugados donde participe (los espacios libres se conservan)
             this.schedule.forEach(round => {
                 round.matches = round.matches.filter(match => {
-                    if (match.played) return true;
+                    if (match.played || match.libre) return true;
                     return match.team1 !== teamName && match.team2 !== teamName;
                 });
             });
             this.schedule = this.schedule.filter(r => r.matches.length > 0);
             // 3. W.O. 3–0 como último partido de la próxima fecha pendiente
             const proxima = this.schedule.find(r => r.matches.some(m => !m.played));
+            const yaHayWO = g => this.schedule.some(r => r.matches.some(m => m.played && this.pairKey(m.team1, m.team2) === this.pairKey(g, teamName)));
             if (proxima) {
-                ganadoresWO.forEach(g => proxima.matches.push({ team1: g, team2: teamName, score1: 3, score2: 0, played: true, scorers: [], wo: true }));
+                ganadoresWO.filter(g => !yaHayWO(g)).forEach(g => proxima.matches.push({ team1: g, team2: teamName, score1: 3, score2: 0, played: true, scorers: [], wo: true }));
             }
             // 4. Reacomodar los pendientes de los demás equipos sin repetir cruces
             const plan = this.planScheduleRepair();
@@ -2548,6 +2568,7 @@
                 const p = plan.result[i] === null ? null : plan.needed[plan.result[i]];
                 if (!p) { s.match.__remove = true; return; }
                 if (this.pairKey(...p) !== s.cur) { s.match.team1 = p[0]; s.match.team2 = p[1]; }
+                delete s.match.libre;
             });
             this.schedule.forEach(r => { r.matches = r.matches.filter(m => !m.__remove); });
             this.schedule = this.schedule.filter(r => r.matches.length > 0);

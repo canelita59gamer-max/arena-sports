@@ -1,0 +1,75 @@
+- generic [active] [ref=e1]:
+  - generic: Mensaje
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - button "Ingresar Admin" [ref=e4] [cursor=pointer]
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Arena Sports" [ref=e8]
+          - img "Faith Cup 2026" [ref=e10]
+        - paragraph [ref=e11]: Arena Sports · Torneo Interiglesias
+        - heading "Faith Cup 2026" [level=1] [ref=e12]: Faith Cup2026
+        - paragraph [ref=e13]: Siete equipos. Veintiún partidos. Un campeón.
+        - generic [ref=e14]:
+          - button "Ver calendario" [ref=e15] [cursor=pointer]
+          - button "Tabla de posiciones" [ref=e16] [cursor=pointer]
+      - navigation [ref=e19]:
+        - button "Partidos" [ref=e20] [cursor=pointer]
+        - button "Posiciones" [ref=e21] [cursor=pointer]
+        - button "Goleadores" [ref=e22] [cursor=pointer]
+        - button "Jugadores" [ref=e23] [cursor=pointer]
+        - button "Patrocinadores" [ref=e24] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e26]: El calendario aún no ha sido generado.
+  - generic [ref=e30]:
+    - paragraph [ref=e31]: Nuestros Sponsors
+    - generic [ref=e32]:
+      - button [ref=e33] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e34]
+      - button [ref=e35] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e36]
+      - button [ref=e37] [cursor=pointer]:
+        - img "Negrón" [ref=e38]
+      - button [ref=e39] [cursor=pointer]:
+        - img "Luminus Car" [ref=e40]
+      - button [ref=e41] [cursor=pointer]:
+        - img "MV Autos" [ref=e42]
+      - button [ref=e43] [cursor=pointer]:
+        - img "Servicentro" [ref=e44]
+      - button [ref=e45] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e46]
+      - button [ref=e47] [cursor=pointer]:
+        - img "Avila Market" [ref=e48]
+      - button [ref=e49] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e50]
+      - button [ref=e51] [cursor=pointer]:
+        - img "El Mero Taco" [ref=e52]
+      - button [ref=e53] [cursor=pointer]:
+        - img "Comunidad Espresso" [ref=e54]
+      - button [ref=e55] [cursor=pointer]:
+        - img "Negrón" [ref=e56]
+      - button [ref=e57] [cursor=pointer]:
+        - img "Luminus Car" [ref=e58]
+      - button [ref=e59] [cursor=pointer]:
+        - img "MV Autos" [ref=e60]
+      - button [ref=e61] [cursor=pointer]:
+        - img "Servicentro" [ref=e62]
+      - button [ref=e63] [cursor=pointer]:
+        - img "Superdrogas Piedecuesta" [ref=e64]
+      - button [ref=e65] [cursor=pointer]:
+        - img "Avila Market" [ref=e66]
+      - button [ref=e67] [cursor=pointer]:
+        - img "Dr. Oscar Mendoza" [ref=e68]
+  - contentinfo [ref=e69]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - img "Arena Sports" [ref=e73]
+        - generic [ref=e74]:
+          - generic [ref=e75]: Desarrollado por
+          - generic [ref=e76]: Arena Sports
+          - paragraph [ref=e77]: © 2026 · Todos los derechos reservados
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: "Una idea de: Juan Pablo Mendoza Villamizar"
+        - generic [ref=e80]: Faith Cup 2026
+      - link "Visitar Arena Sports" [ref=e83] [cursor=pointer]:
+        - /url: https://arena-sports-cyan.vercel.app/
