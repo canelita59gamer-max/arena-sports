@@ -2202,21 +2202,27 @@
 
         withdrawTeam(teamName) {
             this.showConfirm(`¿Retirar a "${teamName}" del torneo? Los partidos pendientes se reorganizarán.`, () => {
-                // 1. Quitar de lista
-                this.teams = this.teams.filter(t => t.name !== teamName);
-                // 2. Eliminar partidos no jugados donde participe
+                // 1. Marcar como retirado (se conserva en la tabla con sus partidos y goleadores)
+                const team = this.teams.find(t => t.name === teamName);
+                if (team) team.retirado = true;
+                // 2. Eliminar solo los partidos NO jugados donde participe
                 this.schedule.forEach(round => {
                     round.matches = round.matches.filter(match => {
                         if (match.played) return true;
                         return match.team1 !== teamName && match.team2 !== teamName;
                     });
                 });
-                // 3. Reorganizar
-                this.reorganizePendingMatches();
+                this.schedule = this.schedule.filter(r => r.matches.length > 0);
+                // 3. Reacomodar los pendientes de los demás equipos sin repetir cruces
+                const plan = this.planScheduleRepair();
+                if (plan) this.applyRepairPlan(plan);
                 this.saveStateToFirestore();
+                this.renderAll();
                 this.showNotification(`Equipo "${teamName}" retirado y calendario reorganizado.`);
             });
         }
+
+        getActiveTeamNames() { return this.teams.filter(t => !t.retirado).map(t => t.name); }
 
         // ---- Calendario (Round Robin) ----
         generateSchedule() {
@@ -2330,7 +2336,7 @@
                 if (match.team1) playing.add(match.team1);
                 if (match.team2) playing.add(match.team2);
             });
-            return this.teams.map(team => team.name).filter(name => !playing.has(name));
+            return this.getActiveTeamNames().filter(name => !playing.has(name));
         }
 
         openTeamSwapModal(rIdx, mIdx) {
@@ -2369,12 +2375,154 @@
             if (newTeam === selectedOut || (match.team1 === newTeam || match.team2 === newTeam)) {
                 return this.showNotification("Ese equipo ya juega en este partido.", true);
             }
+            const otherTeam = match.team1 === selectedOut ? match.team2 : match.team1;
+            const newKey = this.pairKey(newTeam, otherTeam);
+
+            // ¿Ya existe ese cruce en otra jornada?
+            let dupRound = null, dupMatch = null;
+            this.schedule.forEach(r => {
+                if (r === round) return;
+                (r.matches || []).forEach(m => {
+                    if (this.pairKey(m.team1, m.team2) === newKey) { dupRound = r; dupMatch = m; }
+                });
+            });
+
+            if (dupMatch) {
+                if (dupMatch.played) {
+                    return this.showNotification(`${newTeam} y ${otherTeam} ya jugaron (Jornada ${dupRound.round}). Ese intercambio repetiría un cruce.`, true);
+                }
+                // Cruce pendiente en otra jornada: se intercambian los dos partidos para no perder ni repetir ninguno.
+                const busyThere = new Set();
+                dupRound.matches.forEach(m => { if (m !== dupMatch) { busyThere.add(m.team1); busyThere.add(m.team2); } });
+                if (busyThere.has(selectedOut)) {
+                    return this.showNotification(`${newTeam} y ${otherTeam} ya tienen su partido en la Jornada ${dupRound.round}, y ${selectedOut} ya juega esa jornada. Elige otro equipo.`, true);
+                }
+                if (dupMatch.team1 === newTeam) dupMatch.team1 = selectedOut;
+                else dupMatch.team2 = selectedOut;
+            }
+
             if (match.team1 === selectedOut) match.team1 = newTeam;
             else match.team2 = newTeam;
             await this.saveStateToFirestore();
             this.hideKnockoutModal();
             this.renderAll();
-            this.showNotification(`Intercambio guardado: ${newTeam} juega y ${selectedOut} descansa.`);
+            this.showNotification(dupMatch
+                ? `Intercambio guardado. ${selectedOut} vs ${otherTeam} pasó a la Jornada ${dupRound.round}.`
+                : `Intercambio guardado: ${newTeam} juega y ${selectedOut} descansa.`);
+        }
+
+        // ---- Integridad del calendario (cruces repetidos / faltantes) ----
+        pairKey(a, b) { return [a, b].sort().join('||'); }
+
+        getScheduleIssues() {
+            const names = this.getActiveTeamNames();
+            const retirados = new Set(this.teams.filter(t => t.retirado).map(t => t.name));
+            const seen = new Map();
+            const duplicates = [];
+            this.schedule.forEach(r => (r.matches || []).forEach(m => {
+                if (retirados.has(m.team1) || retirados.has(m.team2)) return;
+                const key = this.pairKey(m.team1, m.team2);
+                if (seen.has(key)) duplicates.push({ key, first: seen.get(key), match: m, round: r });
+                else seen.set(key, { match: m, round: r });
+            }));
+            const missing = [];
+            for (let i = 0; i < names.length; i++)
+                for (let j = i + 1; j < names.length; j++)
+                    if (!seen.has(this.pairKey(names[i], names[j]))) missing.push([names[i], names[j]]);
+            return { duplicates, missing };
+        }
+
+        // Calcula (sin modificar nada) cómo reubicar los partidos PENDIENTES para que cada cruce aparezca una sola vez.
+        // Los partidos jugados nunca se tocan.
+        planScheduleRepair() {
+            const names = this.getActiveTeamNames();
+            const retirados = new Set(this.teams.filter(t => t.retirado).map(t => t.name));
+            const playedKeys = new Set();
+            const busy = this.schedule.map(() => new Set());
+            const slots = [];
+            this.schedule.forEach((r, rIdx) => (r.matches || []).forEach(m => {
+                if (m.played) {
+                    // Un partido jugado contra un equipo retirado (p. ej. W.O.) no cuenta como cruce del calendario
+                    if (!retirados.has(m.team1) && !retirados.has(m.team2)) playedKeys.add(this.pairKey(m.team1, m.team2));
+                    busy[rIdx].add(m.team1); busy[rIdx].add(m.team2);
+                } else slots.push({ rIdx, match: m, cur: this.pairKey(m.team1, m.team2) });
+            }));
+
+            const needed = [];
+            for (let i = 0; i < names.length; i++)
+                for (let j = i + 1; j < names.length; j++)
+                    if (!playedKeys.has(this.pairKey(names[i], names[j]))) needed.push([names[i], names[j]]);
+
+            let target = Math.min(slots.length, needed.length);
+            const used = new Array(needed.length).fill(false);
+            const result = new Array(slots.length).fill(null);
+
+            const dfs = (s, filled) => {
+                if (filled === target) return true;
+                if (s === slots.length) return false;
+                const { rIdx, cur } = slots[s];
+                const cand = needed.map((p, i) => i).filter(i => !used[i] && !busy[rIdx].has(needed[i][0]) && !busy[rIdx].has(needed[i][1]));
+                cand.sort((a, b) => (this.pairKey(...needed[b]) === cur) - (this.pairKey(...needed[a]) === cur));
+                for (const i of cand) {
+                    used[i] = true; result[s] = i;
+                    busy[rIdx].add(needed[i][0]); busy[rIdx].add(needed[i][1]);
+                    if (dfs(s + 1, filled + 1)) return true;
+                    busy[rIdx].delete(needed[i][0]); busy[rIdx].delete(needed[i][1]);
+                    used[i] = false; result[s] = null;
+                }
+                // Dejar este espacio vacío solo si sobran espacios
+                return slots.length - s - 1 >= target - filled && dfs(s + 1, filled);
+            };
+            // Si no caben todos en las jornadas pendientes existentes, los que sobren van a jornadas nuevas
+            while (target > 0 && !dfs(0, 0)) target--;
+
+            return {
+                slots, needed, result,
+                leftovers: needed.filter((_, i) => !used[i])
+            };
+        }
+
+        repairDuplicateMatches() {
+            const issues = this.getScheduleIssues();
+            if (!issues.duplicates.length && !issues.missing.length) return this.showNotification("El calendario no tiene cruces repetidos ni faltantes.");
+            const plan = this.planScheduleRepair();
+            if (!plan) return this.showAlert("No se encontró una forma segura de reubicar los partidos pendientes. No se modificó nada.");
+            const lbl = (a, b) => `${a} vs ${b}`;
+            const dupPlayed = issues.duplicates.filter(d => d.match.played);
+            const changes = plan.slots.map((s, i) => ({ s, p: plan.result[i] === null ? null : plan.needed[plan.result[i]] }))
+                .filter(({ s, p }) => !p || this.pairKey(...p) !== s.cur);
+            const lines = changes.map(({ s, p }) => `Jornada ${this.schedule[s.rIdx].round}: ${lbl(s.match.team1, s.match.team2)} → ${p ? lbl(...p) : '(se elimina, sobraba)'}`);
+            if (plan.leftovers.length) lines.push(...plan.leftovers.map(p => `Nueva jornada al final: ${lbl(...p)}`));
+            const warn = dupPlayed.length
+                ? `<br><br><strong>Atención:</strong> hay ${dupPlayed.length} cruce(s) repetido(s) con resultado ya jugado (${dupPlayed.map(d => `Jornada ${d.round.round}: ${lbl(d.match.team1, d.match.team2)}`).join('; ')}). Esos no se tocan; revísalos manualmente.`
+                : '';
+            this.showConfirm(
+                `Se reubicarán <strong>solo partidos pendientes</strong>. Los jugados y sus goleadores no cambian.<br><br>${lines.map(l => `• ${l}`).join('<br>') || 'Sin cambios en pendientes.'}${warn}`,
+                async () => {
+                    this.applyRepairPlan(plan);
+                    await this.saveStateToFirestore();
+                    this.renderAll();
+                    this.showNotification("Calendario reparado: sin cruces repetidos en los partidos pendientes.");
+                }
+            );
+        }
+
+        applyRepairPlan(plan) {
+            plan.slots.forEach((s, i) => {
+                const p = plan.result[i] === null ? null : plan.needed[plan.result[i]];
+                if (!p) { s.match.__remove = true; return; }
+                if (this.pairKey(...p) !== s.cur) { s.match.team1 = p[0]; s.match.team2 = p[1]; }
+            });
+            this.schedule.forEach(r => { r.matches = r.matches.filter(m => !m.__remove); });
+            this.schedule = this.schedule.filter(r => r.matches.length > 0);
+            if (plan.leftovers.length) {
+                const dates = this.schedule.map(r => r.date).filter(Boolean).sort();
+                const d = new Date((dates[dates.length - 1] || new Date().toISOString().split('T')[0]) + 'T12:00:00');
+                plan.leftovers.forEach(p => {
+                    d.setDate(d.getDate() + 7);
+                    this.schedule.push({ round: this.schedule.length + 1, date: d.toISOString().split('T')[0], matches: [{ team1: p[0], team2: p[1], score1: null, score2: null, played: false, scorers: [] }] });
+                });
+            }
         }
 
         // ---- Getters de partidos ----
@@ -2768,7 +2916,7 @@
                         <div class="flex gap-2">
                             <button onclick="app.editTeam(${i})" class="btn btn-primary py-1 px-3 text-xs">Editar</button>
                             ${!started ? `<button onclick="app.removeTeam(${i})" class="btn btn-danger py-1 px-3 text-xs">Eliminar</button>` : ''}
-                            ${started ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
+                            ${started && !t.retirado ? `<button onclick="app.withdrawTeam('${t.name.replace(/'/g, "\\'")}')" class="btn btn-warning py-1 px-3 text-xs">Retirar</button>` : ''}
                         </div>
                     </div>
                     <div class="mt-2">
@@ -3175,6 +3323,16 @@
             const sortedTs = Array.from(weeksMap.keys()).sort((a, b) => a - b);
             let html = '';
             let weekNumber = 1;
+
+            if (this.isAuthenticated) {
+                const issues = this.getScheduleIssues();
+                if (issues.duplicates.length) {
+                    html += `<div class="mb-8 rounded-lg border border-institucional-amarillo bg-white p-4 text-center shadow-sm">
+                        <p class="font-bold text-institucional-azul">Hay ${issues.duplicates.length} cruce(s) repetido(s) en el calendario${issues.missing.length ? ` y ${issues.missing.length} cruce(s) sin programar` : ''}.</p>
+                        <button onclick="app.repairDuplicateMatches()" class="btn btn-warning mt-3 py-1.5 px-4 text-xs">Reparar cruces repetidos</button>
+                    </div>`;
+                }
+            }
 
             // Fase Regular
             for (const ts of sortedTs) {
