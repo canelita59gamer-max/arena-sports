@@ -1,0 +1,23 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body {
+  width:1080px; height:1920px; overflow:hidden;
+  background: radial-gradient(1200px 900px at 50% -10%, #1b2a5e 0%, #0e1736 45%, #080c24 100%);
+  font-family: "Arial Black", Arial, Helvetica, sans-serif;
+  color:#eef0fa;
+}
+.caption {
+  position:absolute; top:120px; left:70px; right:70px;
+  font-size:58px; font-weight:900; line-height:1.15; letter-spacing:-1px;
+  text-shadow: 0 6px 24px rgba(0,0,0,.5);
+}
+.caption b { color:#c1f807; }
+.caption .orange { color:#f65334; }
+.pill {
+  display:inline-block; background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.16);
+  border-radius:999px; padding:14px 30px; font-size:30px; font-weight:700;
+}
+.badge-lime { background:#c1f807; color:#0e1736; }
+.logo-row {
+  position:absolute; bottom:90px; left:0; right:0; text-align:center;
+  font-size:34px; font-weight:800; letter-spacing:2px; color:rgba(255,255,255,.55);
+}
