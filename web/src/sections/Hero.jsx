@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import GradientMesh from '../fx/GradientMesh.jsx'
 import Particles from '../fx/Particles.jsx'
 import LogoDraw from '../fx/LogoDraw.jsx'
+import Magnetic from '../fx/Magnetic.jsx'
 import useReducedMotion from '../fx/useReducedMotion.js'
 import { SmartLink } from './Nav.jsx'
 import { socials } from './Social.jsx'
@@ -39,10 +40,14 @@ export default function Hero() {
 
       <div className="relative mt-10 flex w-full flex-col items-center">
         <motion.div {...fade(2.2)} className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <SmartLink href="/#contacto" className="btn-primary">Organiza con nosotros</SmartLink>
-          <SmartLink href="/perfil-jugador" className="btn-ghost">
-            Conoce Perfil de Jugador <span aria-hidden="true">→</span>
-          </SmartLink>
+          <Magnetic>
+            <SmartLink href="/#contacto" className="btn-primary w-full">Organiza con nosotros</SmartLink>
+          </Magnetic>
+          <Magnetic>
+            <SmartLink href="/perfil-jugador" className="btn-ghost w-full">
+              Conoce Perfil de Jugador <span aria-hidden="true">→</span>
+            </SmartLink>
+          </Magnetic>
         </motion.div>
 
         <motion.ul {...fade(2.4)} className="mt-8 flex gap-2.5" aria-label="Redes sociales">

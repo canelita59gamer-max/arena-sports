@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import SmoothScroll from './fx/SmoothScroll.jsx'
 import ScrollManager from './fx/ScrollManager.jsx'
+import ScrollProgress from './fx/ScrollProgress.jsx'
 import Nav from './sections/Nav.jsx'
 import Footer from './sections/Footer.jsx'
 import { SocialDock } from './sections/Social.jsx'
@@ -11,6 +12,7 @@ export default function App() {
   return (
     <SmoothScroll>
       <ScrollManager />
+      <ScrollProgress />
       <div className="grain" aria-hidden="true" />
       <Nav />
       <SocialDock />

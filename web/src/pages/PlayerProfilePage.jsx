@@ -46,8 +46,8 @@ export default function PlayerProfilePage() {
             </motion.div>
             <motion.p {...fade(1.2)} className="mt-6 text-sm text-texto2">Para fútbol y voleibol · Desde el celular · Sin instalar nada</motion.p>
           </div>
-          <div className="py-8">
-            <IsoPhone>
+          <div className="pb-24 pt-4">
+            <IsoPhone badges={p.badges}>
               <PhoneScreens />
             </IsoPhone>
           </div>

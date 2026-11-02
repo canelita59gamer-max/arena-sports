@@ -40,8 +40,8 @@ export default function PlayerProfile() {
           </Reveal>
         </div>
 
-        <div className="order-1 py-10 lg:order-2">
-          <IsoPhone>
+        <div className="order-1 pb-24 pt-6 lg:order-2">
+          <IsoPhone badges={p.badges}>
             <PhoneScreens />
           </IsoPhone>
         </div>
