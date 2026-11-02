@@ -5,7 +5,7 @@ import GradientMesh from '../fx/GradientMesh.jsx'
 import KineticTitle from '../fx/KineticTitle.jsx'
 import IsoPhone from '../fx/IsoPhone.jsx'
 import Reveal from '../fx/Reveal.jsx'
-import Spotlight from '../fx/Spotlight.jsx'
+import ExpandItem from '../fx/Expand.jsx'
 import PhoneScreens from '../sections/PhoneScreens.jsx'
 import Blueprint from '../sections/Blueprint.jsx'
 import Contact from '../sections/Contact.jsx'
@@ -60,19 +60,13 @@ export default function PlayerProfilePage() {
             <p className="eyebrow mb-5">Qué incluye</p>
             <h2 className="h-section">Todo el club <span className="text-acento">en un solo lugar</span></h2>
           </Reveal>
-          <div className="grid gap-4 md:grid-cols-2">
+          <Reveal className="mx-auto max-w-3xl border-t border-white/10">
             {p.features.map((f, i) => (
-              <Reveal key={f.title} delay={(i % 2) * 0.08}>
-                <Spotlight className="h-full">
-                  <div className="p-8">
-                    <p className="font-display text-5xl font-bold text-white/[0.08]">{String(i + 1).padStart(2, '0')}</p>
-                    <h3 className="mt-4 font-display text-2xl font-semibold uppercase">{f.title}</h3>
-                    <p className="mt-3 leading-relaxed text-texto2">{f.desc}</p>
-                  </div>
-                </Spotlight>
-              </Reveal>
+              <ExpandItem key={f.title} title={f.title} lead={<span className="font-mono text-xs text-acento">0{i + 1}</span>}>
+                {f.desc}
+              </ExpandItem>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 

@@ -24,9 +24,7 @@ export default function Contact({ defaultTopic = '' }) {
         <Reveal>
           <p className="eyebrow mb-5">Trabajemos juntos</p>
           <h2 className="h-section">Escrí<span className="text-acento">benos</span></h2>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-texto2">
-            ¿Quieres organizar un torneo, llevar Perfil de Jugador a tu club o patrocinar un evento? Te respondemos pronto.
-          </p>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-texto2">Torneos, Perfil de Jugador o patrocinios. Te respondemos pronto.</p>
 
           <div className="mt-10 grid grid-cols-2 gap-3">
             {socials.map((s) => (

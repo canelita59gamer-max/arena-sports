@@ -22,26 +22,23 @@ export default function Social() {
         <Reveal className="mb-4 text-center">
           <p className="eyebrow">Síguenos</p>
         </Reveal>
-        <div className="mb-6 text-center">
+        <div className="mb-14 text-center">
           <KineticTitle
             as="h2"
             delay={0}
             lines={[{ text: s.handle, variant: 'accent' }]}
-            className="text-[11vw] sm:text-7xl lg:text-8xl"
+            className="text-[9.5vw] sm:text-7xl lg:text-8xl"
           />
         </div>
-        <Reveal delay={0.1} className="mx-auto mb-16 max-w-xl text-center text-lg text-texto2">
-          Cada jornada se vive también en redes. Síguenos para ver los partidos, los goles y lo que viene.
-        </Reveal>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
           {socials.map((n, i) => (
-            <Reveal key={n.name} delay={i * 0.07} className="h-full">
+            <Reveal key={n.name} delay={i * 0.07} className="h-full last:col-span-2 lg:last:col-span-1">
               <a
                 href={n.href}
                 target="_blank"
                 rel="noreferrer"
-                className="glass group relative flex h-full flex-col overflow-hidden rounded-3xl p-6 transition duration-500 hover:-translate-y-1.5"
+                className="glass group relative flex h-full flex-col overflow-hidden rounded-3xl p-5 transition duration-500 hover:-translate-y-1.5 sm:p-6"
                 style={{ '--glow': n.glow }}
               >
                 <span aria-hidden="true" className={`absolute inset-0 bg-gradient-to-br ${n.grad} opacity-0 transition duration-500 group-hover:opacity-[0.18]`} />
@@ -49,12 +46,11 @@ export default function Social() {
                 <span className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${n.grad} text-2xl text-white shadow-lg`}>
                   <i className={n.icon} aria-hidden="true" />
                 </span>
-                <span className="relative mt-6 font-display text-2xl font-semibold uppercase">{n.name}</span>
-                <span className="relative mt-1 truncate text-sm text-acento">{n.handle}</span>
-                <span className="relative mt-3 flex-1 text-sm leading-relaxed text-texto2">{n.desc}</span>
-                <span className="relative mt-6 font-display text-xs uppercase tracking-[0.25em] text-texto transition group-hover:text-acento">
-                  {n.name === 'WhatsApp' ? 'Escribir' : 'Seguir'} ↗
+                <span className="relative mt-5 flex items-center justify-between font-display text-xl font-semibold uppercase sm:text-2xl">
+                  {n.name}
+                  <span aria-hidden="true" className="text-base text-texto2 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-acento">↗</span>
                 </span>
+                <span className="relative mt-1 truncate text-sm text-acento">{n.handle}</span>
               </a>
             </Reveal>
           ))}

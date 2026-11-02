@@ -1,8 +1,34 @@
-import { useRef } from 'react'
+import { useId, useRef, useState } from 'react'
+import { PlusIcon, Reveal as ExpandBody } from '../fx/Expand.jsx'
 import { motion, useScroll, useSpring } from 'motion/react'
 import site from '../data/site.js'
 import Reveal from '../fx/Reveal.jsx'
 import useReducedMotion from '../fx/useReducedMotion.js'
+
+// Paso del plano: se ve el título; al tocarlo se despliega la explicación.
+function StepCard({ s, i, total }) {
+  const [open, setOpen] = useState(false)
+  const id = useId()
+  return (
+    <button
+      type="button"
+      aria-expanded={open}
+      aria-controls={id}
+      onClick={() => setOpen((v) => !v)}
+      className={`relative block w-full rounded-xl border bg-sky-400/[0.03] p-6 text-left transition ${open ? 'border-acento/50' : 'border-sky-300/20 hover:border-sky-300/50'}`}
+    >
+      <span className="absolute -top-px left-6 right-6 h-px bg-gradient-to-r from-transparent via-sky-300/60 to-transparent" />
+      <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-sky-300/70">Paso {i + 1} / {total}</p>
+      <span className="flex items-center justify-between gap-3">
+        <h3 className="font-display text-2xl font-semibold uppercase">{s.title}</h3>
+        <PlusIcon open={open} />
+      </span>
+      <ExpandBody open={open} id={id}>
+        <p className="pt-3 text-[15px] leading-relaxed text-texto2">{s.desc}</p>
+      </ExpandBody>
+    </button>
+  )
+}
 
 // "Cómo organizamos tu torneo" con estética de plano técnico:
 // cuadrícula azul, cotas y una línea que se dibuja con el scroll uniendo los pasos.
@@ -47,12 +73,7 @@ export default function Blueprint({ id = 'proceso', title = 'Cómo organizamos',
                   <span className="absolute inset-[-7px] rounded-full border border-dashed border-sky-300/25" />
                   {String(i + 1).padStart(2, '0')}
                 </div>
-                <div className="relative rounded-xl border border-sky-300/20 bg-sky-400/[0.03] p-6">
-                  <span className="absolute -top-px left-6 right-6 h-px bg-gradient-to-r from-transparent via-sky-300/60 to-transparent" />
-                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-sky-300/70">Paso {i + 1} / {steps.length}</p>
-                  <h3 className="font-display text-2xl font-semibold uppercase">{s.title}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-texto2">{s.desc}</p>
-                </div>
+                <StepCard s={s} i={i} total={steps.length} />
               </Reveal>
             ))}
           </ol>

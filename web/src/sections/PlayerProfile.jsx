@@ -1,6 +1,7 @@
 import site from '../data/site.js'
 import Reveal from '../fx/Reveal.jsx'
 import IsoPhone from '../fx/IsoPhone.jsx'
+import ExpandItem from '../fx/Expand.jsx'
 import PhoneScreens from './PhoneScreens.jsx'
 import { SmartLink } from './Nav.jsx'
 
@@ -22,17 +23,16 @@ export default function PlayerProfile() {
               Perfil de <span className="text-acento">Jugador</span>
             </h2>
             <p className="mt-3 font-display text-xl uppercase tracking-wide text-texto2 sm:text-2xl">{p.tagline}</p>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-texto2">{p.lead}</p>
           </Reveal>
 
-          <div className="mt-10 grid gap-3 sm:grid-cols-2">
+          {/* solo los títulos; la explicación aparece al tocar */}
+          <Reveal delay={0.1} className="mt-8 border-t border-white/10">
             {p.features.map((f, i) => (
-              <Reveal key={f.title} delay={i * 0.07} className="glass rounded-2xl p-5">
-                <p className="font-display text-base font-semibold uppercase tracking-wide text-texto">{f.title}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-texto2">{f.desc}</p>
-              </Reveal>
+              <ExpandItem key={f.title} title={f.title} lead={<span className="font-mono text-xs text-acento">0{i + 1}</span>}>
+                {f.desc}
+              </ExpandItem>
             ))}
-          </div>
+          </Reveal>
 
           <Reveal delay={0.2} className="mt-10 flex flex-col gap-3 sm:flex-row">
             <SmartLink href="/perfil-jugador" className="btn-primary">Ver más</SmartLink>
