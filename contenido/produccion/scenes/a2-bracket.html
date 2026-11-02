@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#06091a;font-family:"Arial Black",Arial,Helvetica,sans-serif;color:#eef0fa;}
+.bg{position:absolute;inset:0;background:
+  radial-gradient(circle at 50% 22%, rgba(246,83,52,.12) 0%, transparent 55%),
+  #06091a;
+}
+.grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 2px, transparent 2px);background-size:46px 46px;opacity:.5;}
+.wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 70px;}
+.title{font-size:72px;font-weight:900;letter-spacing:-1px;margin-bottom:70px;text-align:center;}
+.title .lime{color:#c1f807;}
+.card{width:100%;border-left:10px solid var(--c);padding:30px 40px;margin-bottom:46px;background:rgba(255,255,255,.03);}
+.card:nth-child(2){--c:#c1f807;}
+.time{font-size:40px;font-weight:900;color:var(--c);letter-spacing:1px;margin-bottom:10px;}
+.match{font-size:52px;font-weight:900;line-height:1.15;}
+.vs{color:#8a8fa8;font-weight:400;}
+.venue{margin-top:30px;font-size:34px;color:#c9ccdc;font-weight:700;text-align:center;letter-spacing:1px;}
+</style></head>
+<body>
+<div class="bg"></div>
+<div class="grid"></div>
+<div class="wrap">
+  <div class="title">Semifinales<br><span class="lime">Faith Cup</span></div>
+  <div class="card" style="--c:#f65334">
+    <div class="time">6:00 PM</div>
+    <div class="match">TMT <span class="vs">vs</span><br>Espresso Youth</div>
+  </div>
+  <div class="card" style="--c:#c1f807">
+    <div class="time">7:00 PM</div>
+    <div class="match">Plenitud <span class="vs">vs</span><br>Living Room</div>
+  </div>
+  <div class="venue">📍 River Side Campus</div>
+</div>
+</body></html>

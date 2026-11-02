@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.stage{position:relative;width:1080px;height:1920px;display:flex;align-items:center;justify-content:center;}
+.card{
+  width:820px; height:1100px; border-radius:48px;
+  background:linear-gradient(160deg,#162252 0%,#101a3f 60%,#0e1736 100%);
+  border:3px solid rgba(193,248,7,.5);
+  box-shadow:0 40px 120px rgba(0,0,0,.6), 0 0 0 10px rgba(193,248,7,.06);
+  padding:60px 56px; position:relative; overflow:hidden;
+}
+.card::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(246,83,52,.35),transparent 70%);}
+.crest{display:flex;align-items:center;gap:20px;}
+.crest .circ{width:84px;height:84px;border-radius:50%;background:#f65334;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;}
+.crest .club{font-size:32px;font-weight:800;color:rgba(255,255,255,.75);}
+.avatar{
+  margin:70px auto 30px; width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #2a3a7a, #0e1736 70%);
+  border:6px solid #c1f807; display:flex;align-items:center;justify-content:center;
+  font-size:140px; font-weight:900; color:#c1f807;
+}
+.name{text-align:center;font-size:66px;font-weight:900;letter-spacing:-1px;margin-top:10px;}
+.pos{text-align:center;font-size:32px;color:rgba(255,255,255,.6);font-weight:700;margin-top:10px;letter-spacing:1px;}
+.stats{margin-top:60px;display:flex;flex-direction:column;gap:26px;}
+.stat-row{display:flex;align-items:center;gap:20px;}
+.stat-label{width:260px;font-size:28px;font-weight:700;color:rgba(255,255,255,.75);}
+.stat-bar{flex:1;height:22px;border-radius:12px;background:rgba(255,255,255,.08);overflow:hidden;}
+.stat-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,#c1f807,#7ea800);}
+</style></head>
+<body>
+<div class="caption">Esto es la carta de <b>Mateo</b> <span class="orange">🔥</span></div>
+<div class="stage">
+  <div class="card">
+    <div class="crest"><div class="circ">JB</div><div class="club">Jogo Bonito · Sub-11</div></div>
+    <div class="avatar">MG</div>
+    <div class="name">Mateo Gómez</div>
+    <div class="pos">DELANTERO</div>
+    <div class="stats">
+      <div class="stat-row"><div class="stat-label">Velocidad</div><div class="stat-bar"><div class="stat-fill" style="width:88%"></div></div></div>
+      <div class="stat-row"><div class="stat-label">Técnica</div><div class="stat-bar"><div class="stat-fill" style="width:76%"></div></div></div>
+      <div class="stat-row"><div class="stat-label">Resistencia</div><div class="stat-bar"><div class="stat-fill" style="width:82%"></div></div></div>
+    </div>
+  </div>
+</div>
+</body></html>

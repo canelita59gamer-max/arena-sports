@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.stage{position:relative;width:1080px;height:1920px;display:flex;align-items:center;justify-content:center;}
+.phone{
+  width:720px;height:1440px;background:#0c1430;border-radius:70px;border:4px solid rgba(255,255,255,.12);
+  box-shadow:0 60px 160px rgba(0,0,0,.7); position:relative; overflow:hidden; padding:50px 40px;
+}
+.minicard{
+  margin-top:40px; background:linear-gradient(160deg,#162252,#0e1736); border-radius:40px; border:3px solid rgba(193,248,7,.5);
+  padding:50px 40px; text-align:center;
+}
+.minicard .av{width:220px;height:220px;border-radius:50%;margin:0 auto;background:radial-gradient(circle at 35% 30%,#2a3a7a,#0e1736 70%);border:5px solid #c1f807;display:flex;align-items:center;justify-content:center;font-size:84px;font-weight:900;color:#c1f807;}
+.minicard .nm{font-size:44px;font-weight:900;margin-top:24px;}
+.minicard .ps{font-size:26px;color:rgba(255,255,255,.55);font-weight:700;margin-top:6px;}
+.sharebar{
+  position:absolute; bottom:70px; left:50px; right:50px; display:flex; justify-content:space-around;
+  background:rgba(255,255,255,.07); border-radius:40px; padding:28px 0;
+}
+.icon{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:34px;}
+.pulse{position:absolute;border:4px solid #c1f807;border-radius:50%;opacity:.0;}
+</style></head>
+<body>
+<div class="caption">Y lo puede <span class="orange">compartir</span> con un toque</div>
+<div class="stage">
+  <div class="phone">
+    <div class="minicard">
+      <div class="av">MG</div>
+      <div class="nm">Mateo Gómez</div>
+      <div class="ps">DELANTERO · Jogo Bonito</div>
+    </div>
+    <div class="sharebar">
+      <div class="icon">💬</div>
+      <div class="icon">📤</div>
+      <div class="icon">⬇️</div>
+      <div class="icon">📷</div>
+    </div>
+  </div>
+</div>
+<div class="logo-row">PERFIL DE JUGADOR</div>
+</body></html>
