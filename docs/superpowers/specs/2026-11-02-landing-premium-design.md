@@ -50,4 +50,4 @@ Revisión en el navegador (escritorio 1440px y celular 375px), consola sin error
 
 ## Pendiente de Juanpa
 - Cifras reales (torneos, equipos, jugadores) — opcional.
-- Confirmar usuarios de redes de Arena Sports (Instagram/TikTok/WhatsApp) para la sección de contacto.
+Redes (tomadas del index.html actual): Instagram y TikTok `@arenasportsco_`, YouTube `@ArenaSportsCo`, correo `arenasports.eventos@gmail.com`.
