@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/((?!torneo\\.html|assets/|css/|js/|img/|app/|favicon).*)", "destination": "/index.html" }
+  ]
+}
