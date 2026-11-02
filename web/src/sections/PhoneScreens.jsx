@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
 import site from '../data/site.js'
 
 // Lo que se ve dentro del celular: capturas reales de la app que se van turnando.
+// Todas las imágenes quedan cargadas y apiladas; solo cambia cuál se ve, así la pantalla
+// nunca queda en negro mientras pasa de una a otra (ni en celulares lentos).
 // Los puntos de abajo dejan elegir la pantalla; tocar uno pausa el cambio automático un rato.
 export default function PhoneScreens() {
   const screens = site.player.screens
@@ -22,19 +23,20 @@ export default function PhoneScreens() {
   }
 
   return (
-    <div className="absolute inset-0">
-      <AnimatePresence initial={false}>
-        <motion.img
-          key={screens[i].src}
-          src={screens[i].src}
-          alt={screens[i].alt}
-          className="absolute inset-0 h-full w-full object-cover object-top"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
+    <div className="absolute inset-0 bg-[#05070d]">
+      {screens.map((s, k) => (
+        <img
+          key={s.src}
+          src={s.src}
+          alt={k === i ? s.alt : ''}
+          aria-hidden={k !== i}
+          loading="eager"
+          decoding="async"
+          draggable="false"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700"
+          style={{ opacity: k === i ? 1 : 0 }}
         />
-      </AnimatePresence>
+      ))}
       <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 gap-1 rounded-full bg-negro/60 px-2 py-1.5 backdrop-blur">
         {screens.map((s, k) => (
           <button

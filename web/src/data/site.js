@@ -66,9 +66,9 @@ const site = {
     clubs: [{ name: 'Club Deportivo Jogo Bonito', city: 'Fútbol formativo · Bucaramanga' }],
     // Etiquetas que flotan alrededor del celular 3D.
     badges: [
-      { icon: '92', label: 'Carta élite', sub: 'Sube de 50 a 99', className: '-left-14 top-[16%] sm:-left-24' },
-      { icon: '✓', label: 'Informe listo', sub: 'Cada trimestre, solo', className: '-right-12 top-[46%] sm:-right-24' },
-      { icon: '⚽', label: 'Fútbol y voleibol', sub: 'Cada categoría elige', className: '-left-10 bottom-[12%] sm:-left-20' },
+      { icon: '92', label: 'Carta élite', sub: 'Sube de 50 a 99', className: '-left-8 top-[16%] sm:-left-24' },
+      { icon: '✓', label: 'Informe listo', sub: 'Cada trimestre', className: '-right-6 top-[46%] sm:-right-24' },
+      { icon: '⚽', label: 'Fútbol y voleibol', sub: 'Cada categoría elige', className: '-left-6 bottom-[12%] sm:-left-20' },
     ],
     screens: [
       { src: '/app/cartas.jpg', alt: 'Portada de Perfil de Jugador con cartas de jugador' },

@@ -18,7 +18,7 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
   const p = useSpring(scrollYProgress, { stiffness: 70, damping: 20 })
   const scrollX = useTransform(p, [0, 0.5, 1], reduced ? [14, 14, 14] : [38, 14, 4])
   const scrollZ = useTransform(p, [0, 0.5, 1], reduced ? [-8, -8, -8] : [-24, -8, -2])
-  const lift = useTransform(p, [0, 1], reduced ? [0, 0] : [60, -40])
+  const lift = useTransform(p, [0, 1], reduced ? [0, 0] : [30, -30])
 
   // giro extra por arrastre o por mouse (grados), con resorte
   const dragX = useMotionValue(0)
@@ -67,7 +67,7 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
       onPointerUp={onUp}
       onPointerCancel={onUp}
       onPointerLeave={() => !start.current && onUp()}
-      className={`relative mx-auto aspect-[9/18.5] w-[230px] select-none sm:w-[270px] ${dragging ? 'cursor-grabbing' : 'cursor-grab'} ${className}`}
+      className={`relative mx-auto aspect-[9/18.5] w-[250px] select-none sm:w-[280px] ${dragging ? 'cursor-grabbing' : 'cursor-grab'} ${className}`}
       style={{ perspective: 1400, touchAction: 'pan-y' }}
     >
       {/* sombra en el piso */}
@@ -87,7 +87,7 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
               key={i}
               aria-hidden="true"
               className="absolute inset-0 rounded-[2.7rem] bg-gradient-to-br from-[#3a3a3a] via-[#1c1c1c] to-[#0d0d0d]"
-              style={{ transform: `translateZ(${-(i + 1) * 1.6}px)` }}
+              style={{ transform: `translateZ(${-(i + 1) * 1.6}px)`, backfaceVisibility: 'hidden' }}
             />
           ))}
           {/* botones laterales */}
@@ -95,8 +95,11 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
           <div aria-hidden="true" className="absolute -left-[3px] top-[31%] h-16 w-[3px] rounded-l bg-[#2a2a2a]" />
           <div aria-hidden="true" className="absolute -right-[3px] top-[27%] h-20 w-[3px] rounded-r bg-[#2a2a2a]" />
 
-          {/* frente */}
-          <div className="absolute inset-0 rounded-[2.7rem] bg-gradient-to-br from-[#5a5a5a] via-[#202020] to-[#3a3a3a] p-[3px] shadow-[0_50px_120px_-25px_rgba(232,255,0,0.45)]">
+          {/* frente: un poco adelante en Z para que Safari (iPhone) no lo tape con el grosor */}
+          <div
+            className="absolute inset-0 rounded-[2.7rem] bg-gradient-to-br from-[#5a5a5a] via-[#202020] to-[#3a3a3a] p-[3px] shadow-[0_50px_120px_-25px_rgba(232,255,0,0.45)]"
+            style={{ transform: 'translateZ(1px)' }}
+          >
             <div className="h-full w-full rounded-[2.55rem] bg-negro p-2">
               <div className="relative h-full w-full overflow-hidden rounded-[2.1rem] bg-gris1">
                 <div aria-hidden="true" className="absolute left-1/2 top-2 z-20 flex h-6 w-24 -translate-x-1/2 items-center justify-end rounded-full bg-black pr-2">

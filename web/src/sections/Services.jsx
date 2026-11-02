@@ -5,7 +5,7 @@ import { SmartLink } from './Nav.jsx'
 
 export default function Services() {
   return (
-    <section id="servicios" className="relative py-28 sm:py-36">
+    <section id="servicios" className="relative pb-6 pt-28 sm:pb-10 sm:pt-36">
       <div aria-hidden="true" className="absolute right-0 top-20 h-96 w-96 rounded-full bg-acento/10 blur-[120px]" />
       <div className="container-x relative">
         <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
