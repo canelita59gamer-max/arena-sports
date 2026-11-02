@@ -1,6 +1,4 @@
-import { motion } from 'motion/react'
 import site from '../data/site.js'
-import useReducedMotion from '../fx/useReducedMotion.js'
 import Reveal from '../fx/Reveal.jsx'
 import IsoPhone from '../fx/IsoPhone.jsx'
 import PhoneScreens from './PhoneScreens.jsx'
@@ -9,19 +7,8 @@ import { SmartLink } from './Nav.jsx'
 // Sección estrella de la landing: presenta Perfil de Jugador.
 export default function PlayerProfile() {
   const p = site.player
-  const reduced = useReducedMotion()
   return (
-    <section id="perfil" className="relative overflow-hidden pb-28 sm:pb-36">
-      {/* línea de luz que conecta Servicios con Perfil de Jugador */}
-      <div aria-hidden="true" className="relative mx-auto mb-4 flex w-px flex-col items-center sm:mb-10">
-        <div className="h-16 w-px bg-gradient-to-b from-transparent via-acento/60 to-acento sm:h-24" />
-        <motion.span
-          className="absolute top-0 h-6 w-[3px] rounded-full bg-acento shadow-[0_0_14px_#E8FF00]"
-          animate={reduced ? undefined : { y: [0, 80], opacity: [0, 1, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeIn' }}
-        />
-        <span className="h-2.5 w-2.5 rounded-full bg-acento shadow-[0_0_16px_4px_rgba(232,255,0,0.6)]" />
-      </div>
+    <section id="perfil" className="relative overflow-hidden pb-28 pt-4 sm:pb-36 sm:pt-16">
       <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,rgba(30,58,138,0.35),transparent_60%)]" />
       <div aria-hidden="true" className="absolute left-[60%] top-1/3 h-[28rem] w-[28rem] rounded-full bg-acento/10 blur-[140px]" />
 
@@ -53,7 +40,7 @@ export default function PlayerProfile() {
           </Reveal>
         </div>
 
-        <div className="order-1 pb-24 pt-4 lg:order-2">
+        <div className="order-1 pb-20 pt-10 lg:order-2">
           <IsoPhone badges={p.badges}>
             <PhoneScreens />
           </IsoPhone>

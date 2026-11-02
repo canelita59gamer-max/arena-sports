@@ -19,6 +19,10 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
   const scrollX = useTransform(p, [0, 0.5, 1], reduced ? [14, 14, 14] : [38, 14, 4])
   const scrollZ = useTransform(p, [0, 0.5, 1], reduced ? [-8, -8, -8] : [-24, -8, -2])
   const lift = useTransform(p, [0, 1], reduced ? [0, 0] : [30, -30])
+  // zoom: entra pequeño y lejos, y se acerca hasta quedar grande en el centro de la pantalla
+  const zoom = useTransform(p, [0, 0.45, 1], reduced ? [1, 1, 1] : [0.62, 1.12, 1.02])
+  const haloOpacity = useTransform(p, [0, 0.45, 1], reduced ? [0.8, 0.8, 0.8] : [0, 1, 0.6])
+  const haloScale = useTransform(p, [0, 0.45], reduced ? [1, 1] : [0.4, 1.15])
 
   // giro extra por arrastre o por mouse (grados), con resorte
   const dragX = useMotionValue(0)
@@ -67,16 +71,26 @@ export default function IsoPhone({ children, badges = [], className = '' }) {
       onPointerUp={onUp}
       onPointerCancel={onUp}
       onPointerLeave={() => !start.current && onUp()}
-      className={`relative mx-auto aspect-[9/18.5] w-[250px] select-none sm:w-[280px] ${dragging ? 'cursor-grabbing' : 'cursor-grab'} ${className}`}
+      className={`relative mx-auto aspect-[9/18.5] w-[255px] select-none sm:w-[290px] ${dragging ? 'cursor-grabbing' : 'cursor-grab'} ${className}`}
       style={{ perspective: 1400, touchAction: 'pan-y' }}
     >
+      {/* halo: foco de luz lima detrás y oscuridad alrededor, crece con el zoom */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[150%] w-[260%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          opacity: haloOpacity,
+          scale: haloScale,
+          background: 'radial-gradient(closest-side, rgba(232,255,0,0.28), rgba(232,255,0,0.08) 45%, rgba(0,0,0,0.85) 75%, transparent)',
+        }}
+      />
       {/* sombra en el piso */}
       <div aria-hidden="true" className="absolute -bottom-12 left-1/2 h-16 w-[95%] -translate-x-1/2 rounded-[50%] bg-acento/30 blur-3xl" />
 
-      {/* flotación suave continua */}
+      {/* zoom con el scroll + flotación suave continua */}
       <motion.div
         className="relative h-full w-full"
-        style={{ transformStyle: 'preserve-3d' }}
+        style={{ transformStyle: 'preserve-3d', scale: zoom }}
         animate={reduced ? undefined : { y: [0, -10, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
       >
