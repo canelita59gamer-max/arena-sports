@@ -35,10 +35,11 @@ const site = {
   services: [
     { title: 'Organización de torneos', tag: 'Organización', img: '/assets/images/servicios/patrocinios.jpg', desc: 'Diseñamos cada competencia con estructura, solvencia y detalle, desde la planificación hasta la premiación final.' },
     { title: 'Cobertura & difusión', tag: 'Cobertura', img: '/assets/images/servicios/cobertura.jpg', desc: 'Capturamos cada momento con una mirada profesional para que el evento viva más allá del día de juego.' },
-    { title: 'Gestión de patrocinios', tag: 'Patrocinios', img: '/assets/images/servicios/organizacion.jpg', desc: 'Conectamos marcas con experiencias de alto impacto, creando visibilidad auténtica y valor real para cada alianza.' },
-    { title: 'Ligas corporativas', tag: 'Corporativo', desc: 'Diseñamos experiencias deportivas que fortalecen equipos, marcas y culturas institucionales con propósito y energía.' },
-    { title: 'Torneos comunitarios', tag: 'Comunidad', desc: 'Impulsamos espacios de encuentro y orgullo comunitario, donde el deporte une y deja huella.' },
-    { title: 'Consultoría deportiva', tag: 'Consultoría', desc: 'Acompañamos a instituciones que desean construir torneos con metodología, orden y una propuesta deportiva sólida.' },
+    { title: 'Gestión de patrocinios', tag: 'Patrocinios', img: '/servicios/patrocinios.jpg', desc: 'Conectamos marcas con experiencias de alto impacto, creando visibilidad auténtica y valor real para cada alianza.' },
+    { title: 'Ligas corporativas', tag: 'Corporativo', img: '/servicios/corporativo.jpg', desc: 'Diseñamos experiencias deportivas que fortalecen equipos, marcas y culturas institucionales con propósito y energía.' },
+    // Foto real de día: `dim` la oscurece para que combine con las demás.
+    { title: 'Torneos comunitarios', tag: 'Comunidad', img: '/assets/images/premiacion.jpeg', dim: true, desc: 'Impulsamos espacios de encuentro y orgullo comunitario, donde el deporte une y deja huella.' },
+    { title: 'Consultoría deportiva', tag: 'Consultoría', img: '/servicios/consultoria.jpg', desc: 'Acompañamos a instituciones que desean construir torneos con metodología, orden y una propuesta deportiva sólida.' },
   ],
 
   steps: [
@@ -50,7 +51,7 @@ const site = {
 
   player: {
     tagline: 'La hoja de vida deportiva de cada jugador',
-    lead: 'Perfil de Jugador es la app de Arena Sports para clubes: cada jugador tiene su card, su historia y sus entrenamientos, y el club lo maneja todo desde un solo panel.',
+    lead: 'Perfil de Jugador es la app de Arena Sports para clubes: cada jugador tiene su carta, su historia y sus entrenamientos, y el club lo maneja todo desde un solo panel.',
     features: [
       { title: 'Una carta por jugador', desc: 'De bronce a élite: arranca en 50 y sube hasta 99 según cómo entrena y juega. El profesor de cada categoría decide qué cualidades pesan.' },
       { title: 'Ficha privada', desc: 'Datos personales, documentos y fotos que solo ve el administrador del club.' },

@@ -25,7 +25,13 @@ export default function Services() {
                 <div className="flex h-full min-h-[300px] flex-col p-7">
                   {s.img ? (
                     <div className="relative -mx-7 -mt-7 mb-6 h-40 overflow-hidden">
-                      <img src={s.img} alt="" loading="lazy" className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90" />
+                      <img
+                        src={s.img}
+                        alt=""
+                        loading="lazy"
+                        className={`h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90 ${s.dim ? 'object-[center_35%] brightness-[0.7] saturate-[0.55]' : ''}`}
+                      />
+                      {s.dim && <div className="absolute inset-0 bg-acento/25 mix-blend-color" />}
                       <div className="absolute inset-0 bg-gradient-to-t from-gris2 to-transparent" />
                     </div>
                   ) : (

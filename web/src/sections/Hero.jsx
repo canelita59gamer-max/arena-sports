@@ -1,10 +1,8 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
-import site from '../data/site.js'
 import GradientMesh from '../fx/GradientMesh.jsx'
 import Particles from '../fx/Particles.jsx'
 import LogoDraw from '../fx/LogoDraw.jsx'
-import KineticTitle from '../fx/KineticTitle.jsx'
 import useReducedMotion from '../fx/useReducedMotion.js'
 import { SmartLink } from './Nav.jsx'
 import { socials } from './Social.jsx'
@@ -39,33 +37,15 @@ export default function Hero() {
         <LogoDraw />
       </motion.div>
 
-      <div className="relative mt-6 flex flex-col items-center">
-        <KineticTitle
-          as="p"
-          delay={1.6}
-          lines={[{ text: 'Donde el juego se vuelve historia', variant: 'solid' }]}
-          className="text-[7.2vw] text-texto sm:text-4xl lg:text-5xl"
-        />
-        <motion.p {...fade(2.2)} className="mt-5 max-w-2xl text-base leading-relaxed text-texto2 sm:text-lg">
-          {site.hero.lead}
-        </motion.p>
-
-        <motion.ul {...fade(2.35)} aria-label="Deportes" className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 font-display text-xs uppercase tracking-[0.3em] text-texto2">
-          {site.sports.map((s) => (
-            <li key={s} className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-acento" /> {s}
-            </li>
-          ))}
-        </motion.ul>
-
-        <motion.div {...fade(2.5)} className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+      <div className="relative mt-10 flex w-full flex-col items-center">
+        <motion.div {...fade(2.2)} className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <SmartLink href="/#contacto" className="btn-primary">Organiza con nosotros</SmartLink>
           <SmartLink href="/perfil-jugador" className="btn-ghost">
             Conoce Perfil de Jugador <span aria-hidden="true">→</span>
           </SmartLink>
         </motion.div>
 
-        <motion.ul {...fade(2.65)} className="mt-8 flex gap-2.5" aria-label="Redes sociales">
+        <motion.ul {...fade(2.4)} className="mt-8 flex gap-2.5" aria-label="Redes sociales">
           {socials.map((s) => (
             <li key={s.name}>
               <a
