@@ -24,6 +24,7 @@ export default function Footer() {
             <li><a href={site.social.instagram} target="_blank" rel="noreferrer" className="hover:text-texto">Instagram</a></li>
             <li><a href={site.social.tiktok} target="_blank" rel="noreferrer" className="hover:text-texto">TikTok</a></li>
             <li><a href={site.social.youtube} target="_blank" rel="noreferrer" className="hover:text-texto">YouTube</a></li>
+            <li><a href={site.social.facebook} target="_blank" rel="noreferrer" className="hover:text-texto">Facebook</a></li>
             <li><a href={`mailto:${site.social.email}`} className="hover:text-texto">{site.social.email}</a></li>
           </ul>
         </div>

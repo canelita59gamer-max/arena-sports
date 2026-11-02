@@ -6,6 +6,7 @@ import PlayerProfile from '../sections/PlayerProfile.jsx'
 import Blueprint from '../sections/Blueprint.jsx'
 import Events from '../sections/Events.jsx'
 import Sponsors from '../sections/Sponsors.jsx'
+import Social from '../sections/Social.jsx'
 import Contact from '../sections/Contact.jsx'
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <PlayerProfile />
       <Blueprint />
       <Events />
+      <Social />
       <Sponsors />
       <Contact />
     </>

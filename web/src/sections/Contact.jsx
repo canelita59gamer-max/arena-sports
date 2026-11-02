@@ -3,13 +3,7 @@ import site from '../data/site.js'
 import Reveal from '../fx/Reveal.jsx'
 import Spotlight from '../fx/Spotlight.jsx'
 import { buildWhatsAppUrl } from '../lib/whatsapp.js'
-
-const socials = [
-  { name: 'Instagram', href: site.social.instagram, handle: site.social.handle },
-  { name: 'TikTok', href: site.social.tiktok, handle: site.social.handle },
-  { name: 'YouTube', href: site.social.youtube, handle: '@ArenaSportsCo' },
-  { name: 'WhatsApp', href: `https://wa.me/${site.social.whatsapp}`, handle: site.social.whatsappLabel },
-]
+import { socials } from './Social.jsx'
 
 const field = 'w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-texto placeholder:text-texto2/60 outline-none transition focus:border-acento/60 focus:bg-white/[0.05]'
 
@@ -36,8 +30,8 @@ export default function Contact({ defaultTopic = '' }) {
 
           <div className="mt-10 grid grid-cols-2 gap-3">
             {socials.map((s) => (
-              <a key={s.name} href={s.href} target="_blank" rel="noreferrer" className="glass group rounded-2xl p-4 transition hover:border-acento/40">
-                <p className="font-display text-sm uppercase tracking-[0.2em] text-texto group-hover:text-acento">{s.name} ↗</p>
+              <a key={s.name} href={s.href} target="_blank" rel="noreferrer" className="glass group rounded-2xl p-4 transition hover:border-acento/40 last:col-span-2">
+                <p className="font-display text-sm uppercase tracking-[0.2em] text-texto group-hover:text-acento"><i className={`${s.icon} mr-2`} aria-hidden="true" />{s.name} ↗</p>
                 <p className="mt-1 truncate text-sm text-texto2">{s.handle}</p>
               </a>
             ))}

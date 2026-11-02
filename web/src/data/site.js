@@ -12,8 +12,10 @@ const site = {
     { label: 'Perfil de Jugador', href: '/perfil-jugador' },
     { label: 'Cómo trabajamos', href: '/#proceso' },
     { label: 'Faith Cup', href: '/#eventos' },
-    { label: 'Patrocinadores', href: '/#patrocinadores' },
+    { label: 'Redes', href: '/#redes' },
   ],
+
+  sports: ['Fútbol', 'Voleibol', 'Básquetbol', 'Multideporte'],
 
   hero: {
     eyebrow: 'Organización profesional de eventos deportivos',
@@ -65,6 +67,7 @@ const site = {
       { src: '/app/cartas.jpg', alt: 'Portada de Perfil de Jugador con cartas de jugador' },
       { src: '/app/carta.jpg', alt: 'Carta de jugador nivel oro' },
       { src: '/app/clubes.jpg', alt: 'Lista de clubes en Perfil de Jugador' },
+      { src: '/app/mision.jpg', alt: 'Para quién es Perfil de Jugador y a dónde vamos' },
     ],
   },
 
@@ -99,6 +102,7 @@ const site = {
     instagram: 'https://www.instagram.com/arenasportsco_',
     tiktok: 'https://www.tiktok.com/@arenasportsco_',
     youtube: 'https://www.youtube.com/@ArenaSportsCo',
+    facebook: 'https://www.facebook.com/share/19YH5N7aiq/?mibextid=wwXIfr',
     handle: '@arenasportsco_',
   },
 
