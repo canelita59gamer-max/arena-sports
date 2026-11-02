@@ -1,18 +1,21 @@
 import { useId, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
-// Ícono + que gira a × cuando el contenido está abierto.
-export function PlusIcon({ open, className = '' }) {
+// Flecha discreta que apunta a la derecha y gira hacia abajo cuando el contenido está abierto.
+export function ArrowIcon({ open, className = '' }) {
   return (
-    <span
+    <svg
       aria-hidden="true"
-      className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition duration-300 ${
-        open ? 'rotate-45 border-acento bg-acento text-negro' : 'border-white/20 text-texto'
-      } ${className}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-5 w-5 shrink-0 transition duration-300 ${open ? 'rotate-90 text-acento' : 'text-texto2 group-hover:translate-x-0.5 group-hover:text-acento'} ${className}`}
     >
-      <span className="absolute h-[1.5px] w-3 bg-current" />
-      <span className="absolute h-3 w-[1.5px] bg-current" />
-    </span>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
   )
 }
 
@@ -54,7 +57,7 @@ export default function ExpandItem({ title, children, lead, className = '' }) {
         <span className={`flex-1 font-display text-lg font-semibold uppercase tracking-wide transition sm:text-xl ${open ? 'text-acento' : 'text-texto group-hover:text-acento'}`}>
           {title}
         </span>
-        <PlusIcon open={open} />
+        <ArrowIcon open={open} />
       </button>
       <Reveal open={open} id={id}>
         <p className="pb-5 pr-12 text-[15px] leading-relaxed text-texto2">{children}</p>

@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from 'react'
-import { PlusIcon, Reveal as ExpandBody } from '../fx/Expand.jsx'
+import { ArrowIcon, Reveal as ExpandBody } from '../fx/Expand.jsx'
 import { motion, useScroll, useSpring } from 'motion/react'
 import site from '../data/site.js'
 import Reveal from '../fx/Reveal.jsx'
@@ -21,7 +21,7 @@ function StepCard({ s, i, total }) {
       <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-sky-300/70">Paso {i + 1} / {total}</p>
       <span className="flex items-center justify-between gap-3">
         <h3 className="font-display text-2xl font-semibold uppercase">{s.title}</h3>
-        <PlusIcon open={open} />
+        <ArrowIcon open={open} />
       </span>
       <ExpandBody open={open} id={id}>
         <p className="pt-3 text-[15px] leading-relaxed text-texto2">{s.desc}</p>

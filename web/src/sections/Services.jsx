@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import site from '../data/site.js'
 import Reveal from '../fx/Reveal.jsx'
-import { PlusIcon } from '../fx/Expand.jsx'
+import { ArrowIcon } from '../fx/Expand.jsx'
 import { SmartLink } from './Nav.jsx'
 
 // Tarjeta de servicio: casi todo es imagen y título. Al tocarla (o pasar el mouse)
@@ -30,7 +30,7 @@ function ServiceCard({ s }) {
       <div className="absolute inset-x-0 bottom-0 p-6">
         <div className="flex items-end justify-between gap-4">
           <h3 className="font-display text-2xl font-semibold uppercase leading-tight sm:text-[1.7rem]">{s.title}</h3>
-          <PlusIcon open={open} />
+          <ArrowIcon open={open} />
         </div>
         <AnimatePresence initial={false}>
           {open && (
