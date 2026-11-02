@@ -40,7 +40,7 @@ export default function Blueprint({ id = 'proceso', title = 'Cómo organizamos',
             <motion.line x1="0" y1="2" x2="100" y2="2" stroke="#E8FF00" strokeWidth="0.4" style={{ pathLength: reduced ? 1 : draw }} />
           </svg>
 
-          <ol className="grid gap-6 lg:grid-cols-4">
+          <ol className={`grid gap-6 ${steps.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'}`}>
             {steps.map((s, i) => (
               <Reveal as="li" key={s.title} delay={i * 0.12} className="relative">
                 <div className="relative z-10 mb-6 flex h-[68px] w-[68px] items-center justify-center rounded-full border border-sky-300/40 bg-[#06101f] font-mono text-lg text-acento">

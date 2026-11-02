@@ -23,7 +23,15 @@ export default function KineticTitle({ lines, as: Tag = 'h1', className = '', de
               {[...word].map((ch, ci) => {
                 const i = index++
                 return reduced ? (
-                  <span key={ci} className="inline-block">{ch}</span>
+                  <motion.span
+                    key={ci}
+                    className="inline-block"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: delay + i * 0.02, duration: 0.6 }}
+                  >
+                    {ch}
+                  </motion.span>
                 ) : (
                   <motion.span
                     key={ci}

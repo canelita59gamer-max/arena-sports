@@ -6,8 +6,12 @@ export default function Reveal({ children, delay = 0, y = 32, className = '', as
   const reduced = useReducedMotion()
   const Tag = motion[as]
   if (reduced) {
-    const Plain = as
-    return <Plain className={className}>{children}</Plain>
+    // Sin desplazamiento: solo un fundido suave, que no marea.
+    return (
+      <Tag className={className} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay }}>
+        {children}
+      </Tag>
+    )
   }
   return (
     <Tag

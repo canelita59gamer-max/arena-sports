@@ -46,9 +46,9 @@ export default function Nav() {
           <span className="hidden font-display text-sm font-semibold uppercase tracking-[0.25em] text-texto sm:inline">Arena Sports</span>
         </Link>
 
-        <div className="hidden items-center gap-7 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex xl:gap-7">
           {site.nav.map((item) => (
-            <SmartLink key={item.href} href={item.href} className="font-display text-[13px] uppercase tracking-[0.18em] text-texto2 transition hover:text-acento">
+            <SmartLink key={item.href} href={item.href} className="whitespace-nowrap font-display text-[13px] uppercase tracking-[0.16em] text-texto2 transition hover:text-acento">
               {item.label}
             </SmartLink>
           ))}
